@@ -1,12 +1,94 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Call to Vocation</title>
-</head>
-<body>
-    <h1>Call to Vocation!</h1>
-    <p>hello</p>
 
-    <script src="dist/main.js"></script>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Call to Vocation">
+    <meta name="author" content="Zyteify">
+    <title>Call to Vocation</title>
+    <link rel="stylesheet" href="dist/css/main.css">
+</head>
+
+<body>
+    <div id="user-stats">
+
+        <div id="game-state" class="main">
+            <h3 id="section-title"> Game State: </h3>
+            <div id="game-state-variables">
+                <p id="game-time">
+                    <span id="game-time-days"> 0 </span> days,
+                    <span id="game-time-hours"> 0 </span> hours,
+                    <span id="game-time-minutes"> 0 </span> minutes
+                </p>
+                <p id="game-time-speed">
+                    <span id="game-time-speed-multiplier"> 1 </span> x speed
+                </p>
+
+            </div>
+        </div>
+
+        
+
+        <div id="resources" class="main">
+            <h3 id="section-title"> Resources: </h3>
+            <div id="resource-variables">
+               
+                <div id="resource-list">
+
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div id="crafting" class="main">
+            <h3 id="section-title"> Crafting: </h3>
+            <button id="create-gear"> Create gear</button>
+        </div>
+
+        <div id="upgrades" class="main">
+            <h3 id="section-title"> Upgrades: </h3>
+            <button id="create-worker"> Create worker</button>
+            <div id="upgrade-list">
+
+            </div>
+        </div>
+
+    </div>
+    <p id="points"></p>
+    <div id="workers" class="main">
+        <h3 id="section-title"> Workers: </h3>
+        <div id="worker-variables">
+            <p id="worker-count">
+                <span id="worker-count-current"> 0 </span> /
+                <span id="worker-count-max"> 0 </span>
+
+            </p>
+            <div id="worker-list">
+
+            </div>
+        </div>
+    </div>
+    <div id="gear" class="main">
+        <h3 id="section-title"> Gear: </h3>
+        <div id="gear-variables">
+            <p id="gear-count">
+                <span id="gear-count-current"> 0 </span> /
+                <span id="gear-count-max"> 0 </span>
+
+            </p>
+            <div id="gear-list">
+
+            </div>
+        </div>
+    </div>
+    <div id="canvas"> </div>
+    <button id="test">test</button>
+    <script src="dist/js/laborer.js"></script>
+    <script src="dist/js/resource.js"></script>
+    <script src="dist/js/item.js"></script>
+    <script src="dist/js/main.js"></script>
+    
 </body>
+
 </html>

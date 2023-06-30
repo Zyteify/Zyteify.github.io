@@ -1,0 +1,20 @@
+body{
+    margin: auto;
+}
+
+#user-stats{
+    margin: auto;
+    display: flex;
+    
+}
+
+.main{
+    border: 1px solid black;
+    padding: 5px;
+
+}
+
+.main {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
