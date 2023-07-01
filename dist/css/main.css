@@ -1,14 +1,14 @@
-body{
+body {
     margin: auto;
 }
 
-#user-stats{
+#user-stats {
     margin: auto;
     display: flex;
-    
+
 }
 
-.main{
+.main {
     border: 1px solid black;
     padding: 5px;
 
@@ -17,4 +17,37 @@ body{
 .main {
     flex-basis: 0;
     flex-grow: 1;
+}
+
+
+
+#worker-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#gear-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.worker-div{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+
+.worker-div.highlight {
+    background-color: lightblue;
   }
+
+  .worker-div.highlight2 {
+    background-color: rgb(241, 134, 134);
+  }
+
+.gear-div{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}

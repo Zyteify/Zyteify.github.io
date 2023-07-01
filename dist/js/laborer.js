@@ -13,44 +13,86 @@ class Laborer {
     vocation;
     id;
     static count = 0;
+    static names = [];
     resources = [];
     //empty array of items
     weapon;
     boot;
+    image;
+    //display
+    div;
+    container;
+    paragraph;
     constructor(name) {
         this.id = Laborer.count++;
         this.name = name;
-        this.vocation = new Vocation('vagrant', 'farms food');
+        this.vocation = new Vocation('Vagrant', 'farms food');
         this.resources = [];
         this.weapon = null;
         this.boot = null;
+        //div
+        this.div = document.createElement('div');
+        this.div.id = "worker-div" + this.id.toString();
+        this.div.className = "worker-div";
+        //image
+        this.image = new Image();
+        //container
+        this.container = document.getElementById('worker-list');
+        //paragraph
+        this.paragraph = null;
+        this.setName();
+    }
+    randomiseName() {
+        if (nameList.length == 0) {
+            return this.id.toString();
+        }
+        else {
+            // Pick a random name
+            const randomIndex = Math.floor(Math.random() * nameList.length);
+            const name = nameList[randomIndex];
+            console.log(name);
+            //remove the name from the list
+            nameList.splice(randomIndex, 1);
+            return name;
+        }
+        return 'error';
+    }
+    setName(name) {
+        if (name) {
+            this.name = name;
+        }
+        else {
+            this.name = this.randomiseName();
+        }
     }
     setVocation() {
         if (this.weapon == null) {
-            this.vocation = new Vocation('vagrant', 'farms food');
+            this.vocation = new Vocation('Vagrant', 'farms food');
         }
         switch (this.weapon?.gear) {
-            case 'sword':
-                this.vocation = new Vocation('warrior', 'fights enemies');
+            case 'Axe':
+                this.vocation = new Vocation('Woodcutter', 'fights enemies');
                 break;
-            case 'hoe':
-                this.vocation = new Vocation('farmer', 'farms food');
+            case 'Hoe':
+                this.vocation = new Vocation('Farmer', 'farms food');
                 break;
             default:
-                this.vocation = new Vocation('vagrant', 'farms food');
+                this.vocation = new Vocation('Vagrant', 'farms food');
                 break;
         }
     }
     doWork() {
         switch (this.vocation.name) {
-            case 'warrior':
-                points++;
+            case 'Woodcutter':
+                this.addResource(new Resource(ResourceType.wood, 1, '🌲'));
                 break;
-            case 'farmer':
+            case 'Farmer':
                 this.addResource(new Resource(ResourceType.food, 1, '🍞'));
                 break;
+            case 'Vagrant':
+                break;
             default:
-                console.log('vagrant');
+                console.log('no work found for ' + this.vocation.name);
                 break;
         }
     }
@@ -132,5 +174,66 @@ class Laborer {
                 this.removeResource(this.resources[i]);
             }
         }
+    }
+    setImage() {
+        //if the image id has not been set, initialise the image
+        if (this.image.id == "") {
+            // Set the source attribute of the image
+            this.image.src = 'dist/img/person.png';
+            this.image.id = "worker-image" + this.id.toString();
+            this.image.draggable = false;
+            if (this.image.parentElement == null) {
+                this.div.appendChild(this.image);
+            }
+        }
+    }
+    setParagraph() {
+        //check to see if a paragraph element exists for this resource
+        if (this.paragraph == null) {
+            this.paragraph = document.createElement('p');
+            this.paragraph.id = "worker" + this.id.toString();
+            this.div.appendChild(this.paragraph);
+        }
+        else {
+            this.paragraph.innerHTML = this.id + " " + this.name + ": " + this.vocation.name;
+        }
+    }
+    setWorkerGearImage() {
+        //display the worker's gear
+        let myWeapon = this.weapon;
+        if (myWeapon != null) {
+            let gearImage = document.getElementById("gear-image" + myWeapon.gear.toString());
+            if (gearImage == null) {
+                gearImage = document.createElement('img');
+                // Set the source attribute of the image
+                gearImage.src = 'dist/img/' + myWeapon.gear + '.png';
+                gearImage.id = "gear-image" + myWeapon.gear.toString();
+                gearImage.draggable = false;
+                this.div.appendChild(gearImage);
+            }
+        }
+        if (this.boot != null) {
+        }
+    }
+    setResourceDisplay() {
+        //check to see if a paragraph element exists for this resource
+        if (this.paragraph == null) {
+            this.setParagraph();
+        }
+        if (this.paragraph != null) {
+            for (let i = 0; i < this.resources.length; i++) {
+                this.paragraph.innerHTML += " " + this.resources[i].icon + " " + this.resources[i].amount;
+            }
+        }
+    }
+    Display() {
+        //append the div to the container if it hasnt already
+        if (this.div.parentElement == null) {
+            this.container.appendChild(this.div);
+        }
+        this.setParagraph();
+        this.setImage();
+        this.setWorkerGearImage();
+        this.setResourceDisplay();
     }
 }
