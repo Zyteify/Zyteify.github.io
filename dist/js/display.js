@@ -16,15 +16,11 @@ function displayText() {
     gearCountCurrent.innerHTML = game.gearCountCurrent.toString();
     //gear-count-max
     gearCountMax.innerHTML = game.gearCountMax.toString();
-    displayWorkers();
-    displayResources();
-    displayGear();
-}
-function displayWorkers() {
-    /*     for (let i = 0; i < workers.length; i++) {
-            workers[i].Display()
-        } */
+    //crafting
+    //crafting-progress
+    craftingProgress.innerHTML = craftProgress.toString();
     updateEventListeners();
+    displayResources();
 }
 function displayGear() {
     for (let i = 0; i < items.length; i++) {

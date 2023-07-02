@@ -4,6 +4,10 @@ var ResourceType;
 (function (ResourceType) {
     ResourceType[ResourceType["food"] = 0] = "food";
     ResourceType[ResourceType["wood"] = 1] = "wood";
+    ResourceType[ResourceType["stone"] = 2] = "stone";
+    ResourceType[ResourceType["gems"] = 3] = "gems";
+    ResourceType[ResourceType["metal"] = 4] = "metal";
+    ResourceType[ResourceType["coins"] = 5] = "coins";
 })(ResourceType || (ResourceType = {}));
 class Resource {
     name;
@@ -15,6 +19,7 @@ class Resource {
         this.amount = amount;
         this.icon = icon;
         this.paragraph = document.createElement('p');
+        this.paragraph.innerText = this.icon + " " + this.name + ": " + this.amount;
     }
 }
 function getResourceByName(name) {

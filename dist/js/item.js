@@ -1,4 +1,5 @@
 "use strict";
+const itemTypes = ["Weapon", "Boot"];
 const gearTypes = [
     "Hoe",
     "Mace",
@@ -23,7 +24,7 @@ const vocationMap = {
     'Knife': 'Cook',
     'Bow': 'Hunter',
     'Chisel': 'Crafter',
-    'Quill': 'Researcher',
+    'Quill': 'Taxer',
     'Dice': 'Gambler',
     'Scales': 'Taxer',
     'Holy Symbol': 'Priest',

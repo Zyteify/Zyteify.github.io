@@ -20,11 +20,14 @@ class Laborer {
     div;
     container;
     paragraph;
+    paragraphDiv;
     resourcesParagraphs;
     resourceDiv;
     gearDiv;
     //actions
     vocationActions; // Mapping of vocation to function
+    workSpeed = 10;
+    workProgress = 0;
     constructor(name) {
         this.id = Laborer.count++;
         this.name = name;
@@ -59,8 +62,10 @@ class Laborer {
         //container
         this.container = document.getElementById('worker-list');
         //paragraph
-        this.paragraph = null;
+        this.paragraph = [];
         this.resourcesParagraphs = [];
+        this.paragraphDiv = document.createElement('div');
+        this.paragraphDiv.id = "worker-paragraph-div" + this.id.toString();
         this.resourceDiv = document.createElement('div');
         this.resourceDiv.id = "worker-resources-div" + this.id.toString();
         this.gearDiv = document.createElement('div');
@@ -102,11 +107,16 @@ class Laborer {
         else {
             console.log(`The item "${gearType}" does not have a corresponding vocation.`);
         }
+        //update text
+        this.setParagraph();
+        //when they change vocation, they should lose their work progress
+        this.workProgress = 0;
     }
     doWork() {
-        const action = this.vocationActions[this.vocation.name];
-        if (action) {
-            action(); // Call the corresponding vocation-specific function
+        this.workProgress += this.workSpeed;
+        if (this.workProgress >= 100) {
+            this.workProgress -= 100;
+            this.vocationActions[this.vocation.name].call(this);
         }
         this.setParagraph();
     }
@@ -139,10 +149,10 @@ class Laborer {
     }
     //equip an item
     equipItem(item) {
-        if (item.type == "weapon") {
+        if (item.type == "Weapon") {
             this.weapon = item;
         }
-        else if (item.type == "boot") {
+        else if (item.type == "Boot") {
             this.boot = item;
         }
         this.setItemParent();
@@ -151,10 +161,10 @@ class Laborer {
     //unequip an item
     unequipItem(item) {
         switch (item.type) {
-            case "weapon":
+            case "Weapon":
                 this.weapon = null;
                 break;
-            case "boot":
+            case "Boot":
                 this.boot = null;
                 break;
             default:
@@ -171,7 +181,7 @@ class Laborer {
             this.weapon.setParentDiv(this.gearDiv);
         }
     }
-    depositResources() {
+    depositResources(amount) {
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
             //check to see if the stockpile has the resource
@@ -179,7 +189,7 @@ class Laborer {
             let homeResource = getResourceByName(workerResource.name);
             if (homeResource != null) {
                 //add the resource to the homeResource
-                let resourceToAdd = Math.min(workerResource.amount, 1);
+                let resourceToAdd = Math.min(workerResource.amount, amount);
                 homeResource.amount += resourceToAdd;
                 //subtract the resource from the worker's inventory
                 workerResource.amount -= resourceToAdd;
@@ -212,13 +222,36 @@ class Laborer {
         }
     }
     setParagraph() {
-        //check to see if a paragraph element exists for this resource
-        if (this.paragraph == null) {
-            this.paragraph = document.createElement('p');
-            this.paragraph.id = "worker" + this.id.toString();
-            this.div.appendChild(this.paragraph);
+        if (this.paragraphDiv.parentElement == null) {
+            this.div.appendChild(this.paragraphDiv);
         }
-        this.paragraph.innerHTML = this.name + ": " + this.vocation.name;
+        if (this.paragraph.length == 0) {
+            this.paragraph.push(document.createElement('p'));
+            this.paragraph.push(document.createElement('p'));
+            this.paragraph.push(document.createElement('p'));
+        }
+        //loop through each paragraph element and create it if it doesn't exist
+        for (let i = 0; i < this.paragraph.length; i++) {
+            //check to see if a paragraph element exists for this resource
+            if (this.paragraph[i].id == '') {
+                this.paragraph[i].id = "worker" + this.id.toString();
+                this.paragraphDiv.appendChild(this.paragraph[i]);
+            }
+            switch (i) {
+                case (0):
+                    this.paragraph[i].innerHTML = this.name + ": " + this.vocation.name;
+                    break;
+                case (1):
+                    this.paragraph[i].innerHTML = "Work Progress: " + this.workProgress.toString();
+                    break;
+                case (2):
+                    this.paragraph[i].innerHTML = "Work Speed: " + this.workSpeed.toString();
+                    break;
+                default:
+                    console.log('error');
+                    break;
+            }
+        }
     }
     setResourcesDisplay() {
         //append the resource div to the worker div if it hasnt already
@@ -230,6 +263,7 @@ class Laborer {
             if (this.resources[i].paragraph.id == "") {
                 this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
                 this.resourceDiv.appendChild(this.resources[i].paragraph);
+                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
             }
             if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
                 this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
@@ -255,16 +289,40 @@ class Laborer {
     }
     farm() {
         //add food to the worker
-        this.addResource(new Resource(ResourceType.food, 1, '🍞'));
+        let resource = new Resource(ResourceType.food, 1, '🍞');
+        this.addResource(resource);
+        console.log('farming');
     }
     mine() {
         console.log('mining');
+        //have an x chance of getting a resource
+        //add a resource to the worker
+        let stoneChance = 0.8;
+        let gemsChance = 0.1;
+        let metalChance = 0.1;
+        let random = Math.random();
+        switch (true) {
+            case (random < stoneChance):
+                this.addResource(new Resource(ResourceType.stone, 1, "⛰️"));
+                break;
+            case (random < stoneChance + gemsChance):
+                this.addResource(new Resource(ResourceType.gems, 1, "💎"));
+                break;
+            case (random < stoneChance + gemsChance + metalChance):
+                this.addResource(new Resource(ResourceType.metal, 1, "⛏️"));
+                break;
+            default:
+                console.log('failed to mine');
+                break;
+        }
     }
     chop() {
         //add wood to the worker
         this.addResource(new Resource(ResourceType.wood, 1, '🌲'));
     }
     craft() {
+        craftProgress += 1;
+        craftItem();
         console.log('crafting');
     }
     guard() {
@@ -280,12 +338,63 @@ class Laborer {
         console.log('cooking');
     }
     hunt() {
+        let huntChance = 0.15;
+        let random = Math.random();
+        if (random < huntChance) {
+            //add food to the worker
+            let resource = new Resource(ResourceType.food, 10, '🍞');
+            this.addResource(resource);
+        }
         console.log('hunting');
     }
     tax() {
+        //get the number of workers who aren't vagrants or taxers
+        let workerCount = 0;
+        for (let i = 0; i < workers.length; i++) {
+            if (workers[i].vocation.name != 'Vagrant' && workers[i].vocation.name != 'Taxer') {
+                workerCount++;
+            }
+        }
+        let amount = workerCount * 2;
+        if (amount > 0) {
+            let resource = new Resource(ResourceType.coins, amount, '💰');
+            this.addResource(resource);
+        }
+        //the taxer can instantly deposit the resources
+        this.depositResources(10);
         console.log('taxing');
     }
     gamble() {
+        let winChance = 0.15;
+        let random = Math.random();
+        if (random < winChance) {
+            let amount = 0;
+            let winChanceBig = 0.01;
+            let winChanceSmall = 0.15;
+            let winChanceHuge = 0.001;
+            // Generate a random number between 0 and the total probability range
+            let totalWinChance = winChanceBig + winChanceSmall + winChanceHuge;
+            let random = Math.random() * totalWinChance;
+            switch (true) {
+                case (random < winChanceSmall):
+                    amount = 10;
+                    break;
+                case (random < winChanceSmall + winChanceBig):
+                    amount = 100;
+                    break;
+                case (random < winChanceSmall + winChanceBig + winChanceHuge):
+                    amount = 1000;
+                    break;
+                default:
+                    amount = 1;
+                    console.log('error chances in gambler');
+                    break;
+            }
+            let resource = new Resource(ResourceType.coins, amount, '💰');
+            this.addResource(resource);
+        }
+        //the gambler can instantly deposit the resources
+        //this.depositResources(10)
         console.log('gambling');
     }
     merchant() {
@@ -295,9 +404,10 @@ class Laborer {
         console.log('preaching');
     }
     research() {
+        upgradePoints += 1;
         console.log('researching');
     }
     noAction() {
-        console.log('no action');
+        //console.log('no action');
     }
 }

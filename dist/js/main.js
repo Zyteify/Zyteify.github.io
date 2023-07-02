@@ -13,6 +13,9 @@ const workerCountCurrent = document.getElementById('worker-count-current');
 const workerCountMax = document.getElementById('worker-count-max');
 //worker-list
 const workerList = document.getElementById('worker-list');
+//crafting
+//crafting-progress
+const craftingProgress = document.getElementById('crafting-progress');
 //buttons
 //create-worker
 const createWorkerButton = document.getElementById('create-worker');
@@ -42,12 +45,18 @@ let game = {
     gearCountMax: 0
 };
 let points = 0;
+let craftProgress = 0;
+let upgradePoints = 0;
 //list of workers
 let workers = [];
 //create resources list of initial resources available
 let resources = [
-    new Resource(ResourceType.food, 100, "🍞"),
-    new Resource(ResourceType.wood, 100, "🌲")
+    new Resource(ResourceType.food, 0, "🍞"),
+    new Resource(ResourceType.wood, 0, "🌲"),
+    new Resource(ResourceType.stone, 0, "⛰️"),
+    new Resource(ResourceType.gems, 0, "💎"),
+    new Resource(ResourceType.metal, 0, "⛏️"),
+    new Resource(ResourceType.coins, 0, "💰"),
 ];
 //list of items
 let items = [];
@@ -83,7 +92,7 @@ createWorkerButton.onclick = function () {
     createWorker();
 };
 createGearButton.onclick = function () {
-    createGear("Hoe");
+    createRandomGear();
 };
 //for development purposes
 for (let i = 0; i < gearTypes.length; i++) {
@@ -91,7 +100,7 @@ for (let i = 0; i < gearTypes.length; i++) {
     let button = document.createElement('button');
     button.innerHTML = gearTypes[i];
     button.onclick = function () {
-        createGear(gearTypes[i]);
+        createGear("Weapon", gearTypes[i]);
     };
     let craftingContainer = document.getElementById('crafting');
     craftingContainer.appendChild(button);
@@ -139,13 +148,18 @@ function createWorker() {
     game.workerCountMax++;
     displayText();
 }
-function createGear(GearType) {
+function createRandomGear() {
+    let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
+    let randomItemType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
+    //set it to weapon for now while we only have weapons
+    randomItemType = "Weapon";
     //create a new worker
-    let newGear = new Item("weapon", GearType);
-    //add the new worker to the list of workers
+    createGear(randomItemType, randomGearType);
+}
+function createGear(itemType, GearType) {
+    let newGear = new Item(itemType, GearType);
     items.push(newGear);
     game.gearCountCurrent++;
-    game.gearCountMax++;
     displayText();
 }
 function controlWorkers() {
@@ -160,7 +174,7 @@ function controlWorkers() {
     if (game.hours % 2 != 0) {
         //loop through each worker and do work
         for (let i = 0; i < workers.length; i++) {
-            workers[i].depositResources();
+            workers[i].depositResources(1);
         }
     }
 }
@@ -174,6 +188,15 @@ displayTextButton.onclick = function () {
 };
 //set the button to be a child of the body
 document.body.appendChild(displayTextButton);
+function craftItem() {
+    //if the progress is 100, create the item
+    if (craftProgress >= 100) {
+        //create a new item
+        createRandomGear();
+        //reset the progress
+        craftProgress = 0;
+    }
+}
 //main game loop
 function gameLoop() {
     updateGameTime();

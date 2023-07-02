@@ -2,6 +2,10 @@
 enum ResourceType {
     food,
     wood,
+    stone,
+    gems,  
+    metal,
+    coins
 }
 
 class Resource {
@@ -15,6 +19,7 @@ class Resource {
         this.amount = amount;
         this.icon = icon;
         this.paragraph = document.createElement('p');
+        this.paragraph.innerText = this.icon + " " + this.name + ": " + this.amount;
     }
 }
 

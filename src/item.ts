@@ -1,4 +1,7 @@
 type GearType = "Hoe" | "Mace" | "Potion" | "Hammer" | "Knife" | "Bow" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
+type ItemType = "Weapon" | "Boot"
+
+const itemTypes: ItemType[] = ["Weapon", "Boot"]
 
 const gearTypes: GearType[] = [
     "Hoe",
@@ -25,7 +28,7 @@ const vocationMap: Record<GearType, ClassType> = {
     'Knife': 'Cook',
     'Bow': 'Hunter',
     'Chisel': 'Crafter',
-    'Quill': 'Researcher',
+    'Quill': 'Taxer',
     'Dice': 'Gambler',
     'Scales': 'Taxer',
     'Holy Symbol': 'Priest',
@@ -36,7 +39,7 @@ const vocationMap: Record<GearType, ClassType> = {
 
 class Item {
     id: number;
-    type: string;
+    type: ItemType;
     gear: GearType;
     image: HTMLImageElement;
 
@@ -52,12 +55,12 @@ class Item {
         
         icon: string; */
     static count: number = 0;
-    constructor(type: string, gear: GearType
+    constructor(type: ItemType, gear: GearType
         //baseName: string, prefixName: string, suffixName: string, rarity: string, icon: string
     ) {
         this.id = Item.count++;
         this.gear = gear,
-            this.type = type;
+        this.type = type;
         this.image = new Image();
 
         /* this.baseName = baseName;
