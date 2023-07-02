@@ -9,10 +9,12 @@ class Resource {
     name;
     amount;
     icon;
+    paragraph;
     constructor(name, amount, icon) {
         this.name = name;
         this.amount = amount;
         this.icon = icon;
+        this.paragraph = document.createElement('p');
     }
 }
 function getResourceByName(name) {

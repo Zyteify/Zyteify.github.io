@@ -1,5 +1,12 @@
+html{
+    width: 100%;
+    height: 100%;
+}
 body {
     margin: auto;
+    width: 100%;
+    height: 100%;
+    
 }
 
 #user-stats {
@@ -29,6 +36,9 @@ body {
 #gear-list{
     display: flex;
     flex-wrap: wrap;
+    min-width: 50px;
+    min-height: 50px;
+    border: 1px solid black;
 }
 
 .worker-div{
@@ -38,16 +48,27 @@ body {
 }
 
 
-.worker-div.highlight {
+.highlight {
     background-color: lightblue;
   }
 
-  .worker-div.highlight2 {
+.highlight2 {
     background-color: rgb(241, 134, 134);
   }
 
 .gear-div{
     border: 1px solid black;
+    padding: 5px;
+    margin: 5px;
+}
+
+#resource-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.resource{
     padding: 5px;
     margin: 5px;
 }

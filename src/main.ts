@@ -116,27 +116,48 @@ for (let i = 0; i < gearTypes.length; i++) {
     button.onclick = function () {
         createGear(gearTypes[i]);
     }
-    let craftingContainer: HTMLElement = <HTMLElement> document.getElementById('crafting');
+    let craftingContainer: HTMLElement = <HTMLElement>document.getElementById('crafting');
     craftingContainer.appendChild(button);
 }
 
 
-function addGearToWorker(item: Item, worker: Laborer) {
-    worker.equipItem(item)
-    worker.setVocation();
-    //remove gear from list of items
-    items = items.filter(myitem => myitem.id !== item.id);
-    game.gearCountCurrent--;
-    emptyGearDisplay();
-}
+function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | Item[] | null) {
+    //if a worker is already wearing this item, remove it from them
 
-function removeGearfromWorker(item: Item, worker: Laborer) {
-    worker.unequipItem(item)
-    worker.setVocation();
-    //remove gear from list of items
-    items.push(item);
-    game.gearCountCurrent++;
+    if (source instanceof Laborer) {
+        source.unequipItem(item)
+        source.setVocation();
+    }
+    if (Array.isArray(source)) {
+        //remove gear from list of items
+        items = items.filter(myitem => myitem.id !== item.id);
+        game.gearCountCurrent--;
+    }
+
+    if (destination instanceof Laborer) {
+        if (destination.weapon) {
+            if (source instanceof Laborer) {
+                //move the item back to the other list
+                moveGear(destination.weapon, source, destination)
+            }
+            else {
+                destination.weapon.setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
+                items.push(destination.weapon);
+                destination.unequipItem(destination.weapon);
+                
+                game.gearCountCurrent++;
+            }
+
+        }
+        destination.equipItem(item)
+    }
+    if (Array.isArray(destination)) {
+        item.setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
+        items.push(item);
+        game.gearCountCurrent++;
+    }
     emptyGearDisplay();
+    displayText();
 }
 
 function createWorker() {
@@ -146,6 +167,7 @@ function createWorker() {
     workers.push(newWorker);
     game.workerCountCurrent++;
     game.workerCountMax++;
+    displayText();
 }
 
 
@@ -156,12 +178,7 @@ function createGear(GearType: GearType) {
     items.push(newGear);
     game.gearCountCurrent++;
     game.gearCountMax++;
-}
-
-let testButton: HTMLButtonElement = document.getElementById('test') as HTMLButtonElement;
-testButton.onclick = function () {
-    addGearToWorker(items[0], workers[0]);
-
+    displayText();
 }
 
 function controlWorkers() {
@@ -186,11 +203,23 @@ function controlWorkers() {
 //do the game loop every 100 milliseconds
 setInterval(gameLoop, 100);
 
+//create a button to display text
+let displayTextButton = document.createElement('button');
+displayTextButton.innerHTML = "Display Text";
+displayTextButton.onclick = function () {
+    displayText();
+}
+//set the button to be a child of the body
+document.body.appendChild(displayTextButton);
+
+
 //main game loop
 function gameLoop() {
-    updateGameTime();
-    controlWorkers();
-    displayText();
+     updateGameTime();
+     controlWorkers();
+     displayText();
 }
 
 displayText();
+
+

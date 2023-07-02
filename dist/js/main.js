@@ -96,21 +96,39 @@ for (let i = 0; i < gearTypes.length; i++) {
     let craftingContainer = document.getElementById('crafting');
     craftingContainer.appendChild(button);
 }
-function addGearToWorker(item, worker) {
-    worker.equipItem(item);
-    worker.setVocation();
-    //remove gear from list of items
-    items = items.filter(myitem => myitem.id !== item.id);
-    game.gearCountCurrent--;
+function moveGear(item, destination, source) {
+    //if a worker is already wearing this item, remove it from them
+    if (source instanceof Laborer) {
+        source.unequipItem(item);
+        source.setVocation();
+    }
+    if (Array.isArray(source)) {
+        //remove gear from list of items
+        items = items.filter(myitem => myitem.id !== item.id);
+        game.gearCountCurrent--;
+    }
+    if (destination instanceof Laborer) {
+        if (destination.weapon) {
+            if (source instanceof Laborer) {
+                //move the item back to the other list
+                moveGear(destination.weapon, source, destination);
+            }
+            else {
+                destination.weapon.setParentDiv(document.getElementById('gear-list'));
+                items.push(destination.weapon);
+                destination.unequipItem(destination.weapon);
+                game.gearCountCurrent++;
+            }
+        }
+        destination.equipItem(item);
+    }
+    if (Array.isArray(destination)) {
+        item.setParentDiv(document.getElementById('gear-list'));
+        items.push(item);
+        game.gearCountCurrent++;
+    }
     emptyGearDisplay();
-}
-function removeGearfromWorker(item, worker) {
-    worker.unequipItem(item);
-    worker.setVocation();
-    //remove gear from list of items
-    items.push(item);
-    game.gearCountCurrent++;
-    emptyGearDisplay();
+    displayText();
 }
 function createWorker() {
     //create a new worker
@@ -119,6 +137,7 @@ function createWorker() {
     workers.push(newWorker);
     game.workerCountCurrent++;
     game.workerCountMax++;
+    displayText();
 }
 function createGear(GearType) {
     //create a new worker
@@ -127,11 +146,8 @@ function createGear(GearType) {
     items.push(newGear);
     game.gearCountCurrent++;
     game.gearCountMax++;
+    displayText();
 }
-let testButton = document.getElementById('test');
-testButton.onclick = function () {
-    addGearToWorker(items[0], workers[0]);
-};
 function controlWorkers() {
     //if the hours are even, do work
     if (game.hours % 2 == 0) {
@@ -150,6 +166,14 @@ function controlWorkers() {
 }
 //do the game loop every 100 milliseconds
 setInterval(gameLoop, 100);
+//create a button to display text
+let displayTextButton = document.createElement('button');
+displayTextButton.innerHTML = "Display Text";
+displayTextButton.onclick = function () {
+    displayText();
+};
+//set the button to be a child of the body
+document.body.appendChild(displayTextButton);
 //main game loop
 function gameLoop() {
     updateGameTime();

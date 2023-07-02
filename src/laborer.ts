@@ -16,18 +16,16 @@ Researcher - generate exp - scroll
 Miner - generates stone - pickaxe
 Woodcutter - generates wood - axe
  */
-type classType = "Vagrant" | 'Farmer' | 'Transporter' | 'Guard' | 'Nurse' | 'Builder' | 'Cook' | 'Hunter' | 'Crafter' | 'Taxer' | 'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' | 'Woodcutter';
-
+type ClassType = "Vagrant" | 'Farmer' | 'Guard' | 'Nurse' | 'Builder' | 'Cook' | 'Hunter' | 'Crafter' | 'Taxer' | 'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' | 'Woodcutter';
 
 class Vocation {
-    name: classType;
-    description: string;
-    constructor(name: classType, description: string) {
+    name: ClassType;
+
+    constructor(name: ClassType) {
         this.name = name;
-        this.description = description;
+
+
     }
-
-
 }
 //create the class worker
 class Laborer {
@@ -35,7 +33,6 @@ class Laborer {
     vocation: Vocation;
     id: number;
     static count: number = 0;
-    static names: string[] = [];
 
     resources: Resource[] = [];
     //empty array of items
@@ -48,15 +45,41 @@ class Laborer {
     div: HTMLDivElement;
     container: HTMLDivElement;
     paragraph: HTMLParagraphElement | null;
+    resourcesParagraphs: HTMLParagraphElement[];
+    resourceDiv: HTMLDivElement;
+    gearDiv: HTMLDivElement;
+
+    //actions
+    vocationActions: Record<ClassType, () => void>; // Mapping of vocation to function
+
 
     constructor(name: string) {
         this.id = Laborer.count++;
         this.name = name;
-        this.vocation = new Vocation('Vagrant', 'farms food');
+        this.vocation = new Vocation('Vagrant');
 
         this.resources = [];
         this.weapon = null;
         this.boot = null;
+
+        //actions
+        this.vocationActions = {
+            Vagrant: this.noAction,
+            Farmer: this.farm,
+            Guard: this.guard,
+            Nurse: this.nurse,
+            Builder: this.build,
+            Cook: this.cook,
+            Hunter: this.hunt,
+            Crafter: this.craft,
+            Researcher: this.research,
+            Gambler: this.gamble,
+            Taxer: this.tax,
+            Merchant: this.merchant,
+            Priest: this.priest,
+            Miner: this.mine,
+            Woodcutter: this.chop,
+          };
 
         //div
         this.div = document.createElement('div');
@@ -69,24 +92,32 @@ class Laborer {
         this.container = document.getElementById('worker-list') as HTMLDivElement;
         //paragraph
         this.paragraph = null;
+        this.resourcesParagraphs = [];
+        this.resourceDiv = document.createElement('div');
+        this.resourceDiv.id = "worker-resources-div" + this.id.toString();
+
+        this.gearDiv = document.createElement('div');
+        this.gearDiv.id = "worker-gear-div" + this.id.toString();
 
         this.setName()
+        this.setupDiv()
+
     }
 
     randomiseName() {
         if (nameList.length == 0) {
+            console.log('error');
             return this.id.toString();
         } else {
             // Pick a random name
             const randomIndex = Math.floor(Math.random() * nameList.length);
             const name = nameList[randomIndex];
-            console.log(name);
             //remove the name from the list
             nameList.splice(randomIndex, 1);
             return name
         }
 
-        return 'error';
+
     }
 
     setName(name?: string) {
@@ -101,43 +132,31 @@ class Laborer {
 
     setVocation() {
         if (this.weapon == null) {
-            this.vocation = new Vocation('Vagrant', 'farms food');
+            this.vocation = new Vocation('Vagrant');
         }
-        switch (this.weapon?.gear) {
-            case 'Axe':
-                this.vocation = new Vocation('Woodcutter', 'fights enemies');
-                break;
-            case 'Hoe':
-                this.vocation = new Vocation('Farmer', 'farms food');
-                break;
-            default:
-                this.vocation = new Vocation('Vagrant', 'farms food');
-                break;
+        let gearType: GearType = <GearType>this.weapon?.gear;
+        if (vocationMap.hasOwnProperty(gearType)) {
+            this.vocation.name = vocationMap[gearType];
+            console.log(`Laborer's vocation changed to ${this.vocation.name}`);
+        } else {
+            console.log(`The item "${gearType}" does not have a corresponding vocation.`);
         }
 
     }
 
     doWork() {
 
-        switch (this.vocation.name) {
-            case 'Woodcutter':
-                this.addResource(new Resource(ResourceType.wood, 1, '🌲'));
-                break;
-            case 'Farmer':
-                this.addResource(new Resource(ResourceType.food, 1, '🍞'));
-                break;
-            case 'Vagrant':
-
-                break;
-            default:
-                console.log('no work found for ' + this.vocation.name);
-                break;
-        }
+        const action = this.vocationActions[this.vocation.name];
+    if (action) {
+      action(); // Call the corresponding vocation-specific function
+    }
+        this.setParagraph()
     }
 
 
     //add a resource to the worker
     addResource(resource: Resource) {
+        let resourceExistsFlag = false;
         //check to see if the worker already has the resource
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
@@ -145,22 +164,22 @@ class Laborer {
             if (this.resources[i].name === resource.name) {
                 //add the resource to the worker's inventory
                 this.resources[i].amount += resource.amount;
-                console.log('adding resource');
-                return;
-            } else {
-                this.resources.push(resource);
-                return
+                resourceExistsFlag = true;
             }
-            //if the resource does not exist in the worker's inventory, add it            
         }
 
-        //the worker does not have the resource, add it to the worker's inventory
-        console.log('adding resource to inventory');
-        this.resources.push(resource);
+        if (!resourceExistsFlag) {
+            //the worker does not have the resource, add it to the worker's inventory
+            this.resources.push(resource);
+        }
+
+        this.setResourcesDisplay();
     }
 
     //remove a resource from the worker
     removeResource(resource: Resource) {
+        resource.paragraph.remove();
+
         let index = this.resources.indexOf(resource);
         if (index > -1) {
             this.resources.splice(index, 1);
@@ -174,6 +193,8 @@ class Laborer {
         } else if (item.type == "boot") {
             this.boot = item;
         }
+        this.setItemParent();
+        this.setVocation();
     }
 
     //unequip an item
@@ -190,6 +211,20 @@ class Laborer {
                 break;
         }
     }
+
+    setItemParent() {
+        //append the gear div to the worker div if it hasnt already
+        if (this.gearDiv.parentElement == null) {
+            this.div.appendChild(this.gearDiv);
+        }
+
+        if (this.weapon) {
+            this.weapon.setParentDiv(this.gearDiv);
+        }
+
+
+    }
+
 
     depositResources() {
         //loop through each resource in the worker's inventory
@@ -217,7 +252,11 @@ class Laborer {
             if (this.resources[i].amount <= 0) {
                 this.removeResource(this.resources[i]);
             }
+
+
         }
+
+        this.setResourcesDisplay();
 
     }
 
@@ -243,62 +282,114 @@ class Laborer {
 
 
             this.div.appendChild(this.paragraph);
-        } else {
-            this.paragraph.innerHTML = this.id + " " + this.name + ": " + this.vocation.name;
+
         }
+        this.paragraph.innerHTML = this.name + ": " + this.vocation.name;
 
 
     }
 
-    setWorkerGearImage() {
-        //display the worker's gear
-        let myWeapon = <Item>this.weapon
-        if (myWeapon != null) {
-            let gearImage = <HTMLImageElement>document.getElementById("gear-image" + myWeapon.gear.toString())
-            if (gearImage == null) {
-                gearImage = document.createElement('img');
-                // Set the source attribute of the image
-
-
-                gearImage.src = 'dist/img/' + myWeapon.gear + '.png';
-                gearImage.id = "gear-image" + myWeapon.gear.toString();
-
-                gearImage.draggable = false
-
-
-                this.div.appendChild(gearImage);
+    setResourcesDisplay() {
+        //append the resource div to the worker div if it hasnt already
+        if (this.resourceDiv.parentElement == null) {
+            this.div.appendChild(this.resourceDiv);
+        }
+        //check to see if a paragraph element exists for each resource and create it if neccessary
+        for (let i = 0; i < this.resources.length; i++) {
+            if (this.resources[i].paragraph.id == "") {
+                this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
+                this.resourceDiv.appendChild(this.resources[i].paragraph);
             }
-        }
-        if (this.boot != null) {
-        }
-    }
-
-    setResourceDisplay() {
-        //check to see if a paragraph element exists for this resource
-        if (this.paragraph == null) {
-            this.setParagraph();
-        }
-        if (this.paragraph != null) {
-
-            for (let i = 0; i < this.resources.length; i++) {
-                this.paragraph.innerHTML += " " + this.resources[i].icon + " " + this.resources[i].amount;
+            if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
+                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
             }
         }
     }
 
-    Display() {
-
+    setupDiv() {
         //append the div to the container if it hasnt already
         if (this.div.parentElement == null) {
             this.container.appendChild(this.div);
         }
 
+        //set the id and class of the div
+        this.div.id = "worker-div" + this.id.toString();
+        this.div.className = "worker-div";
+
+        //append the paragraph to the div if it hasnt already
         this.setParagraph()
 
+        //append the image to the div if it hasnt already
         this.setImage()
 
-        this.setWorkerGearImage()
+        //append the gear to the div if it hasnt already
+        this.setItemParent()
 
-        this.setResourceDisplay()
+        //append the resources to the div if they havent already
+        this.setResourcesDisplay()
     }
+
+
+    farm() {
+        //add food to the worker
+        this.addResource(new Resource(ResourceType.food, 1, '🍞'));
+    }
+
+    mine() {
+        console.log('mining');
+    }
+
+    chop() {
+        //add wood to the worker
+        this.addResource(new Resource(ResourceType.wood, 1, '🌲'));
+    }
+
+    craft() {
+        console.log('crafting');
+    }
+
+    guard() {
+        console.log('guarding');
+    }
+
+    nurse() {
+        console.log('nursing');
+    }
+
+    build() {
+        console.log('building');
+    }
+
+    cook() {
+        console.log('cooking');
+    }
+
+    hunt() {
+        console.log('hunting');
+    }
+
+    tax() {
+        console.log('taxing');
+    }
+
+    gamble() {
+        console.log('gambling');
+    }
+
+    merchant() {
+        console.log('merchandising');
+    }
+
+    priest() {
+        console.log('preaching');
+    }
+
+    research() {
+        console.log('researching');
+    }
+
+    noAction() {
+        console.log('no action');
+    }
+
 }
