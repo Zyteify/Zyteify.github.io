@@ -10,14 +10,20 @@ class Beg {
         this.amount = amount;
         this.maxAmount = maxAmount;
     }
+    getRequiredResource(name) {
+        let resource = getResourceByName(name);
+        return resource;
+    }
     beg() {
-        if (resources[this.resource.name].amount < this.maxAmount) {
-            resources[this.resource.name].amount += this.amount;
+        let resourceGlobal = this.getRequiredResource(this.resource.name);
+        if (resourceGlobal.amount < this.maxAmount) {
+            resourceGlobal.amount += this.amount;
         }
     }
     isAvailable() {
         let ready = false;
-        if (resources[this.resource.name].amount < this.maxAmount) {
+        let resourceGlobal = this.getRequiredResource(this.resource.name);
+        if (resourceGlobal.amount < this.maxAmount) {
             ready = true;
         }
         return ready;

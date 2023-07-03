@@ -27,7 +27,7 @@ function displayText() {
 
 }
 
-
+displayResources()
 
 
 
@@ -53,7 +53,7 @@ function displayResources() {
             container.appendChild(paragraph);
         }
         let resourceName = ResourceType[resources[i].name]
-        paragraph.innerHTML = resources[i].icon + " " + resourceName + ": " + resources[i].amount;
+        paragraph.innerHTML = resources[i].icon+ " " + resources[i].amount;
     }
 }
 

@@ -72,18 +72,31 @@ let workers: Laborer[] = [];
 
 //create resources list of initial resources available
 let resources: Resource[] = [
-    new Resource(ResourceType.food, 0, "🍞"),
-    new Resource(ResourceType.wood, 0, "🌲"),
+    
+    new Resource(ResourceType.food, 0),
+    new Resource(ResourceType.gormetFood, 0),
+/*     new Resource(ResourceType.wood, 0, "🌲"),
     new Resource(ResourceType.stone, 0, "⛰️"),
     new Resource(ResourceType.gems, 0, "💎"),
-    new Resource(ResourceType.metal, 0, "⛏️"),
-    new Resource(ResourceType.coins, 0, "💰"),
+    new Resource(ResourceType.metal, 0, "⛏️"), */
+    new Resource(ResourceType.coins, 0),
 ];
 
-let begList: Beg[] = [
-    new Beg("food", resources[ResourceType.food], 1, 10),
-    new Beg("coins", resources[ResourceType.coins], 1, 10),
-];
+
+let begList: Beg[] = [];
+function createBegList() {
+    //get the food resource from the resources
+    let food = <Resource>getResourceByName(ResourceType.food);
+    let coins = <Resource>getResourceByName(ResourceType.coins);
+
+    return [
+        new Beg("food", food, 1, 10),
+        new Beg("coins", coins, 1, 10),
+    ];
+}
+//todo fix begging
+begList = createBegList();
+
 
 //list of items
 let items: Item[] = [];
@@ -206,14 +219,14 @@ function createGear(itemType: ItemType, GearType: GearType) {
 
 //create a few upgrades
 let upgradeList: Upgrade[] = [
-    new Upgrade("Unlock Workers", true, 10, 0, getEmptyResourceByName(ResourceType.coins), 1, unlockWorkers, ["Worker"], ["Worker"]),
-    new Upgrade("Unlock Gear", true, 10, 0, getEmptyResourceByName(ResourceType.coins), 1, unlockGear, ["Gear"], ["Gear"]),
-    new Upgrade("Hire Worker", false, 10, 0, getEmptyResourceByName(ResourceType.food), 10, createWorker, ["Worker"]),
-    new Upgrade("Increase Gear Slots", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, increaseGearCountMax, ["Gear"]),
+    new Upgrade("Unlock Workers", true, 10, 0, new Resource(ResourceType.coins, 0), 1, unlockWorkers, ["Worker"], ["Worker"]),
+    new Upgrade("Unlock Gear", false, 10, 0, new Resource(ResourceType.coins, 0), 1, unlockGear, ["Worker"], ["Gear"]),
+    new Upgrade("Hire Worker", false, 10, 0, new Resource(ResourceType.food, 0), 10, createWorker, ["Worker"], ["WorkHire"]),
+    new Upgrade("Increase Gear Slots", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseGearCountMax, ["Gear"]),
     //max worker slots
-    new Upgrade("Increase Worker Slots", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, increaseWorkerMax, ["Worker"]),
+    new Upgrade("Increase Worker Slots", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerMax, ["WorkHire"]),
     //increase worker speed
-    new Upgrade("Increase Worker Speed", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, createWorker, ["Worker"]),
+    new Upgrade("Increase Worker Speed", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerSpeed, ["WorkHire"]),
 ];
 
 function increaseWorkerMax() {
@@ -235,21 +248,30 @@ function unlockWorkers() {
     game.workerCountMax++;
 }
 
+function increaseWorkerSpeed() {
+    Laborer.workSpeedDefault+=5;
+    //loop through each worker and display
+    for (let i = 0; i < workers.length; i++) {
+        workers[i].workSpeed +=5;
+        workers[i].setParagraph();
+    }
+}
+
 //loop through the list of upgrades and if they are not available, make them available
-function unlockUpgrades(){
-    for(let i = 0; i < upgradeList.length; i++){
-        if(upgradeList[i].active == false){
+function unlockUpgrades() {
+    for (let i = 0; i < upgradeList.length; i++) {
+        if (upgradeList[i].active == false) {
             //if all the tags arent in the unavailable upgrades list, make it available
             let allTagsAvailable = true;
-            if(upgradeList[i].tags.length > 0){
-                for(let j = 0; j < upgradeList[i].tags.length; j++){
-                    if(Upgrade.unavailableUpgrades.includes(upgradeList[i].tags[j])){
+            if (upgradeList[i].tags.length > 0) {
+                for (let j = 0; j < upgradeList[i].tags.length; j++) {
+                    if (Upgrade.unavailableUpgrades.includes(upgradeList[i].tags[j])) {
                         allTagsAvailable = false;
                     }
                 }
             }
 
-            if(allTagsAvailable){
+            if (allTagsAvailable) {
                 upgradeList[i].active = true;
                 upgradeList[i].displayActive();
             }
@@ -258,7 +280,7 @@ function unlockUpgrades(){
     }
     showUpgrades()
 
-    
+
 }
 
 
@@ -275,22 +297,65 @@ function craftItem() {
 }
 
 function controlWorkers() {
+    let tempWorkers = workers;
+    //sort tempWorkers by workSpeed
+    tempWorkers.sort((a, b) => (a.workSpeed > b.workSpeed) ? 1 : -1)
     //if the hours are even, do work
     if (game.hours % 2 == 0) {
 
+        
         //loop through each worker and do work
         for (let i = 0; i < workers.length; i++) {
             workers[i].doWork();
         }
     }
-    //if the hours are odd, deposit resources
+    //if the hours are odd, deposit resources and eat food
     if (game.hours % 2 != 0) {
 
         //loop through each worker and do work
-        for (let i = 0; i < workers.length; i++) {
-            workers[i].depositResources(1);
+        for (let i = 0; i < tempWorkers.length; i++) {
+            tempWorkers[i].depositResources(1);
+        }
+
+        //loop through each worker and do eat
+        for (let i = 0; i < tempWorkers.length; i++) {
+            tempWorkers[i].eat();
         }
     }
+}
+
+function workersEat() {
+    let food = <Resource>getResourceByName(ResourceType.food);
+    //while we have food left and the workers are hungry, eat
+    let maxIterations = 1000;
+    while (food.amount > 0 && workersAreHungry() && maxIterations > 0) {
+        let hungriestWorker = findHungriestWorker();
+        if (hungriestWorker) {
+            hungriestWorker.eat();
+        }
+        maxIterations--;
+
+    }
+    if(maxIterations <= 0){
+        console.log("max iterations reached")
+    }
+}
+
+function workersAreHungry() {
+    let hungry = false;
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].hunger > 0) {
+            hungry = true;
+        }
+    }
+    return hungry;
+}
+    
+function findHungriestWorker() {
+    let tempWorkers = workers;
+    //sort tempWorkers by hunger
+    tempWorkers.sort((a, b) => (a.hunger > b.hunger) ? 1 : -1)
+    return tempWorkers[0];
 }
 
 //do the game loop every 100 milliseconds
@@ -304,3 +369,4 @@ function gameLoop() {
 }
 
 gameLoop();
+displayResources()

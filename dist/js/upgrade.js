@@ -8,7 +8,7 @@ class Upgrade {
     active = true;
     upgradeAction;
     //list of upgrades that are set to be locked initially based on the tags
-    static unavailableUpgrades = ["Worker", "Gear"];
+    static unavailableUpgrades = ["Worker", "Gear", "WorkHire"];
     unlocks = [];
     //tag the upgrade if it needs to be unlocked later
     tags = [];
@@ -45,6 +45,7 @@ class Upgrade {
         }
         else {
             this.level++;
+            this.cost *= 2;
             console.log(`upgrading ${this.name} to level ${this.level}`);
         }
         this.upgradeAction();

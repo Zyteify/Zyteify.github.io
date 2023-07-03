@@ -36,6 +36,9 @@ class Laborer {
     vocationActions: Record<ClassType, () => void>; // Mapping of vocation to function
 
     workSpeed: number = 10;
+    static workSpeedDefault: number = 10;
+    hunger: number = 0;
+    workSpeedMin: number = 1;
     workProgress: number = 0;
 
     constructor(name?: string) {
@@ -142,7 +145,14 @@ class Laborer {
         if (this.workProgress >= 100) {
             this.workProgress -= 100;
             this.vocationActions[this.vocation.name].call(this);
+            this.workSpeed -= 1
+            this.hunger += 1
+            
+
+
         }
+
+        
 
 
         this.setParagraph()
@@ -159,10 +169,6 @@ class Laborer {
             if (this.resources[i].name === resource.name) {
                 //add the resource to the worker's inventory
                 this.resources[i].amount += resource.amount;
-                console.log(`adding ${resource.amount} ${resource.name} to worker ${this.id}`);
-                if (resource.amount > 1) {
-                    console.log('greater than 1');
-                }
                 resourceExistsFlag = true;
             }
         }
@@ -259,6 +265,21 @@ class Laborer {
 
         this.setResourcesDisplay();
 
+        
+
+    }
+
+    //consume food to do get the work speed back to normal
+    eat() {
+        
+        let food = getResourceByName(ResourceType.food);
+
+        if (food != null && food.amount > 0 && this.workSpeed < Laborer.workSpeedDefault) {
+            food.amount -= 1;
+            this.workSpeed += 1;
+            this.hunger -= 1;
+            this.setParagraph()
+        }
     }
 
     setImage() {
@@ -360,7 +381,7 @@ class Laborer {
 
     farm() {
         //add food to the worker
-        let resource = new Resource(ResourceType.food, 1, '🍞')
+        let resource = new Resource(ResourceType.food, 2)
         this.addResource(resource);
         console.log('farming');
     }
@@ -376,13 +397,13 @@ class Laborer {
 
         switch (true) {
             case (random < stoneChance):
-                this.addResource(new Resource(ResourceType.stone, 1, "⛰️"))
+                this.addResource(new Resource(ResourceType.stone, 1))
                 break;
             case (random < stoneChance + gemsChance):
-                this.addResource(new Resource(ResourceType.gems, 1, "💎"))
+                this.addResource(new Resource(ResourceType.gems, 1))
                 break;
             case (random < stoneChance + gemsChance + metalChance):
-                this.addResource(new Resource(ResourceType.metal, 1, "⛏️"))
+                this.addResource(new Resource(ResourceType.metal, 1))
                 break;
             default:
                 console.log('failed to mine');
@@ -394,7 +415,7 @@ class Laborer {
 
     chop() {
         //add wood to the worker
-        this.addResource(new Resource(ResourceType.wood, 1, '🌲'));
+        this.addResource(new Resource(ResourceType.wood, 1));
     }
 
     craft() {
@@ -420,14 +441,14 @@ class Laborer {
     }
 
     hunt() {
-        let huntChance = 0.15
+        let huntChance = 0.35
         let random = Math.random();
         if (random < huntChance) {
             //add food to the worker
-            let resource = new Resource(ResourceType.food, 10, '🍞')
+            let resource = new Resource(ResourceType.food, 10)
             this.addResource(resource);
         }
-        this.addResource(new Resource(ResourceType.food, 0, '🍞'));
+        this.addResource(new Resource(ResourceType.food, 0));
     }
 
     tax() {
@@ -440,7 +461,7 @@ class Laborer {
         }
         let amount = workerCount * 2;
         if (amount > 0) {
-            let resource = new Resource(ResourceType.coins, amount, '💰')
+            let resource = new Resource(ResourceType.coins, amount)
             this.addResource(resource);
         }
 
@@ -477,11 +498,11 @@ class Laborer {
                     console.log('error chances in gambler');
                     break;
             }
-            let resource = new Resource(ResourceType.coins, amount, '💰')
+            let resource = new Resource(ResourceType.coins, amount)
             this.addResource(resource);
         }
 
-        new Resource(ResourceType.coins, 0, '💰')
+        new Resource(ResourceType.coins, 0)
     }
 
     merchant() {
@@ -500,7 +521,7 @@ class Laborer {
     beg() {
         let resource: Resource;
         //10% chance to get 1 coin/food
-        let chance = 0.1;
+        let chance = 0.4;
         let random = Math.random();
         let amount = 1;
         if (random < chance) {
@@ -510,14 +531,14 @@ class Laborer {
             let random = Math.random() * totalWinChance;
             switch (true) {
                 case (random < chanceCoin):
-                    resource = new Resource(ResourceType.coins, amount, '💰')
+                    resource = new Resource(ResourceType.coins, amount)
                     break;
                 case (random < chanceCoin + chanceFood):
-                    resource = new Resource(ResourceType.food, amount, '🍞')
+                    resource = new Resource(ResourceType.food, amount)
                     break;
                 default:
                     console.log('error chances in beg');
-                    resource = new Resource(ResourceType.coins, 0, '💰')
+                    resource = new Resource(ResourceType.coins, 0)
                     break;
 
 
@@ -525,9 +546,9 @@ class Laborer {
             this.addResource(resource);
         }
         //always add 0 coinds and food to show that the worker is begging
-        resource = new Resource(ResourceType.coins, 0, '💰')
+        resource = new Resource(ResourceType.coins, 0)
         this.addResource(resource);
-        resource = new Resource(ResourceType.food, 0, '🍞')
+        resource = new Resource(ResourceType.food, 0)
         this.addResource(resource);
 
     }
