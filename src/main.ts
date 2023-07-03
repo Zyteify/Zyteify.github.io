@@ -8,6 +8,7 @@ const minutes = <HTMLElement>document.getElementById('game-time-minutes');
 const time_multiplier = <HTMLElement>document.getElementById('game-time-speed-multiplier');
 
 //workers
+const workerContainer = document.getElementById('workers') as HTMLDivElement;
 //worker-count-current
 const workerCountCurrent = <HTMLElement>document.getElementById('worker-count-current');
 //worker-count-max
@@ -15,24 +16,32 @@ const workerCountMax = <HTMLElement>document.getElementById('worker-count-max');
 //worker-list
 const workerList = <HTMLElement>document.getElementById('worker-list');
 
+
 //crafting
+const craftingDiv = <HTMLElement>document.getElementById('crafting');
 //crafting-progress
 const craftingProgress = <HTMLElement>document.getElementById('crafting-progress');
 
 //buttons
-//create-worker
-const createWorkerButton = <HTMLButtonElement>document.getElementById('create-worker');
 //create-gear
 const createGearButton = <HTMLButtonElement>document.getElementById('create-gear');
 
 //gear
+const gearContainer = document.getElementById('gear') as HTMLDivElement;
 //gear-count-current
 const gearCountCurrent = <HTMLElement>document.getElementById('gear-count-current');
 //gear-count-max
 const gearCountMax = <HTMLElement>document.getElementById('gear-count-max');
 
+//hide the gear and worker containers
+gearContainer.style.display = "none"
+workerContainer.style.display = "none"
+craftingDiv.style.display = "none"
+
 let hoursStart = 0;
 let hoursEnd = 24;
+
+
 
 
 //initialize game variables
@@ -69,6 +78,11 @@ let resources: Resource[] = [
     new Resource(ResourceType.gems, 0, "💎"),
     new Resource(ResourceType.metal, 0, "⛏️"),
     new Resource(ResourceType.coins, 0, "💰"),
+];
+
+let begList: Beg[] = [
+    new Beg("food", resources[ResourceType.food], 1, 10),
+    new Beg("coins", resources[ResourceType.coins], 1, 10),
 ];
 
 //list of items
@@ -110,26 +124,12 @@ function updateGameTime() {
 
 
 
-//when buttons are clicked
-createWorkerButton.onclick = function () {
-    createWorker();
-}
 
 createGearButton.onclick = function () {
     createRandomGear();
 }
 
-//for development purposes
-for (let i = 0; i < gearTypes.length; i++) {
-    //create a button for each gear type
-    let button = document.createElement('button');
-    button.innerHTML = gearTypes[i];
-    button.onclick = function () {
-        createGear("Weapon", gearTypes[i]);
-    }
-    let craftingContainer: HTMLElement = <HTMLElement>document.getElementById('crafting');
-    craftingContainer.appendChild(button);
-}
+
 
 
 function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | Item[] | null) {
@@ -155,7 +155,7 @@ function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | I
                 destination.weapon.setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
                 items.push(destination.weapon);
                 destination.unequipItem(destination.weapon);
-                
+
                 game.gearCountCurrent++;
             }
 
@@ -172,12 +172,15 @@ function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | I
 }
 
 function createWorker() {
-    //create a new worker
-    let newWorker = new Laborer("John");
-    //add the new worker to the list of workers
-    workers.push(newWorker);
-    game.workerCountCurrent++;
-    game.workerCountMax++;
+    if (game.workerCountCurrent < game.workerCountMax) {
+
+        //create a new worker
+        let newWorker = new Laborer();
+        //add the new worker to the list of workers
+        workers.push(newWorker);
+        game.workerCountCurrent++;
+    }
+
     displayText();
 }
 
@@ -197,6 +200,78 @@ function createGear(itemType: ItemType, GearType: GearType) {
     items.push(newGear);
     game.gearCountCurrent++;
     displayText();
+}
+
+
+
+//create a few upgrades
+let upgradeList: Upgrade[] = [
+    new Upgrade("Unlock Workers", true, 10, 0, getEmptyResourceByName(ResourceType.coins), 1, unlockWorkers, ["Worker"], ["Worker"]),
+    new Upgrade("Unlock Gear", true, 10, 0, getEmptyResourceByName(ResourceType.coins), 1, unlockGear, ["Gear"], ["Gear"]),
+    new Upgrade("Hire Worker", false, 10, 0, getEmptyResourceByName(ResourceType.food), 10, createWorker, ["Worker"]),
+    new Upgrade("Increase Gear Slots", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, increaseGearCountMax, ["Gear"]),
+    //max worker slots
+    new Upgrade("Increase Worker Slots", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, increaseWorkerMax, ["Worker"]),
+    //increase worker speed
+    new Upgrade("Increase Worker Speed", false, 10, 0, getEmptyResourceByName(ResourceType.coins), 10, createWorker, ["Worker"]),
+];
+
+function increaseWorkerMax() {
+    game.workerCountMax++;
+}
+
+function increaseGearCountMax() {
+    game.gearCountMax++;
+}
+
+function unlockGear() {
+    gearContainer.style.display = "block"
+    game.gearCountMax++;
+}
+
+function unlockWorkers() {
+
+    workerContainer.style.display = "block"
+    game.workerCountMax++;
+}
+
+//loop through the list of upgrades and if they are not available, make them available
+function unlockUpgrades(){
+    for(let i = 0; i < upgradeList.length; i++){
+        if(upgradeList[i].active == false){
+            //if all the tags arent in the unavailable upgrades list, make it available
+            let allTagsAvailable = true;
+            if(upgradeList[i].tags.length > 0){
+                for(let j = 0; j < upgradeList[i].tags.length; j++){
+                    if(Upgrade.unavailableUpgrades.includes(upgradeList[i].tags[j])){
+                        allTagsAvailable = false;
+                    }
+                }
+            }
+
+            if(allTagsAvailable){
+                upgradeList[i].active = true;
+                upgradeList[i].displayActive();
+            }
+
+        }
+    }
+    showUpgrades()
+
+    
+}
+
+
+
+
+function craftItem() {
+    //if the progress is 100, create the item
+    if (craftProgress >= 100) {
+        //create a new item
+        createRandomGear();
+        //reset the progress
+        craftProgress = 0;
+    }
 }
 
 function controlWorkers() {
@@ -221,35 +296,11 @@ function controlWorkers() {
 //do the game loop every 100 milliseconds
 setInterval(gameLoop, 100);
 
-//create a button to display text
-let displayTextButton = document.createElement('button');
-displayTextButton.innerHTML = "Display Text";
-displayTextButton.onclick = function () {
-    displayText();
-}
-//set the button to be a child of the body
-document.body.appendChild(displayTextButton);
-
-
-
-function craftItem() {
-    //if the progress is 100, create the item
-    if (craftProgress >= 100) {
-        //create a new item
-        createRandomGear();
-        //reset the progress
-        craftProgress = 0;
-    }
-}
-
-
 //main game loop
 function gameLoop() {
-     updateGameTime();
-     controlWorkers();
-     displayText();
+    updateGameTime();
+    controlWorkers();
+    displayText();
 }
 
-displayText();
-
-
+gameLoop();

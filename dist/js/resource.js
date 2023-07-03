@@ -30,3 +30,19 @@ function getResourceByName(name) {
     }
     return null;
 }
+let emptyResourceList = [
+    new Resource(ResourceType.food, 0, "🍞"),
+    new Resource(ResourceType.wood, 0, "🌲"),
+    new Resource(ResourceType.stone, 0, "⛰️"),
+    new Resource(ResourceType.gems, 0, "💎"),
+    new Resource(ResourceType.metal, 0, "⛏️"),
+    new Resource(ResourceType.coins, 0, "💰"),
+];
+function getEmptyResourceByName(name) {
+    for (let i = 0; i < emptyResourceList.length; i++) {
+        if (emptyResourceList[i].name === name) {
+            return emptyResourceList[i];
+        }
+    }
+    return new Resource(ResourceType.coins, 0, "💰");
+}

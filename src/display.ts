@@ -22,6 +22,8 @@ function displayText() {
 
     updateEventListeners()
     displayResources()
+    showUpgrades()
+    showBegging()
 
 }
 
@@ -59,4 +61,16 @@ function emptyGearDisplay() {
     const container = document.getElementById('gear-list') as HTMLDivElement;
     container.innerHTML = "";
     displayGear()
+}
+
+function showUpgrades() {
+    for (let i = 0; i < upgradeList.length; i++) {
+        upgradeList[i].display()
+    }
+}
+
+function showBegging() {
+    for (let i = 0; i < begList.length; i++) {
+        begList[i].display()
+    }
 }

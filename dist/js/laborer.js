@@ -30,14 +30,14 @@ class Laborer {
     workProgress = 0;
     constructor(name) {
         this.id = Laborer.count++;
-        this.name = name;
-        this.vocation = new Vocation('Vagrant');
+        this.name = 'temp';
+        this.vocation = new Vocation('Beggar');
         this.resources = [];
         this.weapon = null;
         this.boot = null;
         //actions
         this.vocationActions = {
-            Vagrant: this.noAction,
+            Beggar: this.beg,
             Farmer: this.farm,
             Guard: this.guard,
             Nurse: this.nurse,
@@ -70,7 +70,7 @@ class Laborer {
         this.resourceDiv.id = "worker-resources-div" + this.id.toString();
         this.gearDiv = document.createElement('div');
         this.gearDiv.id = "worker-gear-div" + this.id.toString();
-        this.setName();
+        this.setName(name);
         this.setupDiv();
     }
     randomiseName() {
@@ -97,7 +97,7 @@ class Laborer {
     }
     setVocation() {
         if (this.weapon == null) {
-            this.vocation = new Vocation('Vagrant');
+            this.vocation = new Vocation('Beggar');
         }
         let gearType = this.weapon?.gear;
         if (vocationMap.hasOwnProperty(gearType)) {
@@ -130,6 +130,10 @@ class Laborer {
             if (this.resources[i].name === resource.name) {
                 //add the resource to the worker's inventory
                 this.resources[i].amount += resource.amount;
+                console.log(`adding ${resource.amount} ${resource.name} to worker ${this.id}`);
+                if (resource.amount > 1) {
+                    console.log('greater than 1');
+                }
                 resourceExistsFlag = true;
             }
         }
@@ -141,6 +145,7 @@ class Laborer {
     }
     //remove a resource from the worker
     removeResource(resource) {
+        resource.paragraph.id = "";
         resource.paragraph.remove();
         let index = this.resources.indexOf(resource);
         if (index > -1) {
@@ -345,13 +350,13 @@ class Laborer {
             let resource = new Resource(ResourceType.food, 10, '🍞');
             this.addResource(resource);
         }
-        console.log('hunting');
+        this.addResource(new Resource(ResourceType.food, 0, '🍞'));
     }
     tax() {
         //get the number of workers who aren't vagrants or taxers
         let workerCount = 0;
         for (let i = 0; i < workers.length; i++) {
-            if (workers[i].vocation.name != 'Vagrant' && workers[i].vocation.name != 'Taxer') {
+            if (workers[i].vocation.name != 'Beggar' && workers[i].vocation.name != 'Taxer') {
                 workerCount++;
             }
         }
@@ -393,9 +398,7 @@ class Laborer {
             let resource = new Resource(ResourceType.coins, amount, '💰');
             this.addResource(resource);
         }
-        //the gambler can instantly deposit the resources
-        //this.depositResources(10)
-        console.log('gambling');
+        new Resource(ResourceType.coins, 0, '💰');
     }
     merchant() {
         console.log('merchandising');
@@ -407,7 +410,35 @@ class Laborer {
         upgradePoints += 1;
         console.log('researching');
     }
-    noAction() {
-        //console.log('no action');
+    beg() {
+        let resource;
+        //10% chance to get 1 coin/food
+        let chance = 0.1;
+        let random = Math.random();
+        let amount = 1;
+        if (random < chance) {
+            let chanceCoin = 0.5;
+            let chanceFood = 0.5;
+            let totalWinChance = chanceCoin + chanceFood;
+            let random = Math.random() * totalWinChance;
+            switch (true) {
+                case (random < chanceCoin):
+                    resource = new Resource(ResourceType.coins, amount, '💰');
+                    break;
+                case (random < chanceCoin + chanceFood):
+                    resource = new Resource(ResourceType.food, amount, '🍞');
+                    break;
+                default:
+                    console.log('error chances in beg');
+                    resource = new Resource(ResourceType.coins, 0, '💰');
+                    break;
+            }
+            this.addResource(resource);
+        }
+        //always add 0 coinds and food to show that the worker is begging
+        resource = new Resource(ResourceType.coins, 0, '💰');
+        this.addResource(resource);
+        resource = new Resource(ResourceType.food, 0, '🍞');
+        this.addResource(resource);
     }
 }

@@ -21,6 +21,8 @@ function displayText() {
     craftingProgress.innerHTML = craftProgress.toString();
     updateEventListeners();
     displayResources();
+    showUpgrades();
+    showBegging();
 }
 function displayGear() {
     for (let i = 0; i < items.length; i++) {
@@ -47,4 +49,14 @@ function emptyGearDisplay() {
     const container = document.getElementById('gear-list');
     container.innerHTML = "";
     displayGear();
+}
+function showUpgrades() {
+    for (let i = 0; i < upgradeList.length; i++) {
+        upgradeList[i].display();
+    }
+}
+function showBegging() {
+    for (let i = 0; i < begList.length; i++) {
+        begList[i].display();
+    }
 }
