@@ -13,8 +13,8 @@ function createRandomGear() {
     return gearCreation;
 }
 function createGear(itemType, GearType) {
-    let newGear = new Item(itemType, GearType);
     if (game.gearCountCurrent < game.gearCountMax) {
+        let newGear = new Item(itemType, GearType);
         items.push(newGear);
         game.gearCountCurrent++;
         displayText();

@@ -15,8 +15,9 @@ function createRandomGear(): boolean {
 
 
 function createGear(itemType: ItemType, GearType: GearType): boolean {
-    let newGear = new Item(itemType, GearType);
+    
     if (game.gearCountCurrent < game.gearCountMax) {
+        let newGear = new Item(itemType, GearType);
         items.push(newGear);
         game.gearCountCurrent++;
         displayText();
