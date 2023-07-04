@@ -54,6 +54,12 @@ function displayResources() {
         }
         let resourceName = ResourceType[resources[i].name]
         paragraph.innerHTML = resources[i].icon+ " " + resources[i].amount;
+        if(!resources[i].active){
+            paragraph.style.display = "none";
+        }
+        else{
+            paragraph.style.display = "block";
+        }
     }
 }
 

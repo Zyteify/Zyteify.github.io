@@ -6,7 +6,6 @@ enum ResourceType {
     gems,
     metal,
     coins,
-    gormetFood,
 }
 
 //resource list
@@ -26,7 +25,6 @@ const resourceIconMap: Record<ResourceType, string> = {
     [ResourceType.gems]: "💎",
     [ResourceType.metal]: "⚙️",
     [ResourceType.coins]: "💰",
-    [ResourceType.gormetFood]: "🍖",
 }
 
 
@@ -36,6 +34,7 @@ class Resource {
     amount: number;
     icon: string;
     paragraph: HTMLParagraphElement;
+    active: boolean = false;
 
     constructor(name: ResourceType, amount: number) {
         this.name = name;
@@ -43,6 +42,7 @@ class Resource {
         this.icon = resourceIconMap[name];
         this.paragraph = document.createElement('p');
         this.paragraph.innerText = this.icon + " " + this.name + ": " + this.amount;
+        
     }
 }
 

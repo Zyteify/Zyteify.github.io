@@ -8,7 +8,6 @@ var ResourceType;
     ResourceType[ResourceType["gems"] = 3] = "gems";
     ResourceType[ResourceType["metal"] = 4] = "metal";
     ResourceType[ResourceType["coins"] = 5] = "coins";
-    ResourceType[ResourceType["gormetFood"] = 6] = "gormetFood";
 })(ResourceType || (ResourceType = {}));
 //resource list
 //food - 🍞
@@ -25,13 +24,13 @@ const resourceIconMap = {
     [ResourceType.gems]: "💎",
     [ResourceType.metal]: "⚙️",
     [ResourceType.coins]: "💰",
-    [ResourceType.gormetFood]: "🍖",
 };
 class Resource {
     name;
     amount;
     icon;
     paragraph;
+    active = false;
     constructor(name, amount) {
         this.name = name;
         this.amount = amount;

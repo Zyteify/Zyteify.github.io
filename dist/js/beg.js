@@ -59,3 +59,42 @@ class Beg {
         }
     }
 }
+let fakeBegs = 0;
+let fakeBegButton = document.createElement('button');
+function createFakeBegButton() {
+    //create a button that give a certain gear piece
+    const container = document.getElementById('beg-list');
+    //create a button
+    fakeBegButton.id = "begFake";
+    fakeBegButton.className = "beg";
+    fakeBegButton.innerHTML = "Salvange Gear";
+    container.appendChild(fakeBegButton);
+    fakeBegButton.onclick = () => {
+        // Call upgrade function with the name of the upgrade
+        switch (fakeBegs) {
+            case 0:
+                createGear("Weapon", "Hoe");
+                //hide until it should be shown
+                fakeBegButton.style.display = "none";
+                break;
+            case 1:
+                createGear("Weapon", "Axe");
+                //unlock wood
+                let wood = getResourceByName(ResourceType.wood);
+                wood.active = true;
+                //hide until it should be shown
+                fakeBegButton.style.display = "none";
+                break;
+            case 2:
+                createGear("Weapon", "Chisel");
+                fakeBegButton.style.display = "none";
+                //delete the button
+                fakeBegButton.remove();
+                break;
+            default:
+                console.log('error in fakeBegs switch');
+                break;
+        }
+        fakeBegs++;
+    };
+}

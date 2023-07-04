@@ -1,4 +1,7 @@
-type ClassType = "Beggar" | 'Farmer' | 'Guard' | 'Nurse' | 'Builder' | 'Cook' | 'Hunter' | 'Crafter' | 'Taxer' | 'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' | 'Woodcutter';
+type ClassType = "Beggar" | 'Farmer' | 'Guard' | 'Nurse' |
+'Blacksmith' | 'Cook' | 'Hunter' | 'Gemcutter' | 'Taxer' | 
+'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' |
+ 'Woodcutter';
 
 class Vocation {
     name: ClassType;
@@ -38,6 +41,7 @@ class Laborer {
     workSpeed: number = 10;
     static workSpeedDefault: number = 10;
     hunger: number = 0;
+    rested: boolean = true;
     workSpeedMin: number = 1;
     workProgress: number = 0;
 
@@ -56,10 +60,10 @@ class Laborer {
             Farmer: this.farm,
             Guard: this.guard,
             Nurse: this.nurse,
-            Builder: this.build,
+            Blacksmith: this.craft,
             Cook: this.cook,
             Hunter: this.hunt,
-            Crafter: this.craft,
+            Gemcutter: this.gemcut,
             Researcher: this.research,
             Gambler: this.gamble,
             Taxer: this.tax,
@@ -147,14 +151,8 @@ class Laborer {
             this.vocationActions[this.vocation.name].call(this);
             this.workSpeed -= 1
             this.hunger += 1
-            
-
-
         }
-
-        
-
-
+        this.rested = false;
         this.setParagraph()
     }
 
@@ -282,6 +280,21 @@ class Laborer {
         }
     }
 
+    //rest to get the work speed up
+    rest() {
+        
+
+        if (this.workSpeed < Laborer.workSpeedDefault) {
+            this.workSpeed += 1;
+            if (this.workSpeed < Laborer.workSpeedDefault) {
+                this.workSpeed += 1;
+                this.setParagraph()
+            }
+            this.setParagraph()
+        }
+        this.rested = true;
+    }
+
     setImage() {
         //if the image id has not been set, initialise the image
         if (this.image.id == "") {
@@ -378,6 +391,13 @@ class Laborer {
         this.setResourcesDisplay()
     }
 
+    guard() {
+        console.log('guarding');
+    }
+    
+    cook() {
+        console.log('cooking');
+    }
 
     farm() {
         //add food to the worker
@@ -424,20 +444,18 @@ class Laborer {
         console.log('crafting');
     }
 
-    guard() {
-        console.log('guarding');
-    }
-
+    //give energy to all other workers
     nurse() {
+        for (let i = 0; i < workers.length; i++) {
+            if(workers[i].id != this.id){
+                workers[i].rest();
+            }
+        }
         console.log('nursing');
     }
 
-    build() {
-        console.log('building');
-    }
-
-    cook() {
-        console.log('cooking');
+    gemcut() {
+        console.log('gemcutting');
     }
 
     hunt() {
@@ -552,4 +570,13 @@ class Laborer {
         this.addResource(resource);
 
     }
+}
+
+function getWorkerById(id: number) {
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].id === id) {
+            return workers[i];
+        }
+    }
+    return null;
 }

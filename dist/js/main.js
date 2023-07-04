@@ -57,13 +57,26 @@ let workers = [];
 //create resources list of initial resources available
 let resources = [
     new Resource(ResourceType.food, 0),
-    new Resource(ResourceType.gormetFood, 0),
-    /*     new Resource(ResourceType.wood, 0, "🌲"),
-        new Resource(ResourceType.stone, 0, "⛰️"),
-        new Resource(ResourceType.gems, 0, "💎"),
-        new Resource(ResourceType.metal, 0, "⛏️"), */
+    new Resource(ResourceType.wood, 0),
+    new Resource(ResourceType.stone, 0),
+    new Resource(ResourceType.gems, 0),
+    new Resource(ResourceType.metal, 0),
     new Resource(ResourceType.coins, 0),
 ];
+//set the default resource to be active
+for (let i = 0; i < resources.length; i++) {
+    switch (resources[i].name) {
+        case ResourceType.food:
+            resources[i].active = true;
+            break;
+        case ResourceType.coins:
+            resources[i].active = true;
+            break;
+        default:
+            resources[i].active = false;
+            break;
+    }
+}
 let begList = [];
 function createBegList() {
     //get the food resource from the resources
@@ -178,6 +191,22 @@ let upgradeList = [
     new Upgrade("Increase Worker Speed", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerSpeed, ["WorkHire"]),
 ];
 function increaseWorkerMax() {
+    switch (fakeBegs) {
+        case 0:
+            //unlock the ability to find the next item
+            fakeBegButton.style.display = "block";
+            break;
+        case 1:
+            //unlock the ability to find the next item
+            fakeBegButton.style.display = "block";
+            break;
+        case 2:
+            //unlock the ability to find the next item
+            fakeBegButton.style.display = "block";
+            break;
+        default:
+            break;
+    }
     game.workerCountMax++;
 }
 function increaseGearCountMax() {
@@ -186,6 +215,7 @@ function increaseGearCountMax() {
 function unlockGear() {
     gearContainer.style.display = "block";
     game.gearCountMax++;
+    createFakeBegButton();
 }
 function unlockWorkers() {
     workerContainer.style.display = "block";
@@ -249,6 +279,10 @@ function controlWorkers() {
         //loop through each worker and do eat
         for (let i = 0; i < tempWorkers.length; i++) {
             tempWorkers[i].eat();
+            //if the worker isnt rested, make them rest
+            if (tempWorkers[i].rested == false) {
+                tempWorkers[i].rest();
+            }
         }
     }
 }

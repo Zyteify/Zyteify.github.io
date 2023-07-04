@@ -29,6 +29,7 @@ class Laborer {
     workSpeed = 10;
     static workSpeedDefault = 10;
     hunger = 0;
+    rested = true;
     workSpeedMin = 1;
     workProgress = 0;
     constructor(name) {
@@ -44,10 +45,10 @@ class Laborer {
             Farmer: this.farm,
             Guard: this.guard,
             Nurse: this.nurse,
-            Builder: this.build,
+            Blacksmith: this.craft,
             Cook: this.cook,
             Hunter: this.hunt,
-            Crafter: this.craft,
+            Gemcutter: this.gemcut,
             Researcher: this.research,
             Gambler: this.gamble,
             Taxer: this.tax,
@@ -123,6 +124,7 @@ class Laborer {
             this.workSpeed -= 1;
             this.hunger += 1;
         }
+        this.rested = false;
         this.setParagraph();
     }
     //add a resource to the worker
@@ -225,6 +227,18 @@ class Laborer {
             this.setParagraph();
         }
     }
+    //rest to get the work speed up
+    rest() {
+        if (this.workSpeed < Laborer.workSpeedDefault) {
+            this.workSpeed += 1;
+            if (this.workSpeed < Laborer.workSpeedDefault) {
+                this.workSpeed += 1;
+                this.setParagraph();
+            }
+            this.setParagraph();
+        }
+        this.rested = true;
+    }
     setImage() {
         //if the image id has not been set, initialise the image
         if (this.image.id == "") {
@@ -303,6 +317,12 @@ class Laborer {
         //append the resources to the div if they havent already
         this.setResourcesDisplay();
     }
+    guard() {
+        console.log('guarding');
+    }
+    cook() {
+        console.log('cooking');
+    }
     farm() {
         //add food to the worker
         let resource = new Resource(ResourceType.food, 2);
@@ -341,17 +361,17 @@ class Laborer {
         craftItem();
         console.log('crafting');
     }
-    guard() {
-        console.log('guarding');
-    }
+    //give energy to all other workers
     nurse() {
+        for (let i = 0; i < workers.length; i++) {
+            if (workers[i].id != this.id) {
+                workers[i].rest();
+            }
+        }
         console.log('nursing');
     }
-    build() {
-        console.log('building');
-    }
-    cook() {
-        console.log('cooking');
+    gemcut() {
+        console.log('gemcutting');
     }
     hunt() {
         let huntChance = 0.35;
@@ -452,4 +472,12 @@ class Laborer {
         resource = new Resource(ResourceType.food, 0);
         this.addResource(resource);
     }
+}
+function getWorkerById(id) {
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].id === id) {
+            return workers[i];
+        }
+    }
+    return null;
 }

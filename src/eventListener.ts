@@ -44,9 +44,12 @@ function updateEventListeners() {
                 event.preventDefault();
                 if (dragItem instanceof Item) {
                     //get the gear that is being dragged
-                    let workerid: string = myElement.id.replace('worker-div', '');
-                    let dragWorker = workers[parseInt(workerid)]
-                    if (dragWorker.weapon == null) {
+                    //get the gear that is being dragged
+                    let workerid: number = parseInt(myElement.id.replace('worker-div', ''));
+                    //get the worker with the workerid
+
+                    let dragWorkerDest = <Laborer>getWorkerById(workerid)
+                    if (dragWorkerDest.weapon == null) {
                         myElement.classList.add('highlight');
                     }
                     else {
@@ -100,8 +103,10 @@ function dropEvent(myElement: HTMLElement, event: Event) {
         if (myElement.classList.contains('worker-div')) {
 
             //get the gear that is being dragged
-            let workerid: string = myElement.id.replace('worker-div', '');
-            let dragWorkerDest = workers[parseInt(workerid)]
+            let workerid: number = parseInt(myElement.id.replace('worker-div', ''));
+            //get the worker with the workerid
+
+            let dragWorkerDest = <Laborer>getWorkerById(workerid)
 
             if (dragWorker) {
                 moveGear(<Item>dragItem, dragWorkerDest, dragWorker);
@@ -109,7 +114,7 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             else {
                 moveGear(<Item>dragItem, dragWorkerDest, items);
             }
-            
+
         }
         else if (myElement === gearListDiv) {
             //if the element being dropped on is the body
@@ -158,9 +163,9 @@ trackEventListeners(gearListDiv, 'drop', function (event) {
     // Create a list of elements that should not trigger the drop event
     let excludedChildren = document.getElementsByClassName('worker-div');
     gearListDiv.classList.remove('highlight');
-    
+
     // Check if the clicked element is not one of the excluded children or their descendants
-    if (event.target instanceof Element 
+    if (event.target instanceof Element
         && !isExcludedElement(event.target, excludedChildren)) {
         dropEvent(gearListDiv, event);
     }
@@ -168,27 +173,27 @@ trackEventListeners(gearListDiv, 'drop', function (event) {
 
 function isExcludedElement(element: Element, excludedElements: HTMLCollectionOf<Element>): boolean {
     const stack = [element];
-  
+
     while (stack.length) {
-      const currentElement = stack.pop();
-  
-      if (currentElement) {
-        for (let i = 0; i < excludedElements.length; i++) {
-          if (excludedElements[i] === currentElement || excludedElements[i].contains(currentElement)) {
-            return true;
-          }
+        const currentElement = stack.pop();
+
+        if (currentElement) {
+            for (let i = 0; i < excludedElements.length; i++) {
+                if (excludedElements[i] === currentElement || excludedElements[i].contains(currentElement)) {
+                    return true;
+                }
+            }
+
+            if (currentElement.parentElement) {
+                stack.push(currentElement.parentElement);
+            }
         }
-  
-        if (currentElement.parentElement) {
-          stack.push(currentElement.parentElement);
-        }
-      }
     }
-  
+
     return false;
-  }
-  
-  
+}
+
+
 trackEventListeners(gearListDiv, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
     if (dragItem instanceof Item) {

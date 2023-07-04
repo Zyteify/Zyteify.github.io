@@ -28,9 +28,11 @@ function updateEventListeners() {
                 event.preventDefault();
                 if (dragItem instanceof Item) {
                     //get the gear that is being dragged
-                    let workerid = myElement.id.replace('worker-div', '');
-                    let dragWorker = workers[parseInt(workerid)];
-                    if (dragWorker.weapon == null) {
+                    //get the gear that is being dragged
+                    let workerid = parseInt(myElement.id.replace('worker-div', ''));
+                    //get the worker with the workerid
+                    let dragWorkerDest = getWorkerById(workerid);
+                    if (dragWorkerDest.weapon == null) {
                         myElement.classList.add('highlight');
                     }
                     else {
@@ -78,8 +80,9 @@ function dropEvent(myElement, event) {
         //if the element being dropped on is a worker
         if (myElement.classList.contains('worker-div')) {
             //get the gear that is being dragged
-            let workerid = myElement.id.replace('worker-div', '');
-            let dragWorkerDest = workers[parseInt(workerid)];
+            let workerid = parseInt(myElement.id.replace('worker-div', ''));
+            //get the worker with the workerid
+            let dragWorkerDest = getWorkerById(workerid);
             if (dragWorker) {
                 moveGear(dragItem, dragWorkerDest, dragWorker);
             }
