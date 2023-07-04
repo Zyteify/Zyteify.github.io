@@ -70,37 +70,40 @@ function createFakeBegButton() {
     fakeBegButton.innerHTML = "Salvange Gear";
     container.appendChild(fakeBegButton);
     fakeBegButton.onclick = () => {
-        // Call upgrade function with the name of the upgrade
-        let gearCreation = false;
-        switch (fakeBegs) {
-            case 0:
-                gearCreation = createGear("Weapon", "Hoe");
-                if (gearCreation) {
-                    game.unlockedHoe = true;
-                    fakeBegs++;
-                }
-                break;
-            case 1:
-                gearCreation = createGear("Weapon", "Axe");
-                if (gearCreation) {
-                    game.unlockedAxe = true;
-                    setResourceActive(ResourceType.wood);
-                    fakeBegs++;
-                }
-                break;
-            case 2:
-                gearCreation = createGear("Weapon", "Hammer");
-                if (gearCreation) {
-                    game.unlockedHammer = true;
-                    fakeBegs++;
-                }
-                break;
-            default:
-                console.log('error in fakeBegs switch');
-                break;
-        }
-        showFakeBegButton();
+        unlockStarterGear();
     };
+}
+function unlockStarterGear() {
+    // Call upgrade function with the name of the upgrade
+    let gearCreation = false;
+    switch (fakeBegs) {
+        case 0:
+            gearCreation = createGear("Weapon", "Hoe");
+            if (gearCreation) {
+                game.unlockedHoe = true;
+                fakeBegs++;
+            }
+            break;
+        case 1:
+            gearCreation = createGear("Weapon", "Axe");
+            if (gearCreation) {
+                game.unlockedAxe = true;
+                setResourceActive(ResourceType.wood);
+                fakeBegs++;
+            }
+            break;
+        case 2:
+            gearCreation = createGear("Weapon", "Hammer");
+            if (gearCreation) {
+                game.unlockedHammer = true;
+                fakeBegs++;
+            }
+            break;
+        default:
+            console.log('error in fakeBegs switch');
+            break;
+    }
+    showFakeBegButton();
 }
 function showFakeBegButton() {
     if (game.gearCountMax > fakeBegs && !game.unlockedHammer) {

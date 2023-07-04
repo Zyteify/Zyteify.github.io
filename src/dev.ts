@@ -36,5 +36,20 @@ if (window.location.hostname == "127.0.0.1") {
     craftingContainer.appendChild(buttonCrafting);
     updateCraftingButton();
 
+    let buttonUnlockAll = document.createElement('button');
+    buttonUnlockAll.innerHTML = 'Unlock All';
+    let upgradeDiv: HTMLElement = <HTMLElement>document.getElementById('upgrades');
+    upgradeDiv.appendChild(buttonUnlockAll);
+    buttonUnlockAll.onclick = function () {
+
+        //loop through all upgrades and unlock them
+        for (let i = 0; i < upgradeList.length; i++) {
+            upgradeList[i].upgrade();
+            unlockUpgrades();
+            unlockStarterGear();
+        }
+    }
+    
+    
 
 }
