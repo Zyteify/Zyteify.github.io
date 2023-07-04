@@ -7,6 +7,8 @@
     <meta name="author" content="Zyteify">
     <title>Call to Vocation</title>
     <link rel="stylesheet" href="dist/css/main.css">
+    <!-- set the icon -->
+    <link rel="icon" href="dist/img/person.png" />
 </head>
 
 <body>
@@ -16,13 +18,11 @@
             <h3 id="section-title"> Game State: </h3>
             <div id="game-state-variables">
                 <p id="game-time">
-                    <span id="game-time-days"> 0 </span> days,
-                    <span id="game-time-hours"> 0 </span> hours,
-                    <span id="game-time-minutes"> 0 </span> minutes
+                    <span id="game-time-days"> 0 </span>
+                    <span id="game-time-hours"> 0am </span>
+
                 </p>
-                <p id="game-time-speed">
-                    <span id="game-time-speed-multiplier"> 1 </span> x speed
-                </p>
+
 
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div id="crafting" class="main">
             <h3 id="section-title"> Crafting: </h3>
             <button id="create-gear"> Create gear</button>
-            <div id="crafting-progress"> </div>
+            <div id="crafting-resource"> </div>
         </div>
 
         <div id="upgrades" class="main">
@@ -55,30 +55,32 @@
         </div>
 
     </div>
-    <p id="points"></p>
-    <div id="workers" class="main">
-        <h3 id="section-title"> Workers: </h3>
-        <div id="worker-variables">
-            <p id="worker-count">
-                <span id="worker-count-current"> 0 </span> /
-                <span id="worker-count-max"> 0 </span>
+    <div id="section-interact">
+        <div id="workers" class="main">
+            <h3 id="section-title"> Workers: </h3>
+            <div id="worker-variables">
+                <p id="worker-count">
+                    <span id="worker-count-current"> 0 </span> /
+                    <span id="worker-count-max"> 0 </span>
 
-            </p>
-            <div id="worker-list">
+                </p>
+                <div id="worker-list">
 
+                </div>
             </div>
         </div>
-    </div>
-    <div id="gear" class="main">
-        <h3 id="section-title"> Gear: </h3>
-        <div id="gear-variables">
-            <p id="gear-count">
-                <span id="gear-count-current"> 0 </span> /
-                <span id="gear-count-max"> 0 </span>
+        <div id="gear" class="main">
+            <h3 id="section-title"> Gear: </h3>
+            <div id="gear-variables">
+                <p id="gear-count">
+                    <span id="gear-count-current"> 0 </span> /
+                    <span id="gear-count-max"> 0 </span>
 
-            </p>
-            <div id="gear-list">
+                </p>
+                <div id="gear-list">
 
+                </div>
+                <div id="delete-div"></div>
             </div>
         </div>
     </div>
@@ -88,7 +90,7 @@
 
         </div>
     </div>
-
+    <script src="dist/js/init.js"></script>
     <script src="dist/js/eventListener.js"></script>
     <script src="dist/js/resource.js"></script>
     <script src="dist/js/laborer.js"></script>
@@ -96,6 +98,7 @@
     <script src="dist/js/upgrade.js"></script>
     <script src="dist/js/display.js"></script>
     <script src="dist/js/beg.js"></script>
+    <script src="dist/js/craft.js"></script>
     <script src="dist/js/main.js"></script>
     <script src="dist/js/dev.js"></script>
 

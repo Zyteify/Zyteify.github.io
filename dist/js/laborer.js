@@ -357,8 +357,8 @@ class Laborer {
         this.addResource(new Resource(ResourceType.wood, 1));
     }
     craft() {
-        craftProgress += 1;
-        craftItem();
+        craftResource += 1;
+        updateCraftingButton();
         console.log('crafting');
     }
     //give energy to all other workers

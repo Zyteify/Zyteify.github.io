@@ -7,7 +7,7 @@ const gearTypes: GearType[] = [
     "Hoe",
     //"Mace",
     "Potion",
-    //"Hammer",
+    "Hammer",
     //"Knife",
     "Bow",
     "Chisel",
@@ -126,3 +126,9 @@ class Item {
 
 
 }
+
+//add a delete div to the gear div
+deleteDiv.id = "delete-div";
+deleteDiv.className = "delete-div";
+deleteDiv.draggable = false;
+deleteDiv.innerHTML = "Delete";

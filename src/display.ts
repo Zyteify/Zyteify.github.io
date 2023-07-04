@@ -1,10 +1,8 @@
 function displayText() {
     //game-time
-    days.innerHTML = game.days.toString();
+    days.innerHTML = `day ${game.days.toString()}`
     hours.innerHTML = game.hours.toString();
-    minutes.innerHTML = game.minutes.toString();
-    //game-time-speed
-    time_multiplier.innerHTML = game.time_multiplier.toString();
+    hours.innerHTML = convertHoursToTime(game.hours);
     //workers
     //worker-count-current
     workerCountCurrent.innerHTML = game.workerCountCurrent.toString();
@@ -18,7 +16,7 @@ function displayText() {
 
     //crafting
     //crafting-progress
-    craftingProgress.innerHTML = craftProgress.toString();
+    craftingResource.innerHTML = (`🔨 ${craftResource.toString()}`);
 
     updateEventListeners()
     displayResources()

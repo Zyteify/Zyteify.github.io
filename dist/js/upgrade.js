@@ -6,6 +6,7 @@ class Upgrade {
     level;
     maxLevel;
     active = true;
+    costMultiplier = 2;
     upgradeAction;
     //list of upgrades that are set to be locked initially based on the tags
     static unavailableUpgrades = ["Worker", "Gear", "WorkHire"];
@@ -28,6 +29,14 @@ class Upgrade {
         if (unlocks) {
             this.unlocks = unlocks;
         }
+        switch (this.name) {
+            case "Increase Gear Slots":
+                this.costMultiplier = 1.5;
+                break;
+            default:
+                this.costMultiplier = 2;
+                break;
+        }
     }
     upgrade() {
         let spent = false;
@@ -45,22 +54,18 @@ class Upgrade {
         }
         else {
             this.level++;
-            this.cost *= 2;
+            this.cost = Math.floor(this.cost * this.costMultiplier);
             console.log(`upgrading ${this.name} to level ${this.level}`);
-        }
-        this.upgradeAction();
-        if (this.unlocks.length > 0) {
-            //loop through the list of upgrades that are set to be unlocked
-            for (let i = 0; i < this.unlocks.length; i++) {
-                //remove it from the list of unavailable upgrades
-                let index = Upgrade.unavailableUpgrades.indexOf(this.unlocks[i]);
-                Upgrade.unavailableUpgrades.splice(index, 1);
+            this.upgradeAction();
+            if (this.unlocks.length > 0) {
+                //loop through the list of upgrades that are set to be unlocked
+                for (let i = 0; i < this.unlocks.length; i++) {
+                    //remove it from the list of unavailable upgrades
+                    let index = Upgrade.unavailableUpgrades.indexOf(this.unlocks[i]);
+                    Upgrade.unavailableUpgrades.splice(index, 1);
+                }
             }
-        }
-        unlockUpgrades();
-        //if this upgrade is to unlock a div, show it
-        if (this.name == "Unlock Gear") {
-            craftingDiv.style.display = "block";
+            unlockUpgrades();
         }
     }
     downgrade() {

@@ -1,57 +1,4 @@
 "use strict";
-//get html elements for assigning text
-//game-time
-const days = document.getElementById('game-time-days');
-const hours = document.getElementById('game-time-hours');
-const minutes = document.getElementById('game-time-minutes');
-//game-time-speed
-const time_multiplier = document.getElementById('game-time-speed-multiplier');
-//workers
-const workerContainer = document.getElementById('workers');
-//worker-count-current
-const workerCountCurrent = document.getElementById('worker-count-current');
-//worker-count-max
-const workerCountMax = document.getElementById('worker-count-max');
-//worker-list
-const workerList = document.getElementById('worker-list');
-//crafting
-const craftingDiv = document.getElementById('crafting');
-//crafting-progress
-const craftingProgress = document.getElementById('crafting-progress');
-//buttons
-//create-gear
-const createGearButton = document.getElementById('create-gear');
-//gear
-const gearContainer = document.getElementById('gear');
-//gear-count-current
-const gearCountCurrent = document.getElementById('gear-count-current');
-//gear-count-max
-const gearCountMax = document.getElementById('gear-count-max');
-//hide the gear and worker containers
-gearContainer.style.display = "none";
-workerContainer.style.display = "none";
-craftingDiv.style.display = "none";
-let hoursStart = 0;
-let hoursEnd = 24;
-//initialize game variables
-let game = {
-    //game-time
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    //game-time-speed
-    time_multiplier: 1,
-    //workers
-    //worker-count-current
-    workerCountCurrent: 0,
-    //worker-count-max
-    workerCountMax: 0,
-    gearCountCurrent: 0,
-    gearCountMax: 0
-};
-let points = 0;
-let craftProgress = 0;
-let upgradePoints = 0;
 //list of workers
 let workers = [];
 //create resources list of initial resources available
@@ -63,19 +10,31 @@ let resources = [
     new Resource(ResourceType.metal, 0),
     new Resource(ResourceType.coins, 0),
 ];
-//set the default resource to be active
-for (let i = 0; i < resources.length; i++) {
-    switch (resources[i].name) {
-        case ResourceType.food:
+function setResourceActive(name) {
+    //set the default resource to be active
+    for (let i = 0; i < resources.length; i++) {
+        if (resources[i].name == name) {
             resources[i].active = true;
-            break;
-        case ResourceType.coins:
-            resources[i].active = true;
-            break;
-        default:
-            resources[i].active = false;
-            break;
+        }
     }
+}
+setResourceActive(ResourceType.food);
+setResourceActive(ResourceType.coins);
+//convert the number of hours into a time
+function convertHoursToTime(hours) {
+    let time = "";
+    let ampm = "am";
+    if (hours >= 12) {
+        ampm = "pm";
+    }
+    if (hours > 12) {
+        hours -= 12;
+    }
+    if (hours == 0) {
+        hours = 12;
+    }
+    time = hours + ampm;
+    return time;
 }
 let begList = [];
 function createBegList() {
@@ -108,7 +67,7 @@ loadJson('../dist/json/names-male.json').then(data => {
 });
 function updateGameTime() {
     //game-time
-    game.minutes += game.time_multiplier;
+    game.minutes += 15;
     if (game.minutes >= 60) {
         game.minutes = 0;
         game.hours++;
@@ -118,9 +77,6 @@ function updateGameTime() {
         game.days++;
     }
 }
-createGearButton.onclick = function () {
-    createRandomGear();
-};
 function moveGear(item, destination, source) {
     //if a worker is already wearing this item, remove it from them
     if (source instanceof Laborer) {
@@ -165,20 +121,6 @@ function createWorker() {
     }
     displayText();
 }
-function createRandomGear() {
-    let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
-    let randomItemType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
-    //set it to weapon for now while we only have weapons
-    randomItemType = "Weapon";
-    //create a new worker
-    createGear(randomItemType, randomGearType);
-}
-function createGear(itemType, GearType) {
-    let newGear = new Item(itemType, GearType);
-    items.push(newGear);
-    game.gearCountCurrent++;
-    displayText();
-}
 //create a few upgrades
 let upgradeList = [
     new Upgrade("Unlock Workers", true, 10, 0, new Resource(ResourceType.coins, 0), 1, unlockWorkers, ["Worker"], ["Worker"]),
@@ -191,35 +133,30 @@ let upgradeList = [
     new Upgrade("Increase Worker Speed", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerSpeed, ["WorkHire"]),
 ];
 function increaseWorkerMax() {
-    switch (fakeBegs) {
-        case 0:
-            //unlock the ability to find the next item
-            fakeBegButton.style.display = "block";
-            break;
-        case 1:
-            //unlock the ability to find the next item
-            fakeBegButton.style.display = "block";
-            break;
-        case 2:
-            //unlock the ability to find the next item
-            fakeBegButton.style.display = "block";
-            break;
-        default:
-            break;
-    }
     game.workerCountMax++;
 }
 function increaseGearCountMax() {
     game.gearCountMax++;
+    showFakeBegButton();
 }
 function unlockGear() {
-    gearContainer.style.display = "block";
-    game.gearCountMax++;
-    createFakeBegButton();
+    //if this upgrade is to unlock a div, show it
+    if (!game.unlockedGear) {
+        craftingDiv.style.display = "block";
+        game.unlockedGear = true;
+        gearContainer.style.display = "block";
+        game.gearCountMax++;
+        if (game.unlockedWorkers) {
+            createFakeBegButton();
+        }
+    }
 }
 function unlockWorkers() {
-    workerContainer.style.display = "block";
-    game.workerCountMax++;
+    if (!game.unlockedWorkers) {
+        workerContainer.style.display = "block";
+        game.workerCountMax++;
+        game.unlockedWorkers = true;
+    }
 }
 function increaseWorkerSpeed() {
     Laborer.workSpeedDefault += 5;
@@ -250,28 +187,18 @@ function unlockUpgrades() {
     }
     showUpgrades();
 }
-function craftItem() {
-    //if the progress is 100, create the item
-    if (craftProgress >= 100) {
-        //create a new item
-        createRandomGear();
-        //reset the progress
-        craftProgress = 0;
-    }
-}
 function controlWorkers() {
     let tempWorkers = workers;
     //sort tempWorkers by workSpeed
     tempWorkers.sort((a, b) => (a.workSpeed > b.workSpeed) ? 1 : -1);
-    //if the hours are even, do work
-    if (game.hours % 2 == 0) {
+    let working = (game.hours > hoursStart && game.hours < hoursEnd);
+    if (working) {
         //loop through each worker and do work
         for (let i = 0; i < workers.length; i++) {
             workers[i].doWork();
         }
     }
-    //if the hours are odd, deposit resources and eat food
-    if (game.hours % 2 != 0) {
+    if (!working) {
         //loop through each worker and do work
         for (let i = 0; i < tempWorkers.length; i++) {
             tempWorkers[i].depositResources(1);

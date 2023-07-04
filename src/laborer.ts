@@ -439,8 +439,8 @@ class Laborer {
     }
 
     craft() {
-        craftProgress += 1;
-        craftItem();
+        craftResource += 1;
+        updateCraftingButton()
         console.log('crafting');
     }
 

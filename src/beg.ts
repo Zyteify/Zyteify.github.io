@@ -72,36 +72,49 @@ function createFakeBegButton() {
     fakeBegButton.className = "beg"
     fakeBegButton.innerHTML = "Salvange Gear";
     container.appendChild(fakeBegButton);
+
     fakeBegButton.onclick = () => {
         // Call upgrade function with the name of the upgrade
-
+        let gearCreation: boolean = false;
         switch (fakeBegs) {
             case 0:
-                createGear("Weapon", "Hoe");
-                //hide until it should be shown
-                fakeBegButton.style.display = "none";
+                gearCreation = createGear("Weapon", "Hoe");
+                if(gearCreation){
+                    game.unlockedHoe = true;
+                    fakeBegs++;
+                }
+                
+                
                 break;
             case 1:
-                createGear("Weapon", "Axe");
-                //unlock wood
-                let wood = <Resource>getResourceByName(ResourceType.wood);
-                wood.active = true;
-
-                //hide until it should be shown
-                fakeBegButton.style.display = "none";
+                gearCreation = createGear("Weapon", "Axe");
+                if(gearCreation){
+                    game.unlockedAxe = true;
+                    setResourceActive(ResourceType.wood);
+                    fakeBegs++;
+                }
                 break;
             case 2:
-                createGear("Weapon", "Chisel");
-                fakeBegButton.style.display = "none";
-                //delete the button
-                fakeBegButton.remove();
+                gearCreation = createGear("Weapon", "Hammer");
+                if(gearCreation){
+                    game.unlockedHammer = true;
+                    fakeBegs++;
+                }
                 break;
             default:
                 console.log('error in fakeBegs switch');
                 break;
         }
-        fakeBegs++;
+        showFakeBegButton();
 
     }
 
+}
+function showFakeBegButton() {
+    if (game.gearCountMax > fakeBegs && !game.unlockedHammer) {
+        fakeBegButton.style.display = "block";
+    }
+    else {
+        fakeBegButton.style.display = "none";
+    }
 }
