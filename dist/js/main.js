@@ -20,6 +20,23 @@ function setResourceActive(name) {
 }
 setResourceActive(ResourceType.food);
 setResourceActive(ResourceType.coins);
+//list of gems  
+let gems = [
+    new Gem("Diamond", "💎", 0, false),
+    new Gem("Ruby", "💎", 0, false),
+    new Gem("Emerald", "💎", 0, false),
+];
+function setGemActive(name) {
+    //set the default resource to be active
+    for (let i = 0; i < gems.length; i++) {
+        if (gems[i].name == name) {
+            gems[i].active = true;
+        }
+    }
+}
+setGemActive("Diamond");
+setGemActive("Ruby");
+setGemActive("Emerald");
 //convert the number of hours into a time
 function convertHoursToTime(hours) {
     let time = "";

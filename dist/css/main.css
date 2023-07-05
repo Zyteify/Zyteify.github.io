@@ -101,3 +101,48 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
+#materials-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.item{
+    display: flex;
+    border: 1px solid black;
+    flex-direction: column;
+    align-items: center;
+    max-width: 200px;
+}
+.item-gear{
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+    border-bottom: 1px solid black;
+}
+
+.small-margin{
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+}
+
+.item-name{
+    font-weight: bold;
+    font-size: large;
+}
+
+.item-statDiv{
+    display: flex;
+    width: 100%
+}
+
+.item-stats{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-stat{
+    text-align: center;
+    margin: auto;
+}

@@ -168,6 +168,11 @@ function dropEvent(myElement, event) {
 }
 function dragEventStart(myElement, event) {
     let dragSource = event.target;
+    var dragImage = myElement.cloneNode(true);
+    // Set the drag image opacity to 1 (opaque)
+    if (dragImage instanceof HTMLElement) {
+        dragImage.style.opacity = '1';
+    }
     //get the gear that is being dragged
     let gearid = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker

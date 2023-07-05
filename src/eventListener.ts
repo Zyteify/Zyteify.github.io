@@ -22,40 +22,40 @@ function getEventListeners(element: HTMLElement): EventListenerRecord[] {
     return eventListenerMap.get(element) || [];
 }
 
-class DragDiv{
+class DragDiv {
 
     div?: HTMLDivElement;
     item?: Item;
     worker?: Laborer;
-    setItem(item: Item){
+    setItem(item: Item) {
         this.item = item;
     }
-    setWorker(worker: Laborer){
+    setWorker(worker: Laborer) {
         this.worker = worker;
     }
-    getItem(){
+    getItem() {
         return this.item;
     }
-    getWorker(){
+    getWorker() {
         return this.worker;
     }
-    hasItem(){
-        if(this.item){
+    hasItem() {
+        if (this.item) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
-    hasWorker(){
-        if(this.worker){
+    hasWorker() {
+        if (this.worker) {
             return true;
         }
-        else{
+        else {
             return false;
         }
     }
-    
+
 }
 
 let dragDiv: DragDiv = new DragDiv();
@@ -165,13 +165,13 @@ function dropEvent(myElement: HTMLElement, event: Event) {
         else if (myElement === deleteDiv) {
             let myItem = <Item>dragDiv.item
 
-            
+
             //create a prompt to confirm deletion
             let confirmDelete = confirm(`Are you sure you want to delete ${myItem.gear}?`);
             if (!confirmDelete) {
                 return;
             }
-            
+
             //delete the item and remove it from either the inventory or the workers inventory
             if (dragDiv.hasWorker()) {
                 let dragWorker = <Laborer>dragDiv.worker
@@ -190,11 +190,11 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             let div = <HTMLDivElement>dragDiv.div;
             getEventListeners(div).forEach(({ eventType, listener, options }) => {
                 console.log(`removing event listener for ${eventType}`);
-                
+
                 div.removeEventListener(eventType, listener, options);
             });
             deletedItems.push(myItem);
-                        
+
         }
         else {
             console.log(`dropped on ${myElement.id}`);
@@ -204,6 +204,16 @@ function dropEvent(myElement: HTMLElement, event: Event) {
 
 function dragEventStart(myElement: HTMLElement, event: Event) {
     let dragSource = event.target as HTMLElement;
+
+
+    var dragImage = myElement.cloneNode(true);
+  
+    // Set the drag image opacity to 1 (opaque)
+    if (dragImage instanceof HTMLElement) {
+      dragImage.style.opacity = '1';
+    }
+
+
     //get the gear that is being dragged
     let gearid: string = dragSource.id.replace('gear-div', '');
 

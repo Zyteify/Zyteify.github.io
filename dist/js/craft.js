@@ -1,26 +1,5 @@
 "use strict";
 //set the crafting div inititialisation
-//set the item name
-//create a p element for the name
-let craftingItemName = document.createElement('p');
-craftingItemName.id = "crafting-item-name";
-craftingItemName.innerHTML = "Item Name";
-craftingItemNameDiv.appendChild(craftingItemName);
-//set the item picture
-let craftingItemPicture = document.createElement('img');
-craftingItemPicture.id = "crafting-item-picture";
-craftingItemPicture.src = "dist/img/sword.png";
-craftingItemPictureDiv.appendChild(craftingItemPicture);
-//set the item gear
-let craftingItemGear = document.createElement('p');
-craftingItemGear.id = "crafting-item-gear";
-craftingItemGear.innerHTML = "Item Gear";
-craftingItemGearDiv.appendChild(craftingItemGear);
-//set the item stats
-let craftingItemStats = document.createElement('p');
-craftingItemStats.id = "crafting-item-stats";
-craftingItemStats.innerHTML = "Item Stats";
-craftingItemStatsDiv.appendChild(craftingItemStats);
 //set the item options
 let craftingItemOptions = document.createElement('p');
 craftingItemOptions.id = "crafting-item-options";
@@ -44,9 +23,10 @@ function createRandomGear() {
     }
     return gearCreation;
 }
-function createGear(itemType, GearType) {
+function createGear(itemType, GearType, baseType, rarity) {
     if (game.gearCountCurrent < game.gearCountMax) {
-        let newGear = new Item(itemType, GearType);
+        //type: ItemType, gear?: GearType,baseType?: string, rarity?: rarityType
+        let newGear = new Item(itemType, GearType, baseType, rarity);
         items.push(newGear);
         game.gearCountCurrent++;
         displayText();

@@ -84,7 +84,7 @@ function unlockStarterGear() {
     let gearCreation: boolean = false;
     switch (fakeBegs) {
         case 0:
-            gearCreation = createGear("Weapon", "Hoe");
+            gearCreation = createGear("Weapon", "Hoe", 'Wooden', 'Starter');
             if (gearCreation) {
                 game.unlockedHoe = true;
                 fakeBegs++;
@@ -93,7 +93,7 @@ function unlockStarterGear() {
 
             break;
         case 1:
-            gearCreation = createGear("Weapon", "Axe");
+            gearCreation = createGear("Weapon", "Axe", 'Wooden', 'Starter');
             if (gearCreation) {
                 game.unlockedAxe = true;
                 setResourceActive(ResourceType.wood);
@@ -101,7 +101,7 @@ function unlockStarterGear() {
             }
             break;
         case 2:
-            gearCreation = createGear("Weapon", "Hammer");
+            gearCreation = createGear("Weapon", "Hammer", 'Wooden', 'Starter');
             if (gearCreation) {
                 game.unlockedHammer = true;
                 unlockMaterials()
@@ -109,7 +109,7 @@ function unlockStarterGear() {
             }
             break;
         default:
-            console.log('error in fakeBegs switch');
+            console.log(`error in fakeBegs switch statement, fakeBegs: ${fakeBegs}`);
             break;
     }
     showFakeBegButton();

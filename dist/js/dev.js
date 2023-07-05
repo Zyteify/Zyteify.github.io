@@ -45,7 +45,10 @@ if (window.location.hostname == "127.0.0.1") {
         for (let i = 0; i < upgradeList.length; i++) {
             upgradeList[i].upgrade();
             unlockUpgrades();
-            unlockStarterGear();
+            if (game.gearCountMax > fakeBegs && !game.unlockedHammer) {
+                unlockStarterGear();
+            }
+            
         }
         unlockCrafting();
     };
