@@ -13,9 +13,9 @@ const gearTypes: GearType[] = [
     "Chisel",
     "Quill",
     "Dice",
-    "Scales",
-    "Holy Symbol",
-    "Scroll",
+    //"Scales",
+    //"Holy Symbol",
+    //"Scroll",
     "Pickaxe",
     "Axe",
 ];
@@ -123,6 +123,8 @@ class Item {
 
         this.setParagraph()
     }
+
+    display(){}
 
 
 }

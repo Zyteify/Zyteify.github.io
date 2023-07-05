@@ -159,6 +159,7 @@ function dropEvent(myElement, event) {
                 console.log(`removing event listener for ${eventType}`);
                 div.removeEventListener(eventType, listener, options);
             });
+            deletedItems.push(myItem);
         }
         else {
             console.log(`dropped on ${myElement.id}`);

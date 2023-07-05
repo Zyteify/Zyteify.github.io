@@ -11,11 +11,10 @@ const workerCountCurrent = document.getElementById('worker-count-current');
 const workerCountMax = document.getElementById('worker-count-max');
 //worker-list
 const workerList = document.getElementById('worker-list');
-//crafting
-const craftingDiv = document.getElementById('crafting');
-//crafting-progress
-const craftingResource = document.getElementById('crafting-resource');
-//buttons
+//Materials
+const materialsDiv = document.getElementById('materials');
+//Materials-progress
+const craftingResource = document.getElementById('materials-resource');
 //gear
 const gearContainer = document.getElementById('gear');
 //gear-count-current
@@ -24,9 +23,19 @@ const gearCountCurrent = document.getElementById('gear-count-current');
 const gearCountMax = document.getElementById('gear-count-max');
 //delete-div
 const deleteDiv = document.getElementById('delete-div');
+//crafting
+const craftingDiv = document.getElementById('crafting');
+const craftingItemSectionDiv = document.getElementById('crafting-item-section');
+const craftingItemNameDiv = document.getElementById('crafting-item-name');
+const craftingItemPictureDiv = document.getElementById('crafting-item-picture');
+const craftingItemGearDiv = document.getElementById('crafting-item-gear');
+const craftingItemStatsDiv = document.getElementById('crafting-item-stats');
+const craftingOptions = document.getElementById('crafting-options');
+const craftingMaterialsList = document.getElementById('crafting-materials-list');
 //hide the gear and worker containers
 gearContainer.style.display = "none";
 workerContainer.style.display = "none";
+materialsDiv.style.display = "none";
 craftingDiv.style.display = "none";
 let hoursStart = 8;
 let hoursEnd = 20;
@@ -52,7 +61,9 @@ let game = {
     unlockedWorkers: false,
     unlockedGear: false,
     unlockedPickaxe: false,
+    unlockedCraftingButton: false,
     unlockedCrafting: false,
+    unlockedMaterials: false,
 };
 let points = 0;
 let craftResource = 0;

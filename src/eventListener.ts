@@ -193,6 +193,7 @@ function dropEvent(myElement: HTMLElement, event: Event) {
                 
                 div.removeEventListener(eventType, listener, options);
             });
+            deletedItems.push(myItem);
                         
         }
         else {

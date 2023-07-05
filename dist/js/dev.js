@@ -9,7 +9,7 @@ if (window.location.hostname == "127.0.0.1") {
         button.onclick = function () {
             createGear("Weapon", gearTypes[i]);
         };
-        let craftingContainer = document.getElementById('crafting');
+        let craftingContainer = document.getElementById('materials');
         craftingContainer.appendChild(button);
     }
     //resources
@@ -30,7 +30,7 @@ if (window.location.hostname == "127.0.0.1") {
         craftResource += 1000;
         updateCraftingButton();
     };
-    let craftingContainer = document.getElementById('crafting');
+    let craftingContainer = document.getElementById('materials');
     craftingContainer.appendChild(buttonCrafting);
     updateCraftingButton();
     let buttonUnlockAll = document.createElement('button');
@@ -38,11 +38,15 @@ if (window.location.hostname == "127.0.0.1") {
     let upgradeDiv = document.getElementById('upgrades');
     upgradeDiv.appendChild(buttonUnlockAll);
     buttonUnlockAll.onclick = function () {
+        for (let i = 0; i < resources.length; i++) {
+            resources[i].amount += 1000;
+        }
         //loop through all upgrades and unlock them
         for (let i = 0; i < upgradeList.length; i++) {
             upgradeList[i].upgrade();
             unlockUpgrades();
             unlockStarterGear();
         }
+        unlockCrafting();
     };
 }

@@ -50,6 +50,8 @@ function createBegList() {
 begList = createBegList();
 //list of items
 let items = [];
+//list of items
+let deletedItems = [];
 function loadJson(url) {
     return fetch(url).then(response => {
         if (response.ok) {
@@ -142,13 +144,26 @@ function increaseGearCountMax() {
 function unlockGear() {
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedGear) {
-        craftingDiv.style.display = "block";
         game.unlockedGear = true;
         gearContainer.style.display = "block";
         game.gearCountMax++;
         if (game.unlockedWorkers) {
             createFakeBegButton();
         }
+    }
+}
+function unlockMaterials() {
+    //if this upgrade is to unlock a div, show it
+    if (!game.unlockedMaterials) {
+        materialsDiv.style.display = "block";
+        game.unlockedMaterials = true;
+    }
+}
+function unlockCrafting() {
+    //if this upgrade is to unlock a div, show it
+    if (!game.unlockedCrafting) {
+        craftingDiv.style.display = "block";
+        game.unlockedCrafting = true;
     }
 }
 function unlockWorkers() {

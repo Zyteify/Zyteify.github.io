@@ -104,6 +104,7 @@ function unlockStarterGear() {
             gearCreation = createGear("Weapon", "Hammer");
             if (gearCreation) {
                 game.unlockedHammer = true;
+                unlockMaterials()
                 fakeBegs++;
             }
             break;

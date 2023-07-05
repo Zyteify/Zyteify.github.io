@@ -10,9 +10,9 @@ const gearTypes = [
     "Chisel",
     "Quill",
     "Dice",
-    "Scales",
-    "Holy Symbol",
-    "Scroll",
+    //"Scales",
+    //"Holy Symbol",
+    //"Scroll",
     "Pickaxe",
     "Axe",
 ];

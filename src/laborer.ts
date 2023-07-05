@@ -433,6 +433,14 @@ class Laborer {
 
     }
 
+    merchant() {
+        console.log('merchandising');
+    }
+
+    priest() {
+        console.log('preaching');
+    }
+
     chop() {
         //add wood to the worker
         this.addResource(new Resource(ResourceType.wood, 1));
@@ -477,14 +485,12 @@ class Laborer {
                 workerCount++;
             }
         }
-        let amount = workerCount * 2;
+        let amount = workerCount * 1;
         if (amount > 0) {
             let resource = new Resource(ResourceType.coins, amount)
             this.addResource(resource);
         }
 
-        //the taxer can instantly deposit the resources
-        this.depositResources(10)
         console.log('taxing');
     }
 
@@ -523,13 +529,7 @@ class Laborer {
         new Resource(ResourceType.coins, 0)
     }
 
-    merchant() {
-        console.log('merchandising');
-    }
 
-    priest() {
-        console.log('preaching');
-    }
 
     research() {
         upgradePoints += 1;

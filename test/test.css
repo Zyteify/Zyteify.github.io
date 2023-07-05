@@ -1,0 +1,69 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: auto;
+    width: 100%;
+    height: 100%;
+
+}
+
+#section-interact {
+    display: flex;
+    flex-direction: row;
+}
+
+
+#a{
+    width: 500px;
+    height: 100px;
+    border: 1px solid black;
+}
+#crafting{
+    border: 1px solid black;
+    width: 500px;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item{
+    display: flex;
+    border: 1px solid black;
+    flex-direction: column;
+    align-items: center;
+    max-width: 200px;
+}
+.item-gear{
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+    border-bottom: 1px solid black;
+}
+
+.small-margin{
+    margin-block-start: 0.1em;
+    margin-block-end: 0.1em;
+}
+
+.item-name{
+    font-weight: bold;
+    font-size: large;
+}
+
+.item-statDiv{
+    display: flex;
+    width: 100%
+}
+
+.item-stats{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-stat{
+    text-align: center;
+    margin: auto;
+}

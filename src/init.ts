@@ -13,12 +13,10 @@ const workerCountMax = <HTMLElement>document.getElementById('worker-count-max');
 const workerList = <HTMLElement>document.getElementById('worker-list');
 
 
-//crafting
-const craftingDiv = <HTMLElement>document.getElementById('crafting');
-//crafting-progress
-const craftingResource = <HTMLElement>document.getElementById('crafting-resource');
-
-//buttons
+//Materials
+const materialsDiv = <HTMLElement>document.getElementById('materials');
+//Materials-progress
+const craftingResource = <HTMLElement>document.getElementById('materials-resource');
 
 
 //gear
@@ -30,9 +28,21 @@ const gearCountMax = <HTMLElement>document.getElementById('gear-count-max');
 //delete-div
 const deleteDiv = <HTMLElement>document.getElementById('delete-div');
 
+//crafting
+const craftingDiv = <HTMLDivElement>document.getElementById('crafting');
+const craftingItemSectionDiv = <HTMLDivElement>document.getElementById('crafting-item-section');
+const craftingItemNameDiv = <HTMLElement>document.getElementById('crafting-item-name');
+const craftingItemPictureDiv = <HTMLElement>document.getElementById('crafting-item-picture');
+const craftingItemGearDiv = <HTMLElement>document.getElementById('crafting-item-gear');
+const craftingItemStatsDiv = <HTMLElement>document.getElementById('crafting-item-stats');
+
+const craftingOptions = <HTMLElement>document.getElementById('crafting-options');
+const craftingMaterialsList = <HTMLElement>document.getElementById('crafting-materials-list');
+
 //hide the gear and worker containers
 gearContainer.style.display = "none"
 workerContainer.style.display = "none"
+materialsDiv.style.display = "none"
 craftingDiv.style.display = "none"
 
 let hoursStart = 8;
@@ -63,7 +73,9 @@ let game = {
     unlockedWorkers: false,
     unlockedGear: false,
     unlockedPickaxe: false,
+    unlockedCraftingButton: false,
     unlockedCrafting: false,
+    unlockedMaterials: false,
 
 }
 
