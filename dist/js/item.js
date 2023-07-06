@@ -101,78 +101,12 @@ function generateGear() {
     gear = gearTypes[Math.floor(random)];
     return gear;
 }
-//create an example stat
-let prefix1 = {
-    name: "prefix1",
-    valueRange: [1, 10],
-    value: 1,
-    affix: "Prefix"
-};
-//create another example stat
-let prefix2 = {
-    name: "prefix2",
-    valueRange: [11, 20],
-    value: 2,
-    affix: "Prefix"
-};
-//create another example stat
-let prefix3 = {
-    name: "prefix3",
-    valueRange: [21, 30],
-    value: 3,
-    affix: "Prefix"
-};
-//create an example stat list
-let prefixList = {
-    gear: "Hoe",
-    stats: []
-};
-//add the example stats to the example stat list
-prefixList.stats.push(prefix1);
-prefixList.stats.push(prefix2);
-prefixList.stats.push(prefix3);
-//create an example stat
-let suffix1 = {
-    name: "suffix1",
-    valueRange: [1, 10],
-    value: 1,
-    affix: "Suffix"
-};
-//create another example stat
-let suffix2 = {
-    name: "suffix2",
-    valueRange: [11, 20],
-    value: 2,
-    affix: "Suffix"
-};
-//create another example stat
-let suffix3 = {
-    name: "suffix3",
-    valueRange: [21, 30],
-    value: 3,
-    affix: "Suffix"
-};
-//create an example stat list
-let suffixList = {
-    gear: "Hoe",
-    stats: []
-};
-//add the example stats to the example stat list
-suffixList.stats.push(suffix1);
-suffixList.stats.push(suffix2);
-suffixList.stats.push(suffix3);
-function rollRange(range) {
-    return Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
+function rollRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 let chanceStatMin = 0.5;
 let chanceStatMax = 0.5;
 function generateAffixes(rarity, gear) {
-    let stat = {
-        name: "Default",
-        valueRange: [1, 1],
-        value: 1,
-        affix: "Prefix"
-    };
     let stats = [];
     /* stats.push(stat); */
     let numPrefixes = 0;
@@ -229,18 +163,48 @@ function generateAffixes(rarity, gear) {
     }
     //generate the stats
     for (let i = 0; i < numPrefixes; i++) {
-        //select a random prefix from the stat list
-        let randomStat = Math.floor(Math.random() * prefixList.stats.length);
-        let prefix = Object.assign({}, prefixList.stats[randomStat]);
-        prefix.value = rollRange(prefix.valueRange);
-        stats.push(prefix);
+        //get the list of affixes that are prefixes
+        let prefixList = affixList.filter(affix => affix.affix == "Prefix");
+        //get the list of affixes that are prefixes with the same gear type
+        let prefixGearList = prefixList.filter(affix => affix.gearType == gear || affix.gearType == 'ANY');
+        //get a single prefix from the list using the affix weights
+        let prefix = getAffix(prefixGearList, stats);
+        //roll the value of the stat
+        let value = rollRange(prefix.valueMin, prefix.valueMax);
+        //create the stat
+        let stat = {
+            name: prefix.name,
+            valueRange: [prefix.valueMin, prefix.valueMax],
+            value: value,
+            stat: prefix.stat,
+            affix: prefix.affix,
+            tier: prefix.tier,
+            modFamily: prefix.modFamily,
+            tags: prefix.tags,
+        };
+        stats.push(stat);
     }
     for (let i = 0; i < numSuffixes; i++) {
-        //select a random prefix from the stat list
-        let randomStat = Math.floor(Math.random() * suffixList.stats.length);
-        let suffix = Object.assign({}, suffixList.stats[randomStat]);
-        suffix.value = rollRange(suffix.valueRange);
-        stats.push(suffix);
+        //get the list of affixes that are suffixes
+        let SuffixList = affixList.filter(affix => affix.affix == "Suffix");
+        //get the list of affixes that are suffixes with the same gear type
+        let suffixGearList = SuffixList.filter(affix => affix.gearType == gear || affix.gearType == 'ANY');
+        //get a single suffix from the list using the affix weights
+        let suffix = getAffix(suffixGearList, stats);
+        //roll the value of the stat
+        let value = rollRange(suffix.valueMin, suffix.valueMax);
+        //create the stat
+        let stat = {
+            name: suffix.name,
+            valueRange: [suffix.valueMin, suffix.valueMax],
+            value: value,
+            stat: suffix.stat,
+            affix: suffix.affix,
+            tier: suffix.tier,
+            modFamily: suffix.modFamily,
+            tags: suffix.tags,
+        };
+        stats.push(stat);
     }
     return stats;
 }
@@ -427,42 +391,44 @@ class Item {
             let itemStat = [];
             let itemStatDiv = [];
             let itemStatAffix = [];
-            //item stat div
-            let stat1Div = document.createElement('div');
-            stat1Div.classList.add("item-statDiv");
-            stat1Div.classList.add("small-margin");
-            itemStatDiv.push(stat1Div);
-            let stat2Div = document.createElement('div');
-            stat2Div.classList.add("item-statDiv");
-            stat2Div.classList.add("small-margin");
-            itemStatDiv.push(stat2Div);
-            //set the item stats
-            let stat1 = document.createElement('p');
-            stat1.classList.add("item-stat");
-            stat1.classList.add("small-margin");
-            stat1.innerHTML = "+100 to attack";
-            stat1.dataset.stat = "attack";
-            stat1.dataset.affix = "prefix";
-            itemStat.push(stat1);
-            //set the item stats
-            let statafffix1 = document.createElement('p');
-            statafffix1.classList.add("item-stat-affix");
-            statafffix1.innerHTML = "(P1)";
-            statafffix1.classList.add("small-margin");
-            itemStatAffix.push(statafffix1);
-            let stat2 = document.createElement('p');
-            stat2.classList.add("item-stat");
-            stat2.classList.add("small-margin");
-            stat2.innerHTML = "+100 to Defenceaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaa";
-            stat2.dataset.stat = "defense";
-            stat2.dataset.affix = "suffix";
-            itemStat.push(stat2);
-            //set the item stats
-            let statafffix2 = document.createElement('p');
-            statafffix2.classList.add("item-stat-affix");
-            statafffix2.innerHTML = "(S1)";
-            statafffix2.classList.add("small-margin");
-            itemStatAffix.push(statafffix2);
+            //for each stat
+            let numAffixes = this.prefixes.length + this.suffixes.length;
+            for (let i = 0; i < numAffixes; i++) {
+                let affix;
+                let affixText = "";
+                //if looking at a prefix
+                if (i < this.prefixes.length) {
+                    affix = this.prefixes[i];
+                    affixText = "P";
+                }
+                //if looking at a suffix
+                else {
+                    affix = this.suffixes[i - this.prefixes.length];
+                    affixText = "S";
+                }
+                //create a div for the stat
+                let statDiv = document.createElement('div');
+                statDiv.classList.add("item-statDiv");
+                statDiv.classList.add("small-margin");
+                itemStatDiv.push(statDiv);
+                //set the item stats
+                let statAffix = document.createElement('p');
+                statAffix.classList.add("item-stat-affix");
+                statAffix.classList.add("small-margin");
+                //add a newline between tier and name
+                statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`;
+                statAffix.dataset.stat = affix.tags;
+                statAffix.dataset.affix = `${affix.affix}`;
+                itemStatAffix.push(statAffix);
+                ;
+                let stat = document.createElement('p');
+                stat.classList.add("item-stat");
+                stat.classList.add("small-margin");
+                stat.innerHTML = `${affix.value} ${affix.stat}`;
+                stat.dataset.stat = affix.tags;
+                stat.dataset.affix = `${affix.affix}`;
+                itemStat.push(stat);
+            }
             for (let i = 0; i < itemStat.length; i++) {
                 itemStatDiv[i].appendChild(itemStatAffix[i]);
                 itemStatDiv[i].appendChild(itemStat[i]);

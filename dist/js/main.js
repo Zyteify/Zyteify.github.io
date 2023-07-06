@@ -81,9 +81,16 @@ function loadJson(url) {
 }
 //load the json data for names
 let nameList = [];
-loadJson('../dist/json/names-male.json').then(data => {
+loadJson('../dist/data/names-male.json').then(data => {
     nameList = data.data;
 });
+//load the json data for items
+let affixList = [];
+loadJson('../dist/data/affixes.json').then(data => {
+    affixList = data;
+});
+//todo verify the affixList is indeed an array of affixes at runtime
+//this is not checked and may introduce bugs
 function updateGameTime() {
     //game-time
     game.minutes += 15;
