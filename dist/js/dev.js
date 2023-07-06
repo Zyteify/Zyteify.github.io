@@ -45,7 +45,9 @@ if (window.location.hostname == "127.0.0.1") {
         for (let i = 0; i < upgradeList.length; i++) {
             upgradeList[i].upgrade();
             unlockUpgrades();
-            unlockStarterGear();
+            if (fakeBegs < 3) {
+                unlockStarterGear();
+            }
         }
         unlockCrafting();
     };

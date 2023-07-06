@@ -25,8 +25,22 @@ function displayText() {
 }
 displayResources();
 function displayGear() {
+    //each item in items
     for (let i = 0; i < items.length; i++) {
-        items[i].setParentDiv(document.getElementById('gear-list'));
+        items[i].resetDiv();
+        items[i].setParentDiv(gearListContainer);
+    }
+    //each item in crafting
+    for (let i = 0; i < craftingItems.length; i++) {
+        craftingItems[i].resetDiv();
+        craftingItems[i].setParentDiv(craftingItemSectionDiv);
+    }
+    //each worker
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].weapon != null) {
+            workers[i].weapon?.resetDiv();
+            workers[i].weapon?.setParentDiv(workers[i].gearDiv);
+        }
     }
 }
 function displayResources() {
@@ -74,7 +88,7 @@ function displayGems() {
     }
 }
 function emptyGearDisplay() {
-    const container = document.getElementById('gear-list');
+    const container = gearListContainer;
     container.innerHTML = "";
     displayGear();
 }

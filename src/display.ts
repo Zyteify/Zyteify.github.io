@@ -31,9 +31,25 @@ displayResources()
 
 
 function displayGear() {
+    //each item in items
     for (let i = 0; i < items.length; i++) {
-        items[i].setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
+        items[i].resetDiv()
+        items[i].setParentDiv(gearListContainer)
+
     }
+    //each item in crafting
+    for (let i = 0; i < craftingItems.length; i++) {
+        craftingItems[i].resetDiv()
+        craftingItems[i].setParentDiv(craftingItemSectionDiv)
+    }
+    //each worker
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].weapon != null) {
+            workers[i].weapon?.resetDiv()
+            workers[i].weapon?.setParentDiv(workers[i].gearDiv)
+        }
+    }
+
 }
 
 function displayResources() {
@@ -52,11 +68,11 @@ function displayResources() {
             container.appendChild(paragraph);
         }
         let resourceName = ResourceType[resources[i].name]
-        paragraph.innerHTML = resources[i].icon+ " " + resources[i].amount;
-        if(!resources[i].active){
+        paragraph.innerHTML = resources[i].icon + " " + resources[i].amount;
+        if (!resources[i].active) {
             paragraph.style.display = "none";
         }
-        else{
+        else {
             paragraph.style.display = "block";
         }
     }
@@ -78,18 +94,18 @@ function displayGems() {
             container.appendChild(paragraph);
         }
         let resourceName = gems[i].name
-        paragraph.innerHTML = gems[i].icon+ " " + gems[i].amount;
-        if(!gems[i].active){
+        paragraph.innerHTML = gems[i].icon + " " + gems[i].amount;
+        if (!gems[i].active) {
             paragraph.style.display = "none";
         }
-        else{
+        else {
             paragraph.style.display = "block";
         }
     }
 }
 
 function emptyGearDisplay() {
-    const container = document.getElementById('gear-list') as HTMLDivElement;
+    const container = gearListContainer;
     container.innerHTML = "";
     displayGear()
 }

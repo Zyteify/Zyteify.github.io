@@ -86,6 +86,11 @@ begList = createBegList();
 let items: Item[] = [];
 
 //list of items
+let craftingItems: Item[] = [];
+
+let craftingItemsMax = 1;
+
+//list of items
 let deletedItems: Item[] = [];
 
 function loadJson(url: string) {
@@ -159,7 +164,7 @@ function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | I
                 moveGear(destination.weapon, source, destination)
             }
             else {
-                destination.weapon.setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
+                destination.weapon.setParentDiv(gearListContainer)
                 items.push(destination.weapon);
                 destination.unequipItem(destination.weapon);
 
@@ -170,7 +175,7 @@ function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | I
         destination.equipItem(item)
     }
     if (Array.isArray(destination)) {
-        item.setParentDiv(document.getElementById('gear-list') as HTMLDivElement)
+        item.setParentDiv(gearListContainer)
         items.push(item);
         game.gearCountCurrent++;
     }

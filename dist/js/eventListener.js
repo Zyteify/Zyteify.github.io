@@ -122,7 +122,7 @@ function dropEvent(myElement, event) {
                 moveGear(dragDiv.item, dragWorkerDest, items);
             }
         }
-        else if (myElement === gearListDiv) {
+        else if (myElement === gearListContainer) {
             //if the element being dropped on is the body
             //add the gear to the list of items
             //check to see if the item is on a worker
@@ -208,30 +208,29 @@ function isExcludedElement(element, excludedElements) {
     }
     return false;
 }
-const gearListDiv = document.getElementById('gear-list');
 //add event listeners to the body to allow gear to be dropped back to the inventory
-trackEventListeners(gearListDiv, 'drop', function (event) {
+trackEventListeners(gearListContainer, 'drop', function (event) {
     // Create a list of elements that should not trigger the drop event
     let excludedChildren = document.getElementsByClassName('worker-div');
-    gearListDiv.classList.remove('highlight1');
+    gearListContainer.classList.remove('highlight1');
     // Check if the clicked element is not one of the excluded children or their descendants
     if (event.target instanceof Element
         && !isExcludedElement(event.target, excludedChildren)) {
-        dropEvent(gearListDiv, event);
+        dropEvent(gearListContainer, event);
     }
 });
-trackEventListeners(gearListDiv, 'dragover', function (event) {
+trackEventListeners(gearListContainer, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
     if (dragDiv.hasItem()) {
-        gearListDiv.classList.add('highlight1');
+        gearListContainer.classList.add('highlight1');
     }
     return false;
 });
 //allow the div to be dragged leave
-trackEventListeners(gearListDiv, 'dragleave', function (event) {
+trackEventListeners(gearListContainer, 'dragleave', function (event) {
     event.preventDefault();
-    gearListDiv.classList.remove('highlight1');
-    gearListDiv.classList.remove('highlight2');
+    gearListContainer.classList.remove('highlight1');
+    gearListContainer.classList.remove('highlight2');
 });
 trackEventListeners(deleteDiv, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    

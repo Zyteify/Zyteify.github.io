@@ -17,6 +17,8 @@ const materialsDiv = document.getElementById('materials');
 const craftingResource = document.getElementById('materials-resource');
 //gear
 const gearContainer = document.getElementById('gear');
+//gear
+const gearListContainer = document.getElementById('gear-list');
 //gear-count-current
 const gearCountCurrent = document.getElementById('gear-count-current');
 //gear-count-max
@@ -30,8 +32,8 @@ const craftingItemNameDiv = document.getElementById('crafting-item-name');
 const craftingItemPictureDiv = document.getElementById('crafting-item-picture');
 const craftingItemGearDiv = document.getElementById('crafting-item-gear');
 const craftingItemStatsDiv = document.getElementById('crafting-item-stats');
-const craftingOptions = document.getElementById('crafting-options');
-const craftingMaterialsList = document.getElementById('crafting-materials-list');
+const craftingOptionsDiv = document.getElementById('crafting-options');
+const craftingMaterialsListDiv = document.getElementById('crafting-materials-list');
 //hide the gear and worker containers
 gearContainer.style.display = "none";
 workerContainer.style.display = "none";

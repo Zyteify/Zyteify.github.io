@@ -21,6 +21,7 @@ type Affix = {
     weight: number;
     gearType: string;
     baseType: string;
+    itemType: ItemType;
     rollable: boolean;
     modFamily: string;
     tags: string;

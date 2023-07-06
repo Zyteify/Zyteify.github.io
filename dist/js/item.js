@@ -208,7 +208,7 @@ function generateAffixes(rarity, gear) {
     }
     return stats;
 }
-let showFullItems = false;
+let showFullItems = true;
 //create button to switch from short to long display
 const displayButton = document.createElement('button');
 displayButton.id = "display-button";
@@ -225,6 +225,12 @@ displayButton.onclick = function () {
     showFullItems = !showFullItems;
     displayGear();
 };
+if (showFullItems) {
+    displayButton.innerHTML = "Show Short Items";
+}
+else {
+    displayButton.innerHTML = "Show Full Items";
+}
 //attach the button to the gear list
 const gearList = document.getElementById('gear');
 gearList.appendChild(displayButton);
@@ -272,12 +278,15 @@ class Item {
         this.image = new Image();
         //create an item div
         this.div = document.createElement('div');
+        //set the item div class
+        this.div.id = "gear-div" + this.id.toString();
+        this.div.className = "gear-div";
+        this.div.draggable = true;
+        this.div.classList.add("item");
         //create a short item div
         this.shortDiv = document.createElement('div');
-        //by default make the parent container the gear list
-        this.container = document.getElementById('gear-list');
-        //this.setupDiv()
-        this.setupShortDiv();
+        //by default make the parent container the crafting window
+        this.container = document.getElementById('crafting-item-section');
         this.setupDiv();
         this.setParentDiv();
     }
@@ -286,89 +295,113 @@ class Item {
         if (this.div.parentElement != null) {
             this.div.parentElement.removeChild(this.div);
         }
-        if (this.shortDiv.parentElement != null) {
-            this.shortDiv.parentElement.removeChild(this.shortDiv);
-        }
         if (parent == null) {
-            parent = document.getElementById('gear-list');
+            parent = gearListContainer;
         }
         this.container = parent;
-        if (showFullItems) {
-            this.container.appendChild(this.div);
-        }
-        else {
-            this.container.appendChild(this.shortDiv);
-        }
+        this.container.appendChild(this.div);
     }
-    setupShortDiv() {
-        if (!this.setupShort) {
-            this.setupShort = true;
-            //set the item div class
-            this.shortDiv.id = "gear-div" + this.id.toString();
-            this.shortDiv.className = "gear-div";
-            this.shortDiv.draggable = true;
-            this.shortDiv.classList.add("item");
-            //create an item name div
-            const itemNameDiv = document.createElement('div');
-            //set the item name div class
-            itemNameDiv.classList.add("item-nameDiv");
-            //create an item picture div
-            const itemPictureDiv = document.createElement('div');
-            //set the item picture div class
-            itemPictureDiv.classList.add("item-pictureDiv");
-            let itemName = document.createElement('p');
-            itemName.classList.add("item-name");
-            itemName.innerHTML = `${this.rarity} ${this.baseType} ${this.gear}`;
-            itemNameDiv.appendChild(itemName);
-            //set the item picture
-            let itemPicture = document.createElement('img');
-            itemPicture.classList.add("item-picture");
-            let itempicture = this.gear.toLocaleLowerCase();
-            itemPicture.src = `../dist/img/${itempicture}.png`;
-            itemPicture.draggable = false;
-            itemPictureDiv.appendChild(itemPicture);
-            this.shortDiv.appendChild(itemNameDiv);
-            this.shortDiv.appendChild(itemPictureDiv);
-        }
+    resetDiv() {
+        //destory the div and resetup div
+        removeAllChildren(this.div);
+        this.setup = false;
+        this.setupDiv();
     }
     setupDiv() {
         if (!this.setup) {
             this.setup = true;
-            //set the item div class
-            this.div.id = "gear-div" + this.id.toString();
-            this.div.className = "gear-div";
-            this.div.draggable = true;
-            this.div.classList.add("item");
-            //create an item name div
-            const itemNameDiv = document.createElement('div');
-            //set the item name div class
-            itemNameDiv.classList.add("item-nameDiv");
             //create an item picture div
             const itemPictureDiv = document.createElement('div');
             //set the item picture div class
             itemPictureDiv.classList.add("item-pictureDiv");
-            //create an item gear div
-            const itemGearDiv = document.createElement('div');
-            //set the item gear div class
-            itemGearDiv.classList.add("item-gearDiv");
-            //create an item stats div
-            const itemStatsDiv = document.createElement('div');
-            //set the item stats div class
-            itemStatsDiv.classList.add("item-statsDiv");
-            //create an item rarity div
-            const itemRarityDiv = document.createElement('div');
-            //set the item rarity div class
-            itemRarityDiv.classList.add("item-rarityDiv");
-            //append the divs to the item div
-            this.div.appendChild(itemNameDiv);
             this.div.appendChild(itemPictureDiv);
-            this.div.appendChild(itemRarityDiv);
-            this.div.appendChild(itemGearDiv);
-            this.div.appendChild(itemStatsDiv);
-            let itemName = document.createElement('p');
-            itemName.classList.add("item-name");
-            itemName.innerHTML = `${this.rarity} ${this.baseType} ${this.gear}`;
-            itemNameDiv.appendChild(itemName);
+            if (showFullItems) {
+                //create an item name div
+                const itemNameDiv = document.createElement('div');
+                //set the item name div class
+                itemNameDiv.classList.add("item-nameDiv");
+                //create an item gear div
+                const itemGearDiv = document.createElement('div');
+                //set the item gear div class
+                itemGearDiv.classList.add("item-gearDiv");
+                //create an item stats div
+                const itemStatsDiv = document.createElement('div');
+                //set the item stats div class
+                itemStatsDiv.classList.add("item-statsDiv");
+                //create an item rarity div
+                const itemRarityDiv = document.createElement('div');
+                //set the item rarity div class
+                itemRarityDiv.classList.add("item-rarityDiv");
+                //append the divs to the item div
+                this.div.appendChild(itemNameDiv);
+                this.div.appendChild(itemRarityDiv);
+                this.div.appendChild(itemGearDiv);
+                this.div.appendChild(itemStatsDiv);
+                //set the item rarity
+                let itemRarity = document.createElement('p');
+                itemRarity.classList.add("item-rarity");
+                itemRarity.classList.add("small-margin");
+                itemRarity.innerHTML = `${this.rarity}`;
+                itemRarityDiv.appendChild(itemRarity);
+                //set the item gear
+                let itemGear = document.createElement('p');
+                itemGear.classList.add("item-gear");
+                itemGear.classList.add("small-margin");
+                itemGear.innerHTML = `${this.gear}`;
+                itemGearDiv.appendChild(itemGear);
+                let itemStat = [];
+                let itemStatDiv = [];
+                let itemStatAffix = [];
+                //for each stat
+                let numAffixes = this.prefixes.length + this.suffixes.length;
+                for (let i = 0; i < numAffixes; i++) {
+                    let affix;
+                    let affixText = "";
+                    //if looking at a prefix
+                    if (i < this.prefixes.length) {
+                        affix = this.prefixes[i];
+                        affixText = "P";
+                    }
+                    //if looking at a suffix
+                    else {
+                        affix = this.suffixes[i - this.prefixes.length];
+                        affixText = "S";
+                    }
+                    //create a div for the stat
+                    let statDiv = document.createElement('div');
+                    statDiv.classList.add("item-statDiv");
+                    statDiv.classList.add("small-margin");
+                    itemStatDiv.push(statDiv);
+                    //set the item stats
+                    let statAffix = document.createElement('p');
+                    statAffix.classList.add("item-stat-affix");
+                    statAffix.classList.add("small-margin");
+                    //add a newline between tier and name
+                    statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`;
+                    statAffix.dataset.stat = affix.tags;
+                    statAffix.dataset.affix = `${affix.affix}`;
+                    itemStatAffix.push(statAffix);
+                    ;
+                    let stat = document.createElement('p');
+                    stat.classList.add("item-stat");
+                    stat.classList.add("small-margin");
+                    stat.innerHTML = `${affix.value} ${affix.stat}`;
+                    stat.dataset.stat = affix.tags;
+                    stat.dataset.affix = `${affix.affix}`;
+                    itemStat.push(stat);
+                }
+                for (let i = 0; i < itemStat.length; i++) {
+                    itemStatDiv[i].appendChild(itemStatAffix[i]);
+                    itemStatDiv[i].appendChild(itemStat[i]);
+                }
+                for (let i = 0; i < itemStatDiv.length; i++) {
+                    itemStatsDiv.appendChild(itemStatDiv[i]);
+                }
+                let itemName = document.createElement('p');
+                itemName.classList.add("item-name");
+                itemName.innerHTML = `${this.rarity} ${this.baseType} ${this.gear}`;
+                itemNameDiv.appendChild(itemName);
+            }
             //set the item picture
             let itemPicture = document.createElement('img');
             itemPicture.classList.add("item-picture");
@@ -376,67 +409,13 @@ class Item {
             itemPicture.src = `../dist/img/${itempicture}.png`;
             itemPicture.draggable = false;
             itemPictureDiv.appendChild(itemPicture);
-            //set the item rarity
-            let itemRarity = document.createElement('p');
-            itemRarity.classList.add("item-rarity");
-            itemRarity.classList.add("small-margin");
-            itemRarity.innerHTML = `${this.rarity}`;
-            itemRarityDiv.appendChild(itemRarity);
-            //set the item gear
-            let itemGear = document.createElement('p');
-            itemGear.classList.add("item-gear");
-            itemGear.classList.add("small-margin");
-            itemGear.innerHTML = `${this.gear}`;
-            itemGearDiv.appendChild(itemGear);
-            let itemStat = [];
-            let itemStatDiv = [];
-            let itemStatAffix = [];
-            //for each stat
-            let numAffixes = this.prefixes.length + this.suffixes.length;
-            for (let i = 0; i < numAffixes; i++) {
-                let affix;
-                let affixText = "";
-                //if looking at a prefix
-                if (i < this.prefixes.length) {
-                    affix = this.prefixes[i];
-                    affixText = "P";
-                }
-                //if looking at a suffix
-                else {
-                    affix = this.suffixes[i - this.prefixes.length];
-                    affixText = "S";
-                }
-                //create a div for the stat
-                let statDiv = document.createElement('div');
-                statDiv.classList.add("item-statDiv");
-                statDiv.classList.add("small-margin");
-                itemStatDiv.push(statDiv);
-                //set the item stats
-                let statAffix = document.createElement('p');
-                statAffix.classList.add("item-stat-affix");
-                statAffix.classList.add("small-margin");
-                //add a newline between tier and name
-                statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`;
-                statAffix.dataset.stat = affix.tags;
-                statAffix.dataset.affix = `${affix.affix}`;
-                itemStatAffix.push(statAffix);
-                ;
-                let stat = document.createElement('p');
-                stat.classList.add("item-stat");
-                stat.classList.add("small-margin");
-                stat.innerHTML = `${affix.value} ${affix.stat}`;
-                stat.dataset.stat = affix.tags;
-                stat.dataset.affix = `${affix.affix}`;
-                itemStat.push(stat);
-            }
-            for (let i = 0; i < itemStat.length; i++) {
-                itemStatDiv[i].appendChild(itemStatAffix[i]);
-                itemStatDiv[i].appendChild(itemStat[i]);
-            }
-            for (let i = 0; i < itemStatDiv.length; i++) {
-                itemStatsDiv.appendChild(itemStatDiv[i]);
-            }
         }
+    }
+}
+function removeAllChildren(node) {
+    while (node.firstChild) {
+        removeAllChildren(node.firstChild);
+        node.removeChild(node.firstChild);
     }
 }
 //add a delete div to the gear div

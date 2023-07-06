@@ -4,12 +4,12 @@
 let craftingItemOptions = document.createElement('p');
 craftingItemOptions.id = "crafting-item-options";
 craftingItemOptions.innerHTML = "Item Options";
-craftingItemStatsDiv.appendChild(craftingItemOptions);
+craftingOptionsDiv.appendChild(craftingItemOptions);
 //set the item materials
 let craftingItemMaterials = document.createElement('p');
 craftingItemMaterials.id = "crafting-item-materials";
 craftingItemMaterials.innerHTML = "Item Materials";
-craftingItemStatsDiv.appendChild(craftingItemMaterials);
+craftingMaterialsListDiv.appendChild(craftingItemMaterials);
 function createRandomGear() {
     let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
     let randomItemType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
@@ -24,11 +24,27 @@ function createRandomGear() {
     return gearCreation;
 }
 function createGear(itemType, GearType, baseType, rarity) {
-    if (game.gearCountCurrent < game.gearCountMax) {
-        //type: ItemType, gear?: GearType,baseType?: string, rarity?: rarityType
+    let location;
+    let locationDiv;
+    //starter gear goes directly into inventory
+    if (rarity == 'Starter') {
+        location = items;
+        locationDiv = gearListContainer;
+    }
+    else {
+        location = craftingItems;
+        locationDiv = craftingItemSectionDiv;
+    }
+    //get the div for the location
+    //if the location to put the new item is items and the player has room for it, create the item
+    if ((location == items && game.gearCountCurrent < game.gearCountMax)
+        || (location == craftingItems && craftingItems.length < craftingItemsMax)) {
         let newGear = new Item(itemType, GearType, baseType, rarity);
-        items.push(newGear);
-        game.gearCountCurrent++;
+        newGear.setParentDiv(locationDiv);
+        location.push(newGear);
+        if (location == items) {
+            game.gearCountCurrent++;
+        }
         displayText();
         if (newGear.gear == "Pickaxe") {
             game.unlockedPickaxe = true;
@@ -39,7 +55,12 @@ function createGear(itemType, GearType, baseType, rarity) {
         return true;
     }
     else {
-        console.log(`failed to create gear, gear count current: ${game.gearCountCurrent}, gear count max: ${game.gearCountMax}`);
+        if (location == items) {
+            console.log(`failed to create gear, gear count current: ${game.gearCountCurrent}, gear count max: ${game.gearCountMax}`);
+        }
+        else {
+            console.log(`failed to create gear, crafting items current: ${craftingItems.length}, crafting items max: ${craftingItemsMax}`);
+        }
         return false;
     }
 }
@@ -69,3 +90,42 @@ createGearButton.onclick = function () {
     unlockCrafting();
     createRandomGear();
 };
+//add a button in the item options to delete the item
+let deleteButton = document.createElement('button');
+deleteButton.innerHTML = "Delete";
+deleteButton.onclick = function () {
+    deleteItem();
+};
+craftingOptionsDiv.appendChild(deleteButton);
+//add a button in the item options to add the item to gear
+let addToGearButton = document.createElement('button');
+addToGearButton.innerHTML = "Add to Gear";
+addToGearButton.onclick = function () {
+    addToGear();
+};
+craftingOptionsDiv.appendChild(addToGearButton);
+//todo add and remove event listeners for the crafting items list
+function deleteItem() {
+    //get the item from the crafting items list
+    let item = craftingItems[0];
+    //remove the item from the crafting items list
+    craftingItems.splice(0, 1);
+    //remove the itemDiv from the crafting item section
+    craftingItemSectionDiv.removeChild(item.div);
+    //update the crafting button
+    updateCraftingButton();
+}
+function addToGear() {
+    //get the item from the crafting items list
+    let item = craftingItems[0];
+    //remove the item from the crafting items list
+    craftingItems.splice(0, 1);
+    //set the parent div to the gear list
+    item.setParentDiv(gearListContainer);
+    //add the item to the items list
+    items.push(item);
+    //update the gear count
+    game.gearCountCurrent++;
+    //update the crafting button
+    updateCraftingButton();
+}
