@@ -102,6 +102,10 @@ function roomAvailable(array: Item[]) {
             return false
         }
     }
+    else {
+        console.log(`unable to check room available for array ${array}`);
+        return true
+    }
 
 }
 
@@ -177,8 +181,7 @@ function moveGear2(
     let sourceString: string | undefined;
     let destinationWorker: Laborer | undefined;
     let destinationString: string | undefined;
-
-    let originalItemLength = destinationArray.length;
+    let swap = false;
 
     if (source instanceof Laborer) {
         sourceWorker = source;
@@ -192,6 +195,19 @@ function moveGear2(
         destinationString = destination as string;
     }
 
+    //check if the destination array is able to accept the item
+    if (!destinationWorker && !roomAvailable(destinationArray)) {
+        if(destinationArray == craftingItems){
+            //swap the items
+            swap = true;
+        }
+        else{
+            console.log(`no room available in ${destination} to move ${item.gear}`);
+            return
+        }
+        
+    }
+
     // If the source is a worker, remove the item from them
     if (sourceWorker) {
         sourceWorker.unequipItem(item)
@@ -199,7 +215,7 @@ function moveGear2(
     }
     //if the source is a string, remove the item from the array
     if (sourceString) {
-        removeItem(item, items)
+        removeItem(item, sourceArray)
     }
 
     //if the destination is a worker, equip the item to them
@@ -212,6 +228,9 @@ function moveGear2(
     }
     //if the destination is a string, add the item to the array
     if (destinationString) {
+        if(swap){
+            moveGear2(destinationArray[0], destination, destinationArray, destinationDiv, source, sourceArray, sourceDiv)
+        }
         destinationArray.push(item);
     }
     //set the parent of the item
@@ -222,7 +241,6 @@ function moveGear2(
 
 
     console.log(`moved item from ${source} to ${destination}`)
-    console.log(`source array length: ${originalItemLength}, destination array length: ${destinationArray.length}`)
 
 
 

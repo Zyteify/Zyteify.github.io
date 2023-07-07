@@ -30,6 +30,11 @@ function displayGear() {
         items[i].resetDiv();
         items[i].setParentDiv(gearListContainer);
     }
+    //and each item in craftingItems
+    for (let i = 0; i < craftingItems.length; i++) {
+        craftingItems[i].resetDiv();
+        craftingItems[i].setParentDiv(craftingItemSectionDiv);
+    }
     for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon[0] != null) {
             workers[i].weapon[0]?.resetDiv();

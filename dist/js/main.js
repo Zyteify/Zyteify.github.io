@@ -85,6 +85,10 @@ function roomAvailable(array) {
             return false;
         }
     }
+    else {
+        console.log(`unable to check room available for array ${array}`);
+        return true;
+    }
 }
 //list of items
 let craftingItems = [];
@@ -133,7 +137,7 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     let sourceString;
     let destinationWorker;
     let destinationString;
-    let originalItemLength = destinationArray.length;
+    let swap = false;
     if (source instanceof Laborer) {
         sourceWorker = source;
     }
@@ -146,6 +150,17 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     else {
         destinationString = destination;
     }
+    //check if the destination array is able to accept the item
+    if (!destinationWorker && !roomAvailable(destinationArray)) {
+        if (destinationArray == craftingItems) {
+            //swap the items
+            swap = true;
+        }
+        else {
+            console.log(`no room available in ${destination} to move ${item.gear}`);
+            return;
+        }
+    }
     // If the source is a worker, remove the item from them
     if (sourceWorker) {
         sourceWorker.unequipItem(item);
@@ -153,7 +168,7 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     }
     //if the source is a string, remove the item from the array
     if (sourceString) {
-        removeItem(item, items);
+        removeItem(item, sourceArray);
     }
     //if the destination is a worker, equip the item to them
     if (destinationWorker) {
@@ -165,6 +180,9 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     }
     //if the destination is a string, add the item to the array
     if (destinationString) {
+        if (swap) {
+            moveGear2(destinationArray[0], destination, destinationArray, destinationDiv, source, sourceArray, sourceDiv);
+        }
         destinationArray.push(item);
     }
     //set the parent of the item
@@ -172,7 +190,6 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     emptyGearDisplay();
     displayText();
     console.log(`moved item from ${source} to ${destination}`);
-    console.log(`source array length: ${originalItemLength}, destination array length: ${destinationArray.length}`);
 }
 function removeItem(item, array) {
     const index = array.indexOf(item);

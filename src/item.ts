@@ -389,8 +389,10 @@ class Item {
     }
 
     delete(){
-        
-        this.container.removeChild(this.div);
+        //if the container has the div as a child
+        if(this.container.contains(this.div)){
+            this.container.removeChild(this.div);
+        }
         deletedItems.push(this);
         //remove event listeners
         

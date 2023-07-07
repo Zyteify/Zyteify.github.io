@@ -108,11 +108,9 @@ function updateEventListeners() {
                         if (isChildOf(dragDiv.origin.div as HTMLElement, myElement) || dragDiv.origin.div === event.target) {
                             return; // Exit the event handler
                         }
-                        debugger
                         myElement.classList.add('highlightCanMove');
                     } else {
                         if (isChildOf(dragDiv.origin.div as HTMLElement, myElement) || dragDiv.origin.div === event.target) {
-                            debugger
                             return; // Exit the event handler
                         }
                         myElement.classList.add('highlightMayMove');
@@ -239,6 +237,7 @@ function dragEventStart(myElement: HTMLElement, event: Event) {
         item = craftingItems.find(item => item.id === parseInt(gearid));
         if (item) {
             dragDiv.setItem(item);
+            dragDiv.origin.source = 'craftingItems';
             dragDiv.origin.sourceArray = craftingItems;
         }
     }
