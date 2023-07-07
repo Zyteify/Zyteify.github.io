@@ -30,12 +30,6 @@ function displayGear() {
         items[i].resetDiv();
         items[i].setParentDiv(gearListContainer);
     }
-    //each item in crafting
-    for (let i = 0; i < craftingItems.length; i++) {
-        craftingItems[i].resetDiv();
-        craftingItems[i].setParentDiv(craftingItemSectionDiv);
-    }
-    //each worker
     for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon != null) {
             workers[i].weapon?.resetDiv();
@@ -91,6 +85,7 @@ function emptyGearDisplay() {
     const container = gearListContainer;
     container.innerHTML = "";
     displayGear();
+    controlCraftingButtons();
 }
 function showUpgrades() {
     for (let i = 0; i < upgradeList.length; i++) {

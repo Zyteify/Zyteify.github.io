@@ -30,11 +30,11 @@ if (window.location.hostname == "127.0.0.1") {
     buttonCrafting.innerHTML = '🔨';
     buttonCrafting.onclick = function () {
         craftResource += 1000
-        updateCraftingButton();
+        updateCraftButton();
     }
     let craftingContainer: HTMLElement = <HTMLElement>document.getElementById('materials');
     craftingContainer.appendChild(buttonCrafting);
-    updateCraftingButton();
+    updateCraftButton();
 
     let buttonUnlockAll = document.createElement('button');
     buttonUnlockAll.innerHTML = 'Unlock All';

@@ -19,7 +19,8 @@ function createRandomGear() {
     let gearCreation = createGear(randomItemType, randomGearType);
     if (gearCreation) {
         craftResource -= craftingCost;
-        updateCraftingButton();
+        updateCraftButton();
+        controlCraftingButtons();
     }
     return gearCreation;
 }
@@ -52,6 +53,7 @@ function createGear(itemType, GearType, baseType, rarity) {
             setResourceActive(ResourceType.gems);
             setResourceActive(ResourceType.metal);
         }
+        controlCraftingButtons();
         return true;
     }
     else {
@@ -64,7 +66,7 @@ function createGear(itemType, GearType, baseType, rarity) {
         return false;
     }
 }
-function updateCraftingButton() {
+function updateCraftButton() {
     //if the player has enough resources, enable the button
     if (craftResource >= craftingCost) {
         unlockCrafting();
@@ -113,19 +115,40 @@ function deleteItem() {
     //remove the itemDiv from the crafting item section
     craftingItemSectionDiv.removeChild(item.div);
     //update the crafting button
-    updateCraftingButton();
+    updateCraftButton();
+    controlCraftingButtons();
 }
 function addToGear() {
-    //get the item from the crafting items list
-    let item = craftingItems[0];
-    //remove the item from the crafting items list
-    craftingItems.splice(0, 1);
-    //set the parent div to the gear list
-    item.setParentDiv(gearListContainer);
-    //add the item to the items list
-    items.push(item);
-    //update the gear count
-    game.gearCountCurrent++;
-    //update the crafting button
-    updateCraftingButton();
+    if (game.gearCountCurrent < game.gearCountMax) {
+        //get the item from the crafting items list
+        let item = craftingItems[0];
+        //remove the item from the crafting items list
+        craftingItems.splice(0, 1);
+        //set the parent div to the gear list
+        item.setParentDiv(gearListContainer);
+        item.resetDiv();
+        //add the item to the items list
+        items.push(item);
+        //update the gear count
+        game.gearCountCurrent++;
+        //update the crafting button
+        updateCraftButton();
+        controlCraftingButtons();
+    }
+    else {
+        console.log(`failed to add to gear, gear count current: ${game.gearCountCurrent}, gear count max: ${game.gearCountMax}`);
+    }
+}
+function controlCraftingButtons() {
+    if (craftingItems.length > 0) {
+        deleteButton.disabled = false;
+        addToGearButton.disabled = false;
+    }
+    if (craftingItems.length == 0) {
+        deleteButton.disabled = true;
+        addToGearButton.disabled = true;
+    }
+    if (game.gearCountCurrent >= game.gearCountMax) {
+        addToGearButton.disabled = true;
+    }
 }

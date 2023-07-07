@@ -14,6 +14,7 @@ class DragDiv {
     div;
     item;
     worker;
+    source = [];
     setItem(item) {
         this.item = item;
     }
@@ -65,10 +66,14 @@ function updateEventListeners() {
                     //get the worker with the workerid
                     let dragWorkerDest = getWorkerById(workerid);
                     if (dragWorkerDest.weapon == null) {
-                        myElement.classList.add('highlight1');
+                        if (dragDiv.source != dragWorkerDest) {
+                            myElement.classList.add('highlight1');
+                        }
                     }
                     else {
-                        myElement.classList.add('highlight2');
+                        if (dragDiv.source != dragWorkerDest) {
+                            myElement.classList.add('highlight2');
+                        }
                     }
                 }
             });
@@ -100,6 +105,7 @@ function updateEventListeners() {
                 //item is done dragging. remove the item from the dragItem variable
                 dragDiv.item = undefined;
                 dragDiv.worker = undefined;
+                dragDiv.source = [];
             });
         }
     }
@@ -119,7 +125,7 @@ function dropEvent(myElement, event) {
                 moveGear(dragDiv.item, dragWorkerDest, dragDiv.worker);
             }
             else {
-                moveGear(dragDiv.item, dragWorkerDest, items);
+                moveGear(dragDiv.item, dragWorkerDest, dragDiv.source);
             }
         }
         else if (myElement === gearListContainer) {
@@ -127,10 +133,19 @@ function dropEvent(myElement, event) {
             //add the gear to the list of items
             //check to see if the item is on a worker
             if (dragDiv.hasWorker()) {
-                moveGear(dragDiv.item, items, dragDiv.worker);
+                moveGear(dragDiv.item, items, dragDiv.worker, gearListContainer);
             }
             else {
-                moveGear(dragDiv.item, items, items);
+                moveGear(dragDiv.item, items, dragDiv.source, gearListContainer);
+            } //dropped on body
+        }
+        //if dropped on the crafting section
+        else if (myElement === craftingItemSectionDiv) {
+            if (dragDiv.hasWorker()) {
+                moveGear(dragDiv.item, craftingItems, dragDiv.worker, craftingItemSectionDiv);
+            }
+            else {
+                moveGear(dragDiv.item, craftingItems, dragDiv.source, craftingItemSectionDiv);
             } //dropped on body
         }
         else if (myElement === deleteDiv) {
@@ -154,6 +169,7 @@ function dropEvent(myElement, event) {
             displayText();
             console.log(`deleting ${myItem.gear}`);
             //remove event listeners from the item
+            //todo double check works
             let div = dragDiv.div;
             getEventListeners(div).forEach(({ eventType, listener, options }) => {
                 console.log(`removing event listener for ${eventType}`);
@@ -167,6 +183,7 @@ function dropEvent(myElement, event) {
     }
 }
 function dragEventStart(myElement, event) {
+    dragDiv.div = myElement;
     let dragSource = event.target;
     var dragImage = myElement.cloneNode(true);
     // Set the drag image opacity to 1 (opaque)
@@ -177,10 +194,17 @@ function dragEventStart(myElement, event) {
     let gearid = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker
     let item = items.find(item => item.id === parseInt(gearid));
+    dragDiv.source = items;
+    //also check the crafting items
+    if (!item) {
+        item = craftingItems.find(item => item.id === parseInt(gearid));
+        dragDiv.source = craftingItems;
+    }
     //loop through each worker and see if they are wearing the item
     for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon?.id === parseInt(gearid)) {
             item = workers[i].weapon;
+            dragDiv.source = workers[i];
             dragDiv.setWorker(workers[i]);
         }
     }
@@ -189,6 +213,7 @@ function dragEventStart(myElement, event) {
     }
     else {
         console.log('item not found');
+        dragDiv.source = [];
     }
 }
 function isExcludedElement(element, excludedElements) {
@@ -221,7 +246,7 @@ trackEventListeners(gearListContainer, 'drop', function (event) {
 });
 trackEventListeners(gearListContainer, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
-    if (dragDiv.hasItem()) {
+    if (dragDiv.hasItem() && dragDiv.source != items) {
         gearListContainer.classList.add('highlight1');
     }
     return false;
@@ -248,4 +273,22 @@ trackEventListeners(deleteDiv, 'drop', function (event) {
     event.preventDefault();
     deleteDiv.classList.remove('highlight3');
     dropEvent(deleteDiv, event);
+});
+//craftingItemSectionDiv
+trackEventListeners(craftingItemSectionDiv, 'dragover', function (event) {
+    event.preventDefault(); // Necessary. Allows us to drop.    
+    if (dragDiv.hasItem() && dragDiv.source != craftingItems) {
+        craftingItemSectionDiv.classList.add('highlight1');
+    }
+    return false;
+});
+//allow the div to be dragged leave
+trackEventListeners(craftingItemSectionDiv, 'dragleave', function (event) {
+    event.preventDefault();
+    craftingItemSectionDiv.classList.remove('highlight1');
+});
+trackEventListeners(craftingItemSectionDiv, 'drop', function (event) {
+    event.preventDefault();
+    craftingItemSectionDiv.classList.remove('highlight1');
+    dropEvent(craftingItemSectionDiv, event);
 });

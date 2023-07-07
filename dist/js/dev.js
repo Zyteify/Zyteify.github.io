@@ -28,11 +28,11 @@ if (window.location.hostname == "127.0.0.1") {
     buttonCrafting.innerHTML = '🔨';
     buttonCrafting.onclick = function () {
         craftResource += 1000;
-        updateCraftingButton();
+        updateCraftButton();
     };
     let craftingContainer = document.getElementById('materials');
     craftingContainer.appendChild(buttonCrafting);
-    updateCraftingButton();
+    updateCraftButton();
     let buttonUnlockAll = document.createElement('button');
     buttonUnlockAll.innerHTML = 'Unlock All';
     let upgradeDiv = document.getElementById('upgrades');

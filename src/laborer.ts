@@ -1,7 +1,7 @@
 type ClassType = "Beggar" | 'Farmer' | 'Guard' | 'Nurse' |
-'Blacksmith' | 'Cook' | 'Hunter' | 'Gemcutter' | 'Taxer' | 
-'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' |
- 'Woodcutter';
+    'Blacksmith' | 'Cook' | 'Hunter' | 'Gemcutter' | 'Taxer' |
+    'Gambler' | 'Merchant' | 'Priest' | 'Researcher' | 'Miner' |
+    'Woodcutter';
 
 class Vocation {
     name: ClassType;
@@ -128,13 +128,15 @@ class Laborer {
         if (this.weapon == null) {
             this.vocation = new Vocation('Beggar');
         }
-        let gearType: GearType = <GearType>this.weapon?.gear;
-        if (vocationMap.hasOwnProperty(gearType)) {
-            this.vocation.name = vocationMap[gearType];
-            console.log(`Laborer's vocation changed to ${this.vocation.name}`);
-        } else {
-            console.log(`The item "${gearType}" does not have a corresponding vocation.`);
+        else {
+            let gearType: GearType = <GearType>this.weapon?.gear;
+            if (vocationMap.hasOwnProperty(gearType)) {
+                this.vocation.name = vocationMap[gearType];
+            } else {
+                console.log(`The item "${gearType}" does not have a corresponding vocation.`);
+            }
         }
+
 
         //update text
         this.setParagraph()
@@ -263,13 +265,13 @@ class Laborer {
 
         this.setResourcesDisplay();
 
-        
+
 
     }
 
     //consume food to do get the work speed back to normal
     eat() {
-        
+
         let food = getResourceByName(ResourceType.food);
 
         if (food != null && food.amount > 0 && this.workSpeed < Laborer.workSpeedDefault) {
@@ -282,7 +284,7 @@ class Laborer {
 
     //rest to get the work speed up
     rest() {
-        
+
 
         if (this.workSpeed < Laborer.workSpeedDefault) {
             this.workSpeed += 1;
@@ -392,22 +394,18 @@ class Laborer {
     }
 
     guard() {
-        console.log('guarding');
     }
-    
+
     cook() {
-        console.log('cooking');
     }
 
     farm() {
         //add food to the worker
         let resource = new Resource(ResourceType.food, 2)
         this.addResource(resource);
-        console.log('farming');
     }
 
     mine() {
-        console.log('mining');
         //have an x chance of getting a resource
         //add a resource to the worker
         let stoneChance = 0.8
@@ -434,11 +432,9 @@ class Laborer {
     }
 
     merchant() {
-        console.log('merchandising');
     }
 
     priest() {
-        console.log('preaching');
     }
 
     chop() {
@@ -448,22 +444,19 @@ class Laborer {
 
     craft() {
         craftResource += 1;
-        updateCraftingButton()
-        console.log('crafting');
+        updateCraftButton()
     }
 
     //give energy to all other workers
     nurse() {
         for (let i = 0; i < workers.length; i++) {
-            if(workers[i].id != this.id){
+            if (workers[i].id != this.id) {
                 workers[i].rest();
             }
         }
-        console.log('nursing');
     }
 
     gemcut() {
-        console.log('gemcutting');
     }
 
     hunt() {
@@ -490,8 +483,6 @@ class Laborer {
             let resource = new Resource(ResourceType.coins, amount)
             this.addResource(resource);
         }
-
-        console.log('taxing');
     }
 
     gamble() {
@@ -533,7 +524,6 @@ class Laborer {
 
     research() {
         upgradePoints += 1;
-        console.log('researching');
     }
 
     beg() {

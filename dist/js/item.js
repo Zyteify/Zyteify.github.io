@@ -315,7 +315,7 @@ class Item {
             //set the item picture div class
             itemPictureDiv.classList.add("item-pictureDiv");
             this.div.appendChild(itemPictureDiv);
-            if (showFullItems) {
+            if (showFullItems || this.container == craftingItemSectionDiv) {
                 //create an item name div
                 const itemNameDiv = document.createElement('div');
                 //set the item name div class

@@ -103,13 +103,14 @@ class Laborer {
         if (this.weapon == null) {
             this.vocation = new Vocation('Beggar');
         }
-        let gearType = this.weapon?.gear;
-        if (vocationMap.hasOwnProperty(gearType)) {
-            this.vocation.name = vocationMap[gearType];
-            console.log(`Laborer's vocation changed to ${this.vocation.name}`);
-        }
         else {
-            console.log(`The item "${gearType}" does not have a corresponding vocation.`);
+            let gearType = this.weapon?.gear;
+            if (vocationMap.hasOwnProperty(gearType)) {
+                this.vocation.name = vocationMap[gearType];
+            }
+            else {
+                console.log(`The item "${gearType}" does not have a corresponding vocation.`);
+            }
         }
         //update text
         this.setParagraph();
@@ -318,19 +319,15 @@ class Laborer {
         this.setResourcesDisplay();
     }
     guard() {
-        console.log('guarding');
     }
     cook() {
-        console.log('cooking');
     }
     farm() {
         //add food to the worker
         let resource = new Resource(ResourceType.food, 2);
         this.addResource(resource);
-        console.log('farming');
     }
     mine() {
-        console.log('mining');
         //have an x chance of getting a resource
         //add a resource to the worker
         let stoneChance = 0.8;
@@ -353,10 +350,8 @@ class Laborer {
         }
     }
     merchant() {
-        console.log('merchandising');
     }
     priest() {
-        console.log('preaching');
     }
     chop() {
         //add wood to the worker
@@ -364,8 +359,7 @@ class Laborer {
     }
     craft() {
         craftResource += 1;
-        updateCraftingButton();
-        console.log('crafting');
+        updateCraftButton();
     }
     //give energy to all other workers
     nurse() {
@@ -374,10 +368,8 @@ class Laborer {
                 workers[i].rest();
             }
         }
-        console.log('nursing');
     }
     gemcut() {
-        console.log('gemcutting');
     }
     hunt() {
         let huntChance = 0.35;
@@ -402,7 +394,6 @@ class Laborer {
             let resource = new Resource(ResourceType.coins, amount);
             this.addResource(resource);
         }
-        console.log('taxing');
     }
     gamble() {
         let winChance = 0.15;
@@ -437,7 +428,6 @@ class Laborer {
     }
     research() {
         upgradePoints += 1;
-        console.log('researching');
     }
     beg() {
         let resource;

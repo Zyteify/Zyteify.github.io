@@ -409,7 +409,7 @@ class Item {
 
             this.div.appendChild(itemPictureDiv);
 
-            if (showFullItems) {
+            if (showFullItems || this.container == craftingItemSectionDiv) {
 
                 //create an item name div
                 const itemNameDiv = document.createElement('div');

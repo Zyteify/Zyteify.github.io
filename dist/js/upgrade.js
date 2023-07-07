@@ -50,12 +50,11 @@ class Upgrade {
             }
         }
         if (spent == false) {
-            console.log("not enough resources");
+            console.log(`not enough ${this.resourceRequired.name} to upgrade ${this.name}`);
         }
         else {
             this.level++;
             this.cost = Math.floor(this.cost * this.costMultiplier);
-            console.log(`upgrading ${this.name} to level ${this.level}`);
             this.upgradeAction();
             if (this.unlocks.length > 0) {
                 //loop through the list of upgrades that are set to be unlocked

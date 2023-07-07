@@ -140,22 +140,42 @@ function updateGameTime() {
 
 
 
+function areArraysEqual(array1: any[], array2: any[]): boolean {
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
+}
 
 
 
-
-function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | Item[] | null) {
+function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | Item[] | null, destinationDiv?: HTMLDivElement) {
     //if a worker is already wearing this item, remove it from them
+    let sourceItemArray: Item[] = [];
+    let destinationItemArray: Item[] = [];
+    let itemsOriginal = items;
 
+    if (source && Array.isArray(source)) {
+        sourceItemArray = <Item[]>source
+        if (areArraysEqual(sourceItemArray, itemsOriginal)) {
+            //remove gear from list of items
+            items = items.filter(myitem => myitem.id !== item.id);
+            game.gearCountCurrent--;
+        }
+        else if (areArraysEqual(sourceItemArray, craftingItems)) {
+            //remove gear from list of craftingItems
+            craftingItems = craftingItems.filter(myitem => myitem.id !== item.id);
+        }
+        else {
+            console.log("source is not items or craftingItems")
+        }
+
+    }
+    //if the source is from a worker, remove it from them
     if (source instanceof Laborer) {
         source.unequipItem(item)
         source.setVocation();
     }
-    if (Array.isArray(source)) {
-        //remove gear from list of items
-        items = items.filter(myitem => myitem.id !== item.id);
-        game.gearCountCurrent--;
-    }
+
+
+
 
     if (destination instanceof Laborer) {
         if (destination.weapon) {
@@ -174,11 +194,38 @@ function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | I
         }
         destination.equipItem(item)
     }
-    if (Array.isArray(destination)) {
+
+
+    //checking for when the destination is an empty array, we are not able to tell which array it is
+    if(destinationDiv == gearListContainer){
         item.setParentDiv(gearListContainer)
         items.push(item);
         game.gearCountCurrent++;
     }
+    else if(destinationDiv == craftingItemSectionDiv){
+        item.setParentDiv(craftingItemSectionDiv)
+        craftingItems.push(item);
+    }
+
+    else if (destination && Array.isArray(destination)) {
+        
+        destinationItemArray = <Item[]>destination
+        if (areArraysEqual(destinationItemArray, itemsOriginal)) {
+            item.setParentDiv(gearListContainer)
+            items.push(item);
+            game.gearCountCurrent++;
+        }
+        else if (areArraysEqual(destinationItemArray, craftingItems)) {
+            item.setParentDiv(craftingItemSectionDiv)
+            craftingItems.push(item);
+        }
+        else {
+            console.log("destination is not items or craftingItems")
+        }
+
+    }
+
+
     emptyGearDisplay();
     displayText();
 }
@@ -382,3 +429,4 @@ function gameLoop() {
 
 gameLoop();
 displayResources()
+controlCraftingButtons()
