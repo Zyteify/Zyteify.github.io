@@ -249,7 +249,7 @@ function generateAffixes(rarity, gear) {
     }
     return stats;
 }
-let showFullItems = true;
+/* let showFullItems = true;
 //create button to switch from short to long display
 const displayButton = document.createElement('button');
 displayButton.id = "display-button";
@@ -264,17 +264,19 @@ displayButton.onclick = function () {
         displayButton.innerHTML = "Show Full Items";
     }
     showFullItems = !showFullItems;
-    displayGear();
-};
+    displayGear()
+}
 if (showFullItems) {
     displayButton.innerHTML = "Show Short Items";
 }
 else {
     displayButton.innerHTML = "Show Full Items";
 }
+
 //attach the button to the gear list
-const gearList = document.getElementById('gear');
+const gearList = document.getElementById('gear') as HTMLDivElement;
 gearList.appendChild(displayButton);
+ */
 function removeAllChildren(node) {
     while (node.firstChild) {
         removeAllChildren(node.firstChild);
@@ -314,7 +316,7 @@ function createGear(itemType, GearType, baseType, rarity) {
     }
     //get the div for the location
     //if the location to put the new item is items and the player has room for it, create the item
-    if ((location == items && roomAvailable(craftingItems))
+    if ((location == items && roomAvailable(items))
         || (location == craftingItems && craftingItems.length < craftingItemsMax)) {
         let newGear = new Item(itemType, GearType, baseType, rarity);
         newGear.setParentDiv(locationDiv);
@@ -327,6 +329,7 @@ function createGear(itemType, GearType, baseType, rarity) {
             setResourceActive(ResourceType.metal);
         }
         controlCraftingButtons();
+        displayGear();
         return true;
     }
     else {

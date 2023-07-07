@@ -27,18 +27,18 @@ displayResources();
 function displayGear() {
     //each item in items
     for (let i = 0; i < items.length; i++) {
-        items[i].resetDiv();
         items[i].setParentDiv(gearListContainer);
+        items[i].resetDiv();
     }
     //and each item in craftingItems
     for (let i = 0; i < craftingItems.length; i++) {
-        craftingItems[i].resetDiv();
         craftingItems[i].setParentDiv(craftingItemSectionDiv);
+        craftingItems[i].resetDiv();
     }
     for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon[0] != null) {
-            workers[i].weapon[0]?.resetDiv();
             workers[i].weapon[0]?.setParentDiv(workers[i].gearDiv);
+            workers[i].weapon[0]?.resetDiv();
         }
     }
 }

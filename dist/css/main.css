@@ -148,3 +148,38 @@ body {
     text-align: center;
     margin: auto;
 }
+
+.hover{
+    min-width: 200px;
+    min-height: 200px;
+    position: fixed;
+}
+
+#hover-container{
+    min-height: 0px;
+    min-width: 0px;
+}
+
+.item-background{
+    background-color: rgb(234, 250, 255);
+}
+
+.item-starter{
+    border: 1px solid black;
+}
+
+.item-common{
+    border: 1px solid rgb(72, 72, 72);
+}
+
+.item-magic{
+    border: 1px solid rgb(80, 255, 159);
+}
+
+.item-rare{
+    border: 1px solid rgb(255, 74, 122);
+}
+
+.item-unique{
+    border: 1px solid rgb(31, 11, 255);
+}

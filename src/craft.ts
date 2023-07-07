@@ -310,7 +310,7 @@ function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
     return stats;
 }
 
-let showFullItems = true;
+/* let showFullItems = true;
 //create button to switch from short to long display
 const displayButton = document.createElement('button');
 displayButton.id = "display-button";
@@ -337,7 +337,7 @@ else {
 //attach the button to the gear list
 const gearList = document.getElementById('gear') as HTMLDivElement;
 gearList.appendChild(displayButton);
-
+ */
 
 
 function removeAllChildren(node: Node) {
@@ -394,7 +394,7 @@ function createGear(itemType: ItemType, GearType: GearType, baseType?: BaseType,
     //if the location to put the new item is items and the player has room for it, create the item
 
     if (
-        (location == items && roomAvailable(craftingItems))
+        (location == items && roomAvailable(items))
         || (location == craftingItems && craftingItems.length < craftingItemsMax)) {
 
         let newGear = new Item(itemType, GearType, baseType, rarity);
@@ -412,10 +412,12 @@ function createGear(itemType: ItemType, GearType: GearType, baseType?: BaseType,
             setResourceActive(ResourceType.metal);
         }
         controlCraftingButtons()
+        displayGear()
         return true
     }
     else {
         if (location == items) {
+            
             console.log(`failed to create gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
         }
         else {

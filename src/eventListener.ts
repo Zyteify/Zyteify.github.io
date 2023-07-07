@@ -88,6 +88,7 @@ let dragDiv = new DragDiv();
 //loop through each worker and add an event listener to their div
 function updateEventListeners() {
 
+    //not needed as we are already going through each item as they all have the gear-div class
     //get the list of worker divs
     const workerDivs = document.getElementsByClassName('worker-div');
     //loop through each worker div
@@ -117,7 +118,7 @@ function updateEventListeners() {
                     }
                 }
             });
-            
+
 
             //allow the div to be dragged leave
             trackEventListeners(myElement, 'dragleave', function (event) {
@@ -150,9 +151,77 @@ function updateEventListeners() {
                 //item is done dragging. remove the item from the dragItem variable
                 dragDiv.origin = {} as any;
             });
+
+            trackEventListeners(myElement, 'mouseover', function (event) {
+                mouseoverEventStart(myElement, event)
+            });
+
+            trackEventListeners(myElement, 'mouseleave', function (event) {
+                mouseLeaveEventStart(myElement, event)
+            });
         }
     }
 }
+
+function mouseoverEventStart(myElement: HTMLElement, event: Event) {
+    let dragSource = event.target as HTMLElement;
+    //get the gear that is being dragged
+    let gearid: string = dragSource.id.replace('gear-div', '');
+    //find the item from the list of items in storage or on a worker
+    let item = items.find(item => item.id === parseInt(gearid));
+    if (item) {
+    }
+    //also check the crafting items
+    if (!item) {
+        item = craftingItems.find(item => item.id === parseInt(gearid));
+        if (item) {
+        }
+    }
+
+    //loop through each worker and see if they are wearing the item
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].weapon[0]?.id === parseInt(gearid)) {
+            item = <Item>workers[i].weapon[0];
+        }
+    }
+    if (item) {
+        item.handleHover(event as MouseEvent);
+    }
+    else {
+    }
+
+}
+
+function mouseLeaveEventStart(myElement: HTMLElement, event: Event) {
+    if (!dragDiv.hasItem()) {
+        let dragSource = event.target as HTMLElement;
+        //get the gear that is being dragged
+        let gearid: string = myElement.id.replace('gear-div', '');
+        //find the item from the list of items in storage or on a worker
+        let item = items.find(item => item.id === parseInt(gearid));
+        if (item) {
+        }
+        //also check the crafting items
+        if (!item) {
+            item = craftingItems.find(item => item.id === parseInt(gearid));
+            if (item) {
+            }
+        }
+
+        //loop through each worker and see if they are wearing the item
+        for (let i = 0; i < workers.length; i++) {
+            if (workers[i].weapon[0]?.id === parseInt(gearid)) {
+                item = <Item>workers[i].weapon[0];
+            }
+        }
+        if (item) {
+            item.handleHoverLeave(event as MouseEvent);
+        }
+        else {
+        }
+    }
+}
+
 
 function dropEvent(myElement: HTMLElement, event: Event) {
     event.preventDefault();
@@ -241,6 +310,7 @@ function dragEventStart(myElement: HTMLElement, event: Event) {
             dragDiv.origin.sourceArray = craftingItems;
         }
     }
+    
 
     //loop through each worker and see if they are wearing the item
     for (let i = 0; i < workers.length; i++) {
@@ -255,6 +325,11 @@ function dragEventStart(myElement: HTMLElement, event: Event) {
     if (!item) {
         console.log('item not found');
         dragDiv.origin.source = 'unknown';
+    }
+
+    if (item) {
+        //trigger the hover handle leave event
+        item.handleHoverLeave(event as MouseEvent);
     }
 }
 
