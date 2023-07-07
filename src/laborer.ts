@@ -12,6 +12,8 @@ class Vocation {
 
     }
 }
+
+
 //create the class worker
 class Laborer {
     name: string;
@@ -21,8 +23,8 @@ class Laborer {
 
     resources: Resource[] = [];
     //empty array of items
-    weapon: Item | null;
-    boot: Item | null;
+    weapon: Item[] = [];
+    boot: Item[] = [];
     image: HTMLImageElement;
 
 
@@ -51,8 +53,8 @@ class Laborer {
         this.vocation = new Vocation('Beggar');
 
         this.resources = [];
-        this.weapon = null;
-        this.boot = null;
+        this.weapon = [];
+        this.boot = [];
 
         //actions
         this.vocationActions = {
@@ -125,11 +127,11 @@ class Laborer {
     }
 
     setVocation() {
-        if (this.weapon == null) {
+        if (this.weapon[0] == null) {
             this.vocation = new Vocation('Beggar');
         }
         else {
-            let gearType: GearType = <GearType>this.weapon?.gear;
+            let gearType: GearType = <GearType>this.weapon[0]?.gear;
             if (vocationMap.hasOwnProperty(gearType)) {
                 this.vocation.name = vocationMap[gearType];
             } else {
@@ -196,9 +198,9 @@ class Laborer {
     //equip an item
     equipItem(item: Item) {
         if (item.type == "Weapon") {
-            this.weapon = item;
+            this.weapon[0] = item;
         } else if (item.type == "Boot") {
-            this.boot = item;
+            this.boot[0] = item;
         }
         this.setItemParent();
         this.setVocation();
@@ -208,10 +210,10 @@ class Laborer {
     unequipItem(item: Item) {
         switch (item.type) {
             case "Weapon":
-                this.weapon = null;
+                removeItem(item, this.weapon)
                 break;
             case "Boot":
-                this.boot = null;
+                removeItem(item, this.boot)
                 break;
             default:
                 console.log('unknown weapon type');
@@ -225,8 +227,8 @@ class Laborer {
             this.div.appendChild(this.gearDiv);
         }
 
-        if (this.weapon) {
-            this.weapon.setParentDiv(this.gearDiv);
+        if (this.weapon[0]) {
+            this.weapon[0].setParentDiv(this.gearDiv);
         }
 
 
@@ -570,3 +572,4 @@ function getWorkerById(id: number) {
     }
     return null;
 }
+

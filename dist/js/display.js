@@ -11,7 +11,7 @@ function displayText() {
     workerCountMax.innerHTML = game.workerCountMax.toString();
     //gear
     //gear-count-current
-    gearCountCurrent.innerHTML = game.gearCountCurrent.toString();
+    gearCountCurrent.innerHTML = items.length.toString();
     //gear-count-max
     gearCountMax.innerHTML = game.gearCountMax.toString();
     //crafting
@@ -31,9 +31,9 @@ function displayGear() {
         items[i].setParentDiv(gearListContainer);
     }
     for (let i = 0; i < workers.length; i++) {
-        if (workers[i].weapon != null) {
-            workers[i].weapon?.resetDiv();
-            workers[i].weapon?.setParentDiv(workers[i].gearDiv);
+        if (workers[i].weapon[0] != null) {
+            workers[i].weapon[0]?.resetDiv();
+            workers[i].weapon[0]?.setParentDiv(workers[i].gearDiv);
         }
     }
 }

@@ -85,6 +85,26 @@ begList = createBegList();
 //list of items
 let items: Item[] = [];
 
+function roomAvailable(array: Item[]) {
+    //if the array is the same as items
+    if (array == items) {
+        if (items.length < game.gearCountMax) {
+            return true
+        }
+        else {
+            return false
+        }
+    } else if (array == craftingItems) {
+        if (craftingItems.length < craftingItemsMax) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
+}
+
 //list of items
 let craftingItems: Item[] = [];
 
@@ -144,90 +164,75 @@ function areArraysEqual(array1: any[], array2: any[]): boolean {
     return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 }
 
+function moveGear2(
+    item: Item,
+    source: string | Laborer,
+    sourceArray: Item[],
+    sourceDiv: HTMLDivElement,
+    destination: string | Laborer,
+    destinationArray: Item[],
+    destinationDiv: HTMLDivElement
+) {
+    let sourceWorker: Laborer | undefined;
+    let sourceString: string | undefined;
+    let destinationWorker: Laborer | undefined;
+    let destinationString: string | undefined;
 
+    let originalItemLength = destinationArray.length;
 
-function moveGear(item: Item, destination: Laborer | Item[], source: Laborer | Item[] | null, destinationDiv?: HTMLDivElement) {
-    //if a worker is already wearing this item, remove it from them
-    let sourceItemArray: Item[] = [];
-    let destinationItemArray: Item[] = [];
-    let itemsOriginal = items;
-
-    if (source && Array.isArray(source)) {
-        sourceItemArray = <Item[]>source
-        if (areArraysEqual(sourceItemArray, itemsOriginal)) {
-            //remove gear from list of items
-            items = items.filter(myitem => myitem.id !== item.id);
-            game.gearCountCurrent--;
-        }
-        else if (areArraysEqual(sourceItemArray, craftingItems)) {
-            //remove gear from list of craftingItems
-            craftingItems = craftingItems.filter(myitem => myitem.id !== item.id);
-        }
-        else {
-            console.log("source is not items or craftingItems")
-        }
-
-    }
-    //if the source is from a worker, remove it from them
     if (source instanceof Laborer) {
-        source.unequipItem(item)
-        source.setVocation();
+        sourceWorker = source;
+    } else {
+        sourceString = source as string;
     }
-
-
-
 
     if (destination instanceof Laborer) {
-        if (destination.weapon) {
-            if (source instanceof Laborer) {
-                //move the item back to the other list
-                moveGear(destination.weapon, source, destination)
-            }
-            else {
-                destination.weapon.setParentDiv(gearListContainer)
-                items.push(destination.weapon);
-                destination.unequipItem(destination.weapon);
-
-                game.gearCountCurrent++;
-            }
-
-        }
-        destination.equipItem(item)
+        destinationWorker = destination;
+    } else {
+        destinationString = destination as string;
     }
 
-
-    //checking for when the destination is an empty array, we are not able to tell which array it is
-    if(destinationDiv == gearListContainer){
-        item.setParentDiv(gearListContainer)
-        items.push(item);
-        game.gearCountCurrent++;
+    // If the source is a worker, remove the item from them
+    if (sourceWorker) {
+        sourceWorker.unequipItem(item)
+        sourceWorker.setVocation();
     }
-    else if(destinationDiv == craftingItemSectionDiv){
-        item.setParentDiv(craftingItemSectionDiv)
-        craftingItems.push(item);
+    //if the source is a string, remove the item from the array
+    if (sourceString) {
+        removeItem(item, items)
     }
 
-    else if (destination && Array.isArray(destination)) {
-        
-        destinationItemArray = <Item[]>destination
-        if (areArraysEqual(destinationItemArray, itemsOriginal)) {
-            item.setParentDiv(gearListContainer)
-            items.push(item);
-            game.gearCountCurrent++;
+    //if the destination is a worker, equip the item to them
+    if (destinationWorker) {
+        //if the destination worker already has an item equipped, move it back to the source
+        if (destinationWorker.weapon[0]) {
+            moveGear2(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationWorker.gearDiv, source, sourceArray, sourceDiv)
         }
-        else if (areArraysEqual(destinationItemArray, craftingItems)) {
-            item.setParentDiv(craftingItemSectionDiv)
-            craftingItems.push(item);
-        }
-        else {
-            console.log("destination is not items or craftingItems")
-        }
-
+        destinationWorker.equipItem(item)
     }
-
+    //if the destination is a string, add the item to the array
+    if (destinationString) {
+        destinationArray.push(item);
+    }
+    //set the parent of the item
+    item.setParentDiv(destinationDiv)
 
     emptyGearDisplay();
     displayText();
+
+
+    console.log(`moved item from ${source} to ${destination}`)
+    console.log(`source array length: ${originalItemLength}, destination array length: ${destinationArray.length}`)
+
+
+
+}
+
+function removeItem(item: any, array: any[]): void {
+    const index = array.indexOf(item);
+    if (index !== -1) {
+        array.splice(index, 1);
+    }
 }
 
 function createWorker() {

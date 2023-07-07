@@ -388,6 +388,15 @@ class Item {
         this.setupDiv();
     }
 
+    delete(){
+        
+        this.container.removeChild(this.div);
+        deletedItems.push(this);
+        //remove event listeners
+        
+        
+    }
+
 
 
     setupDiv() {

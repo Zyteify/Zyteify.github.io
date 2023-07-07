@@ -307,6 +307,11 @@ class Item {
         this.setup = false;
         this.setupDiv();
     }
+    delete() {
+        this.container.removeChild(this.div);
+        deletedItems.push(this);
+        //remove event listeners
+    }
     setupDiv() {
         if (!this.setup) {
             this.setup = true;

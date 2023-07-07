@@ -10,25 +10,36 @@ function trackEventListeners(element, eventType, listener, options) {
 function getEventListeners(element) {
     return eventListenerMap.get(element) || [];
 }
+function removeEventListenerOnce(element, eventType, callback) {
+    function handler(event) {
+        callback.call(element, event);
+        element.removeEventListener(eventType, handler);
+    }
+    element.addEventListener(eventType, handler);
+}
+function isChildOf(child, parent) {
+    let node = child.parentNode;
+    while (node !== null) {
+        if (node === parent) {
+            return true;
+        }
+        node = node.parentNode;
+    }
+    return false;
+}
 class DragDiv {
-    div;
-    item;
-    worker;
-    source = [];
+    origin;
+    constructor() {
+        this.origin = {};
+    }
     setItem(item) {
-        this.item = item;
+        this.origin.item = item;
     }
     setWorker(worker) {
-        this.worker = worker;
-    }
-    getItem() {
-        return this.item;
-    }
-    getWorker() {
-        return this.worker;
+        this.origin.worker = worker;
     }
     hasItem() {
-        if (this.item) {
+        if (this.origin.item) {
             return true;
         }
         else {
@@ -36,7 +47,7 @@ class DragDiv {
         }
     }
     hasWorker() {
-        if (this.worker) {
+        if (this.origin.worker) {
             return true;
         }
         else {
@@ -60,31 +71,32 @@ function updateEventListeners() {
             trackEventListeners(myElement, 'dragover', function (event) {
                 event.preventDefault();
                 if (dragDiv.hasItem()) {
-                    //get the gear that is being dragged
-                    //get the gear that is being dragged
                     let workerid = parseInt(myElement.id.replace('worker-div', ''));
-                    //get the worker with the workerid
                     let dragWorkerDest = getWorkerById(workerid);
-                    if (dragWorkerDest.weapon == null) {
-                        if (dragDiv.source != dragWorkerDest) {
-                            myElement.classList.add('highlight1');
+                    if (dragWorkerDest.weapon[0] == null) {
+                        if (isChildOf(dragDiv.origin.div, myElement) || dragDiv.origin.div === event.target) {
+                            return; // Exit the event handler
                         }
+                        debugger;
+                        myElement.classList.add('highlightCanMove');
                     }
                     else {
-                        if (dragDiv.source != dragWorkerDest) {
-                            myElement.classList.add('highlight2');
+                        if (isChildOf(dragDiv.origin.div, myElement) || dragDiv.origin.div === event.target) {
+                            debugger;
+                            return; // Exit the event handler
                         }
+                        myElement.classList.add('highlightMayMove');
                     }
                 }
             });
             //allow the div to be dragged leave
             trackEventListeners(myElement, 'dragleave', function (event) {
                 event.preventDefault();
-                myElement.classList.remove('highlight1');
-                myElement.classList.remove('highlight2');
+                removeAllHighlights(myElement);
             });
             //allow the div to be dropped on
             trackEventListeners(myElement, 'drop', function (event) {
+                removeAllHighlights(myElement);
                 dropEvent(myElement, event);
             });
         }
@@ -103,53 +115,33 @@ function updateEventListeners() {
             });
             trackEventListeners(myElement, 'dragend', function (event) {
                 //item is done dragging. remove the item from the dragItem variable
-                dragDiv.item = undefined;
-                dragDiv.worker = undefined;
-                dragDiv.source = [];
+                dragDiv.origin = {};
             });
         }
     }
 }
 function dropEvent(myElement, event) {
     event.preventDefault();
-    myElement.classList.remove('highlight1');
-    myElement.classList.remove('highlight2');
+    removeAllHighlights(myElement);
     if (dragDiv.hasItem()) {
         //if the element being dropped on is a worker
-        if (myElement.classList.contains('worker-div')) {
+        if (isWorkerDiv(myElement)) {
             //get the gear that is being dragged
-            let workerid = parseInt(myElement.id.replace('worker-div', ''));
+            let workerId = getWorkerId(myElement);
             //get the worker with the workerid
-            let dragWorkerDest = getWorkerById(workerid);
-            if (dragDiv.hasWorker()) {
-                moveGear(dragDiv.item, dragWorkerDest, dragDiv.worker);
-            }
-            else {
-                moveGear(dragDiv.item, dragWorkerDest, dragDiv.source);
-            }
+            let worker = getWorkerById(workerId);
+            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, myElement);
         }
+        //if the element being dropped on is the gear list container
         else if (myElement === gearListContainer) {
-            //if the element being dropped on is the body
-            //add the gear to the list of items
-            //check to see if the item is on a worker
-            if (dragDiv.hasWorker()) {
-                moveGear(dragDiv.item, items, dragDiv.worker, gearListContainer);
-            }
-            else {
-                moveGear(dragDiv.item, items, dragDiv.source, gearListContainer);
-            } //dropped on body
+            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'gearListContainer', items, myElement);
         }
         //if dropped on the crafting section
         else if (myElement === craftingItemSectionDiv) {
-            if (dragDiv.hasWorker()) {
-                moveGear(dragDiv.item, craftingItems, dragDiv.worker, craftingItemSectionDiv);
-            }
-            else {
-                moveGear(dragDiv.item, craftingItems, dragDiv.source, craftingItemSectionDiv);
-            } //dropped on body
+            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'craftingItems', craftingItems, myElement);
         }
         else if (myElement === deleteDiv) {
-            let myItem = dragDiv.item;
+            let myItem = dragDiv.origin.item;
             //create a prompt to confirm deletion
             let confirmDelete = confirm(`Are you sure you want to delete ${myItem.gear}?`);
             if (!confirmDelete) {
@@ -157,34 +149,32 @@ function dropEvent(myElement, event) {
             }
             //delete the item and remove it from either the inventory or the workers inventory
             if (dragDiv.hasWorker()) {
-                let dragWorker = dragDiv.worker;
-                dragWorker.unequipItem(dragDiv.item);
+                let dragWorker = dragDiv.origin.worker;
+                dragWorker.unequipItem(dragDiv.origin.item);
                 dragWorker.setVocation();
             }
-            else {
-                items = items.filter(item => item.id !== myItem.id);
-                game.gearCountCurrent--;
+            else if (dragDiv.origin.source == 'items') {
+                removeItem(myItem, items);
+            }
+            else if (dragDiv.origin.source == 'craftingItems') {
+                removeItem(myItem, craftingItems);
             }
             emptyGearDisplay();
             displayText();
             console.log(`deleting ${myItem.gear}`);
-            //remove event listeners from the item
-            //todo double check works
-            let div = dragDiv.div;
-            getEventListeners(div).forEach(({ eventType, listener, options }) => {
-                console.log(`removing event listener for ${eventType}`);
-                div.removeEventListener(eventType, listener, options);
-            });
-            deletedItems.push(myItem);
+            myItem.delete();
         }
         else {
-            console.log(`dropped on ${myElement.id}`);
+            console.log(`dropped on ${myElement.id} without an item found`);
         }
     }
+    dragDiv.origin = {};
 }
+//track the div and item that is being dragged into the dragDiv variable
 function dragEventStart(myElement, event) {
-    dragDiv.div = myElement;
     let dragSource = event.target;
+    //create the dragDiv element
+    dragDiv.origin.div = myElement;
     var dragImage = myElement.cloneNode(true);
     // Set the drag image opacity to 1 (opaque)
     if (dragImage instanceof HTMLElement) {
@@ -194,26 +184,32 @@ function dragEventStart(myElement, event) {
     let gearid = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker
     let item = items.find(item => item.id === parseInt(gearid));
-    dragDiv.source = items;
+    if (item) {
+        dragDiv.setItem(item);
+        dragDiv.origin.source = 'items';
+        dragDiv.origin.sourceArray = items;
+    }
     //also check the crafting items
     if (!item) {
         item = craftingItems.find(item => item.id === parseInt(gearid));
-        dragDiv.source = craftingItems;
+        if (item) {
+            dragDiv.setItem(item);
+            dragDiv.origin.sourceArray = craftingItems;
+        }
     }
     //loop through each worker and see if they are wearing the item
     for (let i = 0; i < workers.length; i++) {
-        if (workers[i].weapon?.id === parseInt(gearid)) {
-            item = workers[i].weapon;
-            dragDiv.source = workers[i];
+        if (workers[i].weapon[0]?.id === parseInt(gearid)) {
+            item = workers[i].weapon[0];
+            dragDiv.setItem(item);
             dragDiv.setWorker(workers[i]);
+            dragDiv.origin.worker = workers[i];
+            dragDiv.origin.source = workers[i];
         }
     }
-    if (item) {
-        dragDiv.setItem(item);
-    }
-    else {
+    if (!item) {
         console.log('item not found');
-        dragDiv.source = [];
+        dragDiv.origin.source = 'unknown';
     }
 }
 function isExcludedElement(element, excludedElements) {
@@ -235,60 +231,71 @@ function isExcludedElement(element, excludedElements) {
 }
 //add event listeners to the body to allow gear to be dropped back to the inventory
 trackEventListeners(gearListContainer, 'drop', function (event) {
-    // Create a list of elements that should not trigger the drop event
-    let excludedChildren = document.getElementsByClassName('worker-div');
-    gearListContainer.classList.remove('highlight1');
-    // Check if the clicked element is not one of the excluded children or their descendants
-    if (event.target instanceof Element
-        && !isExcludedElement(event.target, excludedChildren)) {
-        dropEvent(gearListContainer, event);
-    }
+    removeAllHighlights(gearListContainer);
+    dropEvent(gearListContainer, event);
 });
+//highlight the div when the item is dragged over it
 trackEventListeners(gearListContainer, 'dragover', function (event) {
-    event.preventDefault(); // Necessary. Allows us to drop.    
-    if (dragDiv.hasItem() && dragDiv.source != items) {
-        gearListContainer.classList.add('highlight1');
+    event.preventDefault();
+    if (dragDiv.hasItem() && dragDiv.origin.source != 'items') {
+        roomAvailable(items) ? gearListContainer.classList.add('highlightCanMove') : gearListContainer.classList.add('highlightCannotMove');
     }
     return false;
 });
 //allow the div to be dragged leave
 trackEventListeners(gearListContainer, 'dragleave', function (event) {
     event.preventDefault();
-    gearListContainer.classList.remove('highlight1');
-    gearListContainer.classList.remove('highlight2');
+    removeAllHighlights(gearListContainer);
 });
 trackEventListeners(deleteDiv, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
     if (dragDiv.hasItem()) {
-        deleteDiv.classList.add('highlight3');
+        deleteDiv.classList.add('highlightCanMove');
     }
     return false;
 });
 //allow the div to be dragged leave
 trackEventListeners(deleteDiv, 'dragleave', function (event) {
     event.preventDefault();
-    deleteDiv.classList.remove('highlight3');
+    removeAllHighlights(deleteDiv);
 });
 trackEventListeners(deleteDiv, 'drop', function (event) {
     event.preventDefault();
-    deleteDiv.classList.remove('highlight3');
+    removeAllHighlights(gearListContainer);
     dropEvent(deleteDiv, event);
 });
 //craftingItemSectionDiv
 trackEventListeners(craftingItemSectionDiv, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
-    if (dragDiv.hasItem() && dragDiv.source != craftingItems) {
-        craftingItemSectionDiv.classList.add('highlight1');
+    if (dragDiv.hasItem() && dragDiv.origin.source != 'craftingItems') {
+        roomAvailable(craftingItems) ? craftingItemSectionDiv.classList.add('highlightCanMove') : craftingItemSectionDiv.classList.add('highlightCannotMove');
     }
     return false;
 });
 //allow the div to be dragged leave
 trackEventListeners(craftingItemSectionDiv, 'dragleave', function (event) {
     event.preventDefault();
-    craftingItemSectionDiv.classList.remove('highlight1');
+    removeAllHighlights(craftingItemSectionDiv);
 });
 trackEventListeners(craftingItemSectionDiv, 'drop', function (event) {
     event.preventDefault();
-    craftingItemSectionDiv.classList.remove('highlight1');
+    removeAllHighlights(craftingItemSectionDiv);
     dropEvent(craftingItemSectionDiv, event);
 });
+//remove all highlights from the element
+function removeAllHighlights(elemnt) {
+    elemnt.classList.remove('highlightCanMove');
+    elemnt.classList.remove('highlightCannotMove');
+    elemnt.classList.remove('highlightMayMove');
+}
+function isWorkerDiv(element) {
+    if (element.classList.contains('worker-div')) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function getWorkerId(element) {
+    return parseInt(element.id.replace('worker-div', ''));
+}

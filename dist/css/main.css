@@ -49,15 +49,15 @@ body {
 }
 
 
-.highlight1 {
+.highlightCanMove {
     background-color: lightblue;
 }
 
-.highlight3 {
+.highlightCannotMove {
     background-color: rgb(241, 134, 134);
 }
 
-.highlight2 {
+.highlightMayMove {
     background-color: orange;
 }
 

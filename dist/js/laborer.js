@@ -13,8 +13,8 @@ class Laborer {
     static count = 0;
     resources = [];
     //empty array of items
-    weapon;
-    boot;
+    weapon = [];
+    boot = [];
     image;
     //display
     div;
@@ -37,8 +37,8 @@ class Laborer {
         this.name = 'temp';
         this.vocation = new Vocation('Beggar');
         this.resources = [];
-        this.weapon = null;
-        this.boot = null;
+        this.weapon = [];
+        this.boot = [];
         //actions
         this.vocationActions = {
             Beggar: this.beg,
@@ -100,11 +100,11 @@ class Laborer {
         }
     }
     setVocation() {
-        if (this.weapon == null) {
+        if (this.weapon[0] == null) {
             this.vocation = new Vocation('Beggar');
         }
         else {
-            let gearType = this.weapon?.gear;
+            let gearType = this.weapon[0]?.gear;
             if (vocationMap.hasOwnProperty(gearType)) {
                 this.vocation.name = vocationMap[gearType];
             }
@@ -159,10 +159,10 @@ class Laborer {
     //equip an item
     equipItem(item) {
         if (item.type == "Weapon") {
-            this.weapon = item;
+            this.weapon[0] = item;
         }
         else if (item.type == "Boot") {
-            this.boot = item;
+            this.boot[0] = item;
         }
         this.setItemParent();
         this.setVocation();
@@ -171,10 +171,10 @@ class Laborer {
     unequipItem(item) {
         switch (item.type) {
             case "Weapon":
-                this.weapon = null;
+                removeItem(item, this.weapon);
                 break;
             case "Boot":
-                this.boot = null;
+                removeItem(item, this.boot);
                 break;
             default:
                 console.log('unknown weapon type');
@@ -186,8 +186,8 @@ class Laborer {
         if (this.gearDiv.parentElement == null) {
             this.div.appendChild(this.gearDiv);
         }
-        if (this.weapon) {
-            this.weapon.setParentDiv(this.gearDiv);
+        if (this.weapon[0]) {
+            this.weapon[0].setParentDiv(this.gearDiv);
         }
     }
     depositResources(amount) {

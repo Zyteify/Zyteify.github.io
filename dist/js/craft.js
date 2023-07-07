@@ -38,14 +38,11 @@ function createGear(itemType, GearType, baseType, rarity) {
     }
     //get the div for the location
     //if the location to put the new item is items and the player has room for it, create the item
-    if ((location == items && game.gearCountCurrent < game.gearCountMax)
+    if ((location == items && roomAvailable(craftingItems))
         || (location == craftingItems && craftingItems.length < craftingItemsMax)) {
         let newGear = new Item(itemType, GearType, baseType, rarity);
         newGear.setParentDiv(locationDiv);
         location.push(newGear);
-        if (location == items) {
-            game.gearCountCurrent++;
-        }
         displayText();
         if (newGear.gear == "Pickaxe") {
             game.unlockedPickaxe = true;
@@ -58,7 +55,7 @@ function createGear(itemType, GearType, baseType, rarity) {
     }
     else {
         if (location == items) {
-            console.log(`failed to create gear, gear count current: ${game.gearCountCurrent}, gear count max: ${game.gearCountMax}`);
+            console.log(`failed to create gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
         }
         else {
             console.log(`failed to create gear, crafting items current: ${craftingItems.length}, crafting items max: ${craftingItemsMax}`);
@@ -119,7 +116,7 @@ function deleteItem() {
     controlCraftingButtons();
 }
 function addToGear() {
-    if (game.gearCountCurrent < game.gearCountMax) {
+    if (roomAvailable(items)) {
         //get the item from the crafting items list
         let item = craftingItems[0];
         //remove the item from the crafting items list
@@ -129,14 +126,12 @@ function addToGear() {
         item.resetDiv();
         //add the item to the items list
         items.push(item);
-        //update the gear count
-        game.gearCountCurrent++;
         //update the crafting button
         updateCraftButton();
         controlCraftingButtons();
     }
     else {
-        console.log(`failed to add to gear, gear count current: ${game.gearCountCurrent}, gear count max: ${game.gearCountMax}`);
+        console.log(`failed to add to gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
     }
 }
 function controlCraftingButtons() {
@@ -148,7 +143,7 @@ function controlCraftingButtons() {
         deleteButton.disabled = true;
         addToGearButton.disabled = true;
     }
-    if (game.gearCountCurrent >= game.gearCountMax) {
+    if (!roomAvailable(items)) {
         addToGearButton.disabled = true;
     }
 }
