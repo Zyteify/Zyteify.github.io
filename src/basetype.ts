@@ -6,18 +6,18 @@ class BaseType{
     gearType: GearType
     resourceCost: number []
     resource: ResourceType []
-    itemPower: number
     implicit: string
     value: number
     craftingCost: number
+    itemMod: ItemMod[] = []
     static count: number = 0;
-    constructor(name: BaseTypeName, gearType: GearType, resourceCost: number[], resource: ResourceType[], itemPower: number, implicit: string, value: number, craftingCost: number){
+    constructor(name: BaseTypeName, gearType: GearType, resourceCost: number[], resource: ResourceType[], itemMods: ItemMod[], implicit: string, value: number, craftingCost: number){
         this.id = BaseType.count++;
         this.name = name
         this.gearType = gearType
         this.resourceCost = resourceCost
         this.resource = resource
-        this.itemPower = itemPower
+        this.itemMod = itemMods
         this.implicit = implicit
         this.value = value
         this.craftingCost = craftingCost

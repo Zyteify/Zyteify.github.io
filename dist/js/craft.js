@@ -191,6 +191,11 @@ function generateAffixes(rarity, gear) {
             tier: prefix.tier,
             modFamily: prefix.modFamily,
             tags: prefix.tags,
+            modified: false,
+            itemMod: {
+                modName: prefix.modName,
+                modValue: value,
+            }
         };
         stats.push(stat);
     }
@@ -213,6 +218,11 @@ function generateAffixes(rarity, gear) {
             tier: suffix.tier,
             modFamily: suffix.modFamily,
             tags: suffix.tags,
+            modified: false,
+            itemMod: {
+                modName: suffix.modName,
+                modValue: value,
+            }
         };
         stats.push(stat);
     }

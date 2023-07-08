@@ -138,9 +138,26 @@ function generateGear(): GearType {
     return gear;
 }
 
+type ModName = 'itemPower' |
+    'itemPowerLocalAddition' |
+    'itemPowerLocalMultiplier' |
+    'duplicateWork' |
+    'adjacentWorkPower' |
+    'chanceToRepeatGreatestWork' |
+    'otherModTiers' |
+    'criticalWorkChance' |
+    'criticalWorkMultiplier' |
+    'chanceToNotConsumeEnergy' |
+    'multiplyStock';
+
+interface ItemMod {
+    modName: ModName;
+    modValue: number;
+}
+
 type PrefixorSuffix = "Prefix" | "Suffix";
 
-type Stat = {
+type Explicit = {
     name: string;
     valueRange: number[];
     value: number;
@@ -149,11 +166,13 @@ type Stat = {
     tier: number;
     modFamily: string;
     tags: string;
+    itemMod: ItemMod;
+    modified?: boolean;
 }
 
 type StatList = {
     gear: GearType;
-    stats: Stat[];
+    stats: Explicit[];
 }
 
 function rollRange(min: number, max: number): number {
@@ -163,9 +182,9 @@ function rollRange(min: number, max: number): number {
 let chanceStatMin = 0.5;
 let chanceStatMax = 0.5;
 
-function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
+function generateAffixes(rarity: RarityType, gear: GearType): Explicit[] {
 
-    let stats: Stat[] = [];
+    let stats: Explicit[] = [];
     /* stats.push(stat); */
 
     let numPrefixes = 0;
@@ -232,7 +251,7 @@ function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
         //roll the value of the stat
         let value = rollRange(prefix.valueMin, prefix.valueMax);
         //create the stat
-        let stat: Stat = {
+        let stat: Explicit = {
             name: prefix.name,
             valueRange: [prefix.valueMin, prefix.valueMax],
             value: value,
@@ -241,6 +260,11 @@ function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
             tier: prefix.tier,
             modFamily: prefix.modFamily,
             tags: prefix.tags,
+            modified: false,
+            itemMod: {
+                modName: prefix.modName,
+                modValue: value,
+            }
         }
         stats.push(stat);
 
@@ -256,7 +280,7 @@ function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
         //roll the value of the stat
         let value = rollRange(suffix.valueMin, suffix.valueMax);
         //create the stat
-        let stat: Stat = {
+        let stat: Explicit = {
             name: suffix.name,
             valueRange: [suffix.valueMin, suffix.valueMax],
             value: value,
@@ -265,6 +289,11 @@ function generateAffixes(rarity: RarityType, gear: GearType): Stat[] {
             tier: suffix.tier,
             modFamily: suffix.modFamily,
             tags: suffix.tags,
+            modified: false,
+            itemMod: {
+                modName: suffix.modName,
+                modValue: value,
+            }
         }
         stats.push(stat);
     }
@@ -389,7 +418,7 @@ function createGear(itemType: ItemType, gearType: GearType, baseType?: BaseType,
     }
 
     let resourceCostSuccess = false;
-    if(baseType.resource.length == 0){
+    if (baseType.resource.length == 0) {
         resourceCostSuccess = true;
     }
     //able to pay the resources?

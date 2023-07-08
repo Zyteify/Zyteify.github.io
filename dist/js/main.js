@@ -130,7 +130,7 @@ loadJson('../dist/data/basetypes.json').then(data => {
         let gearType = baseType.gearType;
         let resourceCost = baseType.resourceCost;
         let resource = baseType.resource;
-        let itemPower = baseType.itemPower;
+        let itemMods = baseType.itemMods;
         let implicit = baseType.implicit;
         let value = baseType.value;
         let craftingCost = baseType.craftingCost;
@@ -148,7 +148,8 @@ loadJson('../dist/data/basetypes.json').then(data => {
                 resourceArray.push(resource[j]);
             }
         }
-        let newBaseType = new BaseType(name, gearType, resourceCostArray, resourceArray, itemPower, implicit, value, craftingCost);
+        //create an itemMod for the item power
+        let newBaseType = new BaseType(name, gearType, resourceCostArray, resourceArray, itemMods, implicit, value, craftingCost);
         baseTypes.push(newBaseType);
     }
     initializeCrafting();

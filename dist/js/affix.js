@@ -1,16 +1,4 @@
 "use strict";
-/* type InputAffix = {
-    affix: PrefixorSuffix;
-    name: string;
-    valueMin: number;
-    valueMax: number;
-    tier: number
-    stat: string;
-    weight: number;
-    gearType: string;
-    baseType: string;
-    rollable: boolean;
-} */
 //return a single affix using the weights of the affix list
 function getAffix(affixList, statlist) {
     //get mod families from the statlist that should be forbidden

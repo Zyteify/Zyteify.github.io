@@ -126,3 +126,26 @@ function showBegging() {
         begList[i].display()
     }
 }
+
+function setTextfromAffixes(stringText: string, stringValue: number):string {
+    //get the position to put the value of the stat by the #
+    let position = stringText.search("#");
+    let text = 'ERROR'
+    //if the position is -1, then there is no # in the stat
+    if (position == -1) {
+        text = `${stringText}`;
+    }
+    //if the position is 0, then the # is at the beginning of the stat
+    else if (position == 0) {
+        text = `${stringValue}${stringText.slice(1)}`;
+    }
+    //if the position is at the end of the stat
+    else if (position == stringText.length - 1) {
+        text = `${stringText.slice(0, -1)}${stringValue}`;
+    }
+    //if the position is in the middle of the stat
+    else {
+        text = `${stringText.slice(0, position)}${stringValue}${stringText.slice(position + 1)}`;
+    }
+    return text
+}

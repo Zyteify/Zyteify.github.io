@@ -3,15 +3,33 @@ class Item {
     type: ItemType;
     image: HTMLImageElement;
 
+    //mods
+    baseType: BaseType;
+    prefixes: Explicit[] = [];
+    suffixes: Explicit[] = [];
+    rarity: RarityType;
+    itemMods: ItemMod[] = [];
+
+    mods = {
+        itemPower: 0,
+        itemPowerLocalAddition: 0,
+        itemPowerLocalMultiplier: 0,
+        duplicateWork: 0,
+        adjacentWorkPower: 0,
+        chanceToRepeatGreatestWork: 0,
+        otherModTiers: 0,
+        criticalWorkChance: 0,
+        criticalWorkMultiplier: 0,
+        chanceToNotConsumeEnergy: 0,
+        multiplyStock: 0,
+    }
+
     //display
     div: HTMLDivElement;
     hoverDiv: HTMLDivElement;
     hoverInsideDiv: HTMLDivElement;
     container: HTMLDivElement;
-    baseType: BaseType;
-    prefixes: Stat[] = [];
-    suffixes: Stat[] = [];
-    rarity: RarityType;
+
 
     setup: boolean = false;
     setupHover: boolean = false;
@@ -24,7 +42,6 @@ class Item {
         this.baseType = baseType;
 
         this.rarity = rarity;
-        
 
         //generate the affixes
         let affixes = generateAffixes(this.rarity, this.baseType.gearType);
@@ -36,6 +53,9 @@ class Item {
                 this.suffixes.push(affixes[i]);
             }
         }
+
+        this.populateItemMods();
+        this.calculateModStrength();
 
         this.image = new Image();
 
@@ -59,8 +79,6 @@ class Item {
         this.hoverInsideDiv.classList.add("item");
         this.hoverInsideDiv.classList.add("item-background");
 
-
-
         //by default make the parent container the crafting window
         this.container = document.getElementById('crafting-item-section') as HTMLDivElement;
 
@@ -68,6 +86,43 @@ class Item {
         this.setupDiv()
         this.setParentDiv()
         this.setHoverDiv()
+    }
+
+    populateItemMods() {
+        //get the list of suffixes and prefixes
+        let affixes = this.prefixes.concat(this.suffixes);
+        //loop through each and add the item mod to the item
+        for (let i = 0; i < affixes.length; i++) {
+            this.itemMods.push(affixes[i].itemMod);
+        }
+
+        //add the base type item mods
+        for (let i = 0; i < this.baseType.itemMod.length; i++) {
+            this.itemMods.push(this.baseType.itemMod[i]);
+        }
+    }
+
+    calculateModStrength() {
+        //reset the mods
+        this.mods = {
+            itemPower: 0,
+            itemPowerLocalAddition: 0,
+            itemPowerLocalMultiplier: 0,
+            duplicateWork: 0,
+            adjacentWorkPower: 0,
+            chanceToRepeatGreatestWork: 0,
+            otherModTiers: 0,
+            criticalWorkChance: 0,
+            criticalWorkMultiplier: 0,
+            chanceToNotConsumeEnergy: 0,
+            multiplyStock: 0,
+        }
+
+        //loop through each item mod and add the values to the mods
+        for (let i = 0; i < this.itemMods.length; i++) {
+            let name = this.itemMods[i].modName;
+            this.mods[name] += this.itemMods[i].modValue;
+        }
     }
 
     setRarityBorder() {
@@ -185,114 +240,133 @@ class Item {
 
             //attach the hoverinside div to the hover div
             this.hoverDiv.appendChild(this.hoverInsideDiv);
-
-            //create an item name div
-            const itemNameDiv = document.createElement('div');
-            //set the item name div class
-            itemNameDiv.classList.add("item-nameDiv");
-            //create an item gear div
-            const itemGearDiv = document.createElement('div');
-            //set the item gear div class
-            itemGearDiv.classList.add("item-gearDiv");
-            //create an item stats div
-            const itemStatsDiv = document.createElement('div');
-            //set the item stats div class
-            itemStatsDiv.classList.add("item-statsDiv");
-            //create an item rarity div
-            const itemRarityDiv = document.createElement('div');
-            //set the item rarity div class
-            itemRarityDiv.classList.add("item-rarityDiv");
-
-            //append the divs to the item div
-            this.hoverInsideDiv.appendChild(itemNameDiv);
-            this.hoverInsideDiv.appendChild(itemRarityDiv);
-            this.hoverInsideDiv.appendChild(itemGearDiv);
-            this.hoverInsideDiv.appendChild(itemStatsDiv);
-
-            //set the item rarity
-            let itemRarity = document.createElement('p');
-            itemRarity.classList.add("item-rarity");
-            itemRarity.classList.add("small-margin");
-            itemRarity.innerHTML = `${this.rarity}`;
-            itemRarityDiv.appendChild(itemRarity);
-
-            //set the item gear
-            let itemGear = document.createElement('p');
-            itemGear.classList.add("item-gear");
-            itemGear.classList.add("small-margin");
-            itemGear.innerHTML = `${this.baseType.gearType}`;
-            itemGearDiv.appendChild(itemGear);
-
-            let itemStat = [];
-            let itemStatDiv = [];
-            let itemStatAffix = [];
-
-
-            //for each stat
-            let numAffixes = this.prefixes.length + this.suffixes.length;
-            for (let i = 0; i < numAffixes; i++) {
-
-                let affix;
-                let affixText = "";
-                //if looking at a prefix
-                if (i < this.prefixes.length) {
-                    affix = this.prefixes[i];
-                    affixText = "P";
-                }
-                //if looking at a suffix
-                else {
-                    affix = this.suffixes[i - this.prefixes.length];
-                    affixText = "S";
-                }
-
-                //create a div for the stat
-                let statDiv = document.createElement('div');
-                statDiv.classList.add("item-statDiv");
-                statDiv.classList.add("small-margin");
-                itemStatDiv.push(statDiv);
-
-                //set the item stats
-                let statAffix = document.createElement('p');
-                statAffix.classList.add("item-stat-affix");
-                statAffix.classList.add("small-margin");
-                //add a newline between tier and name
-                statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`
-                statAffix.dataset.stat = affix.tags;
-                statAffix.dataset.affix = `${affix.affix}`;
-                itemStatAffix.push(statAffix);
-                ;
-
-                let stat = document.createElement('p');
-                stat.classList.add("item-stat");
-                stat.classList.add("small-margin");
-                stat.innerHTML = `${affix.value} ${affix.stat}`;
-                stat.dataset.stat = affix.tags;
-                stat.dataset.affix = `${affix.affix}`;
-                itemStat.push(stat);
-
-            }
-
-
-            for (let i = 0; i < itemStat.length; i++) {
-                itemStatDiv[i].appendChild(itemStatAffix[i]);
-                itemStatDiv[i].appendChild(itemStat[i]);
-
-            }
-
-            for (let i = 0; i < itemStatDiv.length; i++) {
-                itemStatsDiv.appendChild(itemStatDiv[i]);
-            }
-
-            let itemName = document.createElement('p');
-            itemName.classList.add("item-name");
-            itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
-            itemNameDiv.appendChild(itemName);
+            this.createFullText(this.hoverInsideDiv);
 
         }
 
     }
 
+    createFullText(containerDiv: HTMLDivElement) {
+        //create an item name div
+        const itemNameDiv = document.createElement('div');
+        //set the item name div class
+        itemNameDiv.classList.add("item-nameDiv");
+        //create an item gear div
+        const itemGearDiv = document.createElement('div');
+        //set the item gear div class
+        itemGearDiv.classList.add("item-gearDiv");
+        //create an item stats div
+        const itemStatsDiv = document.createElement('div');
+        //set the item stats div class
+        itemStatsDiv.classList.add("item-statsDiv");
+        //create an item rarity div
+        const itemRarityDiv = document.createElement('div');
+        //set the item rarity div class
+        itemRarityDiv.classList.add("item-rarityDiv");
 
+        //append the divs to the item div
+        containerDiv.appendChild(itemNameDiv);
+        containerDiv.appendChild(itemRarityDiv);
+        containerDiv.appendChild(itemGearDiv);
+        containerDiv.appendChild(itemStatsDiv);
+
+        //set the item rarity
+        let itemRarity = document.createElement('p');
+        itemRarity.classList.add("item-rarity");
+        itemRarity.classList.add("small-margin");
+        itemRarity.innerHTML = `${this.rarity}`;
+        itemRarityDiv.appendChild(itemRarity);
+
+        //set the item gear
+        let itemGear = document.createElement('p');
+        itemGear.classList.add("item-gear");
+        itemGear.classList.add("small-margin");
+        itemGear.innerHTML = `${this.baseType.gearType}`;
+        itemGearDiv.appendChild(itemGear);
+
+        //set the item gear item power
+        let itemPower = document.createElement('p');
+        itemPower.classList.add("item-power");
+        itemPower.classList.add("small-margin");
+        let itemPowerText = "";
+        //find the item power mod from the base type
+        const foundItemMod = this.baseType.itemMod.find((itemMod) => itemMod.modName === 'itemPower');
+        if(foundItemMod != null){
+            itemPowerText = `Item Power: ${foundItemMod.modValue}`;
+        }
+        else{
+            itemPowerText = `Item Power: 0`;
+        }
+        itemPower.innerHTML = `${itemPowerText}`;
+        itemGearDiv.appendChild(itemPower);
+
+        let itemStat = [];
+        let itemStatDiv = [];
+        let itemStatAffix = [];
+
+
+        //for each stat
+        let numAffixes = this.prefixes.length + this.suffixes.length;
+        for (let i = 0; i < numAffixes; i++) {
+
+            let affix;
+            let affixText = "";
+            //if looking at a prefix
+            if (i < this.prefixes.length) {
+                affix = this.prefixes[i];
+                affixText = "P";
+            }
+            //if looking at a suffix
+            else {
+                affix = this.suffixes[i - this.prefixes.length];
+                affixText = "S";
+            }
+
+            //create a div for the stat
+            let statDiv = document.createElement('div');
+            statDiv.classList.add("item-statDiv");
+            statDiv.classList.add("small-margin");
+            itemStatDiv.push(statDiv);
+
+            //set the item stats
+            let statAffix = document.createElement('p');
+            statAffix.classList.add("item-stat-affix");
+            statAffix.classList.add("small-margin");
+            //add a newline between tier and name
+            statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`
+            statAffix.dataset.stat = affix.tags;
+            statAffix.dataset.affix = `${affix.affix}`;
+            itemStatAffix.push(statAffix);
+            ;
+
+            let stat = document.createElement('p');
+            stat.classList.add("item-stat");
+            stat.classList.add("small-margin");
+
+            let text = setTextfromAffixes(affix.stat, affix.value);
+            stat.innerHTML = `${text}`;
+            stat.dataset.stat = affix.tags;
+            stat.dataset.affix = `${affix.affix}`;
+            itemStat.push(stat);
+
+        }
+
+
+        for (let i = 0; i < itemStat.length; i++) {
+            itemStatDiv[i].appendChild(itemStatAffix[i]);
+            itemStatDiv[i].appendChild(itemStat[i]);
+
+        }
+
+        for (let i = 0; i < itemStatDiv.length; i++) {
+            itemStatsDiv.appendChild(itemStatDiv[i]);
+        }
+
+        let itemName = document.createElement('p');
+        itemName.classList.add("item-name");
+        itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
+        itemNameDiv.appendChild(itemName);
+    }
 
     setupDiv() {
 
@@ -309,109 +383,7 @@ class Item {
             this.div.appendChild(itemPictureDiv);
 
             if (this.container == craftingItemSectionDiv) {
-
-                //create an item name div
-                const itemNameDiv = document.createElement('div');
-                //set the item name div class
-                itemNameDiv.classList.add("item-nameDiv");
-                //create an item gear div
-                const itemGearDiv = document.createElement('div');
-                //set the item gear div class
-                itemGearDiv.classList.add("item-gearDiv");
-                //create an item stats div
-                const itemStatsDiv = document.createElement('div');
-                //set the item stats div class
-                itemStatsDiv.classList.add("item-statsDiv");
-                //create an item rarity div
-                const itemRarityDiv = document.createElement('div');
-                //set the item rarity div class
-                itemRarityDiv.classList.add("item-rarityDiv");
-
-                //append the divs to the item div
-                this.div.appendChild(itemNameDiv);
-                this.div.appendChild(itemRarityDiv);
-                this.div.appendChild(itemGearDiv);
-                this.div.appendChild(itemStatsDiv);
-
-                //set the item rarity
-                let itemRarity = document.createElement('p');
-                itemRarity.classList.add("item-rarity");
-                itemRarity.classList.add("small-margin");
-                itemRarity.innerHTML = `${this.rarity}`;
-                itemRarityDiv.appendChild(itemRarity);
-
-                //set the item gear
-                let itemGear = document.createElement('p');
-                itemGear.classList.add("item-gear");
-                itemGear.classList.add("small-margin");
-                itemGear.innerHTML = `${this.baseType.gearType}`;
-                itemGearDiv.appendChild(itemGear);
-
-                let itemStat = [];
-                let itemStatDiv = [];
-                let itemStatAffix = [];
-
-
-                //for each stat
-                let numAffixes = this.prefixes.length + this.suffixes.length;
-                for (let i = 0; i < numAffixes; i++) {
-
-                    let affix;
-                    let affixText = "";
-                    //if looking at a prefix
-                    if (i < this.prefixes.length) {
-                        affix = this.prefixes[i];
-                        affixText = "P";
-                    }
-                    //if looking at a suffix
-                    else {
-                        affix = this.suffixes[i - this.prefixes.length];
-                        affixText = "S";
-                    }
-
-                    //create a div for the stat
-                    let statDiv = document.createElement('div');
-                    statDiv.classList.add("item-statDiv");
-                    statDiv.classList.add("small-margin");
-                    itemStatDiv.push(statDiv);
-
-                    //set the item stats
-                    let statAffix = document.createElement('p');
-                    statAffix.classList.add("item-stat-affix");
-                    statAffix.classList.add("small-margin");
-                    //add a newline between tier and name
-                    statAffix.innerHTML = `(${affixText}${affix.tier})<br>(${affix.name})`
-                    statAffix.dataset.stat = affix.tags;
-                    statAffix.dataset.affix = `${affix.affix}`;
-                    itemStatAffix.push(statAffix);
-                    ;
-
-                    let stat = document.createElement('p');
-                    stat.classList.add("item-stat");
-                    stat.classList.add("small-margin");
-                    stat.innerHTML = `${affix.value} ${affix.stat}`;
-                    stat.dataset.stat = affix.tags;
-                    stat.dataset.affix = `${affix.affix}`;
-                    itemStat.push(stat);
-
-                }
-
-
-                for (let i = 0; i < itemStat.length; i++) {
-                    itemStatDiv[i].appendChild(itemStatAffix[i]);
-                    itemStatDiv[i].appendChild(itemStat[i]);
-
-                }
-
-                for (let i = 0; i < itemStatDiv.length; i++) {
-                    itemStatsDiv.appendChild(itemStatDiv[i]);
-                }
-
-                let itemName = document.createElement('p');
-                itemName.classList.add("item-name");
-                itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
-                itemNameDiv.appendChild(itemName);
-
+                this.createFullText(this.div);
             }
             //set the item picture
             let itemPicture = document.createElement('img');
@@ -423,3 +395,4 @@ class Item {
         }
     }
 }
+

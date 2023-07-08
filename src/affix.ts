@@ -1,19 +1,8 @@
-/* type InputAffix = {
-    affix: PrefixorSuffix;
-    name: string;
-    valueMin: number;
-    valueMax: number;
-    tier: number
-    stat: string;
-    weight: number;
-    gearType: string;
-    baseType: string;
-    rollable: boolean;
-} */
 
 type Affix = {
     affix: PrefixorSuffix;
     name: string;
+    modName: ModName;
     valueMin: number;
     valueMax: number;
     tier: number
@@ -28,7 +17,7 @@ type Affix = {
 }
 
 //return a single affix using the weights of the affix list
-function getAffix(affixList: Affix[], statlist: Stat[]): Affix{
+function getAffix(affixList: Affix[], statlist: Explicit[]): Affix{
 
     //get mod families from the statlist that should be forbidden
     let forbiddenModFamilies: string[] = [];
