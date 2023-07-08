@@ -131,18 +131,16 @@ function mouseoverEventStart(myElement, event) {
     let gearid = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker
     let item = items.find(item => item.id === parseInt(gearid));
-    if (item) {
-    }
     //also check the crafting items
     if (!item) {
         item = craftingItems.find(item => item.id === parseInt(gearid));
         if (item) {
         }
-    }
-    //loop through each worker and see if they are wearing the item
-    for (let i = 0; i < workers.length; i++) {
-        if (workers[i].weapon[0]?.id === parseInt(gearid)) {
-            item = workers[i].weapon[0];
+        //loop through each worker and see if they are wearing the item
+        for (let i = 0; i < workers.length; i++) {
+            if (workers[i].weapon[0]?.id === parseInt(gearid)) {
+                item = workers[i].weapon[0];
+            }
         }
     }
     if (item) {
@@ -158,18 +156,16 @@ function mouseLeaveEventStart(myElement, event) {
         let gearid = myElement.id.replace('gear-div', '');
         //find the item from the list of items in storage or on a worker
         let item = items.find(item => item.id === parseInt(gearid));
-        if (item) {
-        }
         //also check the crafting items
         if (!item) {
             item = craftingItems.find(item => item.id === parseInt(gearid));
             if (item) {
             }
-        }
-        //loop through each worker and see if they are wearing the item
-        for (let i = 0; i < workers.length; i++) {
-            if (workers[i].weapon[0]?.id === parseInt(gearid)) {
-                item = workers[i].weapon[0];
+            //loop through each worker and see if they are wearing the item
+            for (let i = 0; i < workers.length; i++) {
+                if (workers[i].weapon[0]?.id === parseInt(gearid)) {
+                    item = workers[i].weapon[0];
+                }
             }
         }
         if (item) {
@@ -189,20 +185,20 @@ function dropEvent(myElement, event) {
             let workerId = getWorkerId(myElement);
             //get the worker with the workerid
             let worker = getWorkerById(workerId);
-            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, myElement);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, myElement);
         }
         //if the element being dropped on is the gear list container
         else if (myElement === gearListContainer) {
-            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'gearListContainer', items, myElement);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'items', items, myElement);
         }
         //if dropped on the crafting section
         else if (myElement === craftingItemSectionDiv) {
-            moveGear2(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'craftingItems', craftingItems, myElement);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'craftingItems', craftingItems, myElement);
         }
         else if (myElement === deleteDiv) {
             let myItem = dragDiv.origin.item;
             //create a prompt to confirm deletion
-            let confirmDelete = confirm(`Are you sure you want to delete ${myItem.gear}?`);
+            let confirmDelete = confirm(`Are you sure you want to delete ${myItem.baseType.gearType}?`);
             if (!confirmDelete) {
                 return;
             }
@@ -220,7 +216,7 @@ function dropEvent(myElement, event) {
             }
             emptyGearDisplay();
             displayText();
-            console.log(`deleting ${myItem.gear}`);
+            console.log(`deleting ${myItem.baseType.gearType}`);
             myItem.delete();
         }
         else {

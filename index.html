@@ -43,7 +43,14 @@
 
         <div id="materials" class="main">
             <h3 id="section-title"> Materials: </h3>
-            <button id="create-gear"> Create gear</button>
+            <!-- crete a dropdown -->
+            <select id="material-geartype-dropdown">
+                <option value="all"> geartype Not Loaded </option>
+            </select>
+            <select id="material-basetypename-dropdown">
+                <option value="all"> basetypename Not Loaded </option>
+            </select>
+            <button id="materials-create-gear"> Create gear</button>
             <div id="materials-resource"> </div>
             <div id="materials-list">
             </div>
@@ -101,7 +108,7 @@
         </div>
     </div>
     <div id="hover-container">
-        </div>
+    </div>
     <script src="dist/js/init.js"></script>
     <script src="dist/js/eventListener.js"></script>
     <script src="dist/js/resource.js"></script>
@@ -112,6 +119,8 @@
     <script src="dist/js/upgrade.js"></script>
     <script src="dist/js/display.js"></script>
     <script src="dist/js/beg.js"></script>
+    <script src="dist/js/basetype.js"></script>
+    <script src="dist/js/craftbutton.js"></script>
     <script src="dist/js/craft.js"></script>
     <script src="dist/js/main.js"></script>
     <script src="dist/js/dev.js"></script>

@@ -15,8 +15,14 @@ const workerList = <HTMLDivElement>document.getElementById('worker-list');
 
 //Materials
 const materialsDiv = <HTMLElement>document.getElementById('materials');
+//Materials-create-gear
+const materialsCreateGearButton = <HTMLButtonElement>document.getElementById('materials-create-gear');
+//Materials-item-dropdown
+const materialsItemDropdown = <HTMLSelectElement>document.getElementById('material-basetypename-dropdown');
+//Materials-gear-dropdown
+const materialsGearDropdown = <HTMLSelectElement>document.getElementById('material-geartype-dropdown');
 //Materials-progress
-const craftingResource = <HTMLElement>document.getElementById('materials-resource');
+const materialsResource = <HTMLElement>document.getElementById('materials-resource');
 
 
 //gear
@@ -81,8 +87,6 @@ let game = {
 
 }
 
-let points = 0;
-
-let craftResource = 0;
+let craftWork = 0;
 
 let upgradePoints = 0;

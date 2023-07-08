@@ -16,13 +16,14 @@ function displayText() {
 
     //crafting
     //crafting-progress
-    craftingResource.innerHTML = (`🔨 ${craftResource.toString()}`);
+    materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
 
     updateEventListeners()
     displayResources()
     showUpgrades()
     showBegging()
     displayGems()
+    updateCraftButton()
 
 }
 
@@ -70,7 +71,7 @@ function displayResources() {
             const container = document.getElementById('resource-list') as HTMLDivElement;
             container.appendChild(paragraph);
         }
-        let resourceName = ResourceType[resources[i].name]
+        let resourceName = resources[i].name
         paragraph.innerHTML = resources[i].icon + " " + resources[i].amount;
         if (!resources[i].active) {
             paragraph.style.display = "none";

@@ -27,36 +27,6 @@ const gearTypes = [
     "Pickaxe",
     "Axe",
 ];
-const gearBaseTypeMap = {
-    'Hoe': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Mace': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Potion': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Hammer': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Knife': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Bow': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Chisel': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Quill': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Dice': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Scales': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Holy Symbol': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Scroll': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Pickaxe': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-    'Axe': ['Wooden', 'Copper', 'Bronze', 'Iron', 'Gold'],
-};
-const baseTypeResourceCostMap = {
-    'Wooden': 5,
-    'Copper': 10,
-    'Bronze': 100,
-    'Iron': 100,
-    'Gold': 100,
-};
-const baseTypeCraftingCostMap = {
-    'Wooden': 5,
-    'Copper': 10,
-    'Bronze': 100,
-    'Iron': 1000,
-    'Gold': 10000,
-};
 const vocationMap = {
     'Hoe': 'Farmer',
     'Mace': 'Guard',
@@ -79,8 +49,7 @@ let rarityChanceRare = 0.2;
 let rarityChanceUnique = 0.00;
 let baseTypeChanceWooden = 0.8;
 let baseTypeChanceCopper = 0.5;
-let baseTypeChanceBronze = 0.2;
-let baseTypeChanceIron = 0.05;
+let baseTypeChanceSilver = 0.05;
 let baseTypeChanceGold = 0.01;
 function generateRarity() {
     let rarity = "Common";
@@ -107,31 +76,32 @@ function generateRarity() {
     }
     return rarity;
 }
-function generateBaseType() {
-    let baseType = "Wooden";
-    let totalChance = baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceBronze + baseTypeChanceIron + baseTypeChanceGold;
+function generateBaseType(gearType) {
+    let baseType = baseTypes[0];
+    let totalChance = baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceSilver + baseTypeChanceGold;
     let random = Math.random() * totalChance;
     //generate a random number between 0 and 
+    let myBaseType = null;
     switch (true) {
         case (random < baseTypeChanceWooden):
-            baseType = 'Wooden';
+            myBaseType = findBaseTypeByNameandGearType("Wooden", gearType);
             break;
         case (random < baseTypeChanceWooden + baseTypeChanceCopper):
-            baseType = 'Copper';
+            myBaseType = findBaseTypeByNameandGearType("Copper", gearType);
             break;
-        case (random < baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceBronze):
-            baseType = 'Bronze';
+        case (random < baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceSilver):
+            myBaseType = findBaseTypeByNameandGearType("Silver", gearType);
             break;
-        case (random < baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceBronze + baseTypeChanceIron):
-            baseType = 'Iron';
-            break;
-        case (random < baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceBronze + baseTypeChanceIron + baseTypeChanceGold):
-            baseType = 'Gold';
+        case (random < baseTypeChanceWooden + baseTypeChanceCopper + baseTypeChanceSilver + baseTypeChanceGold):
+            myBaseType = findBaseTypeByNameandGearType("Gold", gearType);
             break;
         default:
-            baseType = 'Wooden';
-            console.log('error chances in generateRarity');
+            myBaseType = findBaseTypeByNameandGearType("Wooden", gearType);
+            console.log('error chances in generateBaseType');
             break;
+    }
+    if (myBaseType) {
+        baseType = myBaseType;
     }
     return baseType;
 }
@@ -157,7 +127,6 @@ function generateAffixes(rarity, gear) {
     //get the number of stats to generate
     switch (rarity) {
         case "Starter":
-            console.log(`shouldnt be generating stats for start gear`);
             break;
         case "Common":
             numPrefixes = 0;
@@ -296,13 +265,31 @@ function createRandomGear() {
     //create a new worker
     let gearCreation = createGear(randomItemType, randomGearType);
     if (gearCreation) {
-        craftResource -= craftingCost;
+        craftWork -= craftingCosts.craftingWork;
         updateCraftButton();
         controlCraftingButtons();
     }
     return gearCreation;
 }
-function createGear(itemType, GearType, baseType, rarity) {
+function createSelectedGear() {
+    let baseTypeName = materialsItemDropdown.value;
+    let gearType = materialsGearDropdown.value;
+    let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
+    if (baseType) {
+        let gearCreation = createGear("Weapon", gearType, baseType);
+        if (gearCreation) {
+            craftWork -= craftingCosts.craftingWork;
+            updateCraftButton();
+            controlCraftingButtons();
+        }
+        return gearCreation;
+    }
+    else {
+        console.log(`error in createSelectedGear, baseType not found, baseTypeName: ${baseTypeName}, gearType: ${gearType}`);
+        return false;
+    }
+}
+function createGear(itemType, gearType, baseType, rarity) {
     let location;
     let locationDiv;
     //starter gear goes directly into inventory
@@ -314,60 +301,81 @@ function createGear(itemType, GearType, baseType, rarity) {
         location = craftingItems;
         locationDiv = craftingItemSectionDiv;
     }
-    //get the div for the location
-    //if the location to put the new item is items and the player has room for it, create the item
-    if ((location == items && roomAvailable(items))
-        || (location == craftingItems && craftingItems.length < craftingItemsMax)) {
-        let newGear = new Item(itemType, GearType, baseType, rarity);
+    let gear = gearType;
+    if (!gear) {
+        gear = generateGear();
+    }
+    if (!baseType) {
+        baseType = generateBaseType(gear);
+    }
+    if (!rarity) {
+        rarity = generateRarity();
+    }
+    //if the location to put the new item is items and the player has room for it and the player has the resources, create the item
+    let locationHasRoom = false;
+    if (location == items) {
+        locationHasRoom = roomAvailable(items);
+    }
+    else if (location == craftingItems) {
+        locationHasRoom = roomAvailable(craftingItems);
+    }
+    let resourceCostSuccess = false;
+    if (baseType.resource.length == 0) {
+        resourceCostSuccess = true;
+    }
+    //able to pay the resources?
+    for (let i = 0; i < baseType.resource.length; i++) {
+        let resource = getResourceByName(baseType.resource[i]);
+        if (resource) {
+            if (resource.amount >= baseType.resourceCost[i]) {
+                resourceCostSuccess = true;
+            }
+            else {
+                resourceCostSuccess = false;
+                break;
+            }
+        }
+        else {
+            console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
+            resourceCostSuccess = false;
+            break;
+        }
+    }
+    if (locationHasRoom && resourceCostSuccess) {
+        //pay the resources
+        for (let i = 0; i < baseType.resource.length; i++) {
+            let resource = getResourceByName(baseType.resource[i]);
+            if (resource) {
+                resource.amount -= baseType.resourceCost[i];
+            }
+            else {
+                console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
+                break;
+            }
+        }
+        let newGear = new Item(itemType, baseType, rarity);
         newGear.setParentDiv(locationDiv);
         location.push(newGear);
         displayText();
-        if (newGear.gear == "Pickaxe") {
-            game.unlockedPickaxe = true;
-            setResourceActive(ResourceType.stone);
-            setResourceActive(ResourceType.gems);
-            setResourceActive(ResourceType.metal);
-        }
         controlCraftingButtons();
         displayGear();
         return true;
     }
     else {
-        if (location == items) {
-            console.log(`failed to create gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
+        if (!locationHasRoom) {
+            if (location == items) {
+                console.log(`failed to create gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
+            }
+            else {
+                console.log(`failed to create gear, crafting items current: ${craftingItems.length}, crafting items max: ${craftingItemsMax}`);
+            }
         }
-        else {
-            console.log(`failed to create gear, crafting items current: ${craftingItems.length}, crafting items max: ${craftingItemsMax}`);
+        else if (!resourceCostSuccess) {
+            console.log(`failed to create gear, not enough resources`);
         }
         return false;
     }
 }
-function updateCraftButton() {
-    //if the player has enough resources, enable the button
-    if (craftResource >= craftingCost) {
-        unlockCrafting();
-        createGearButton.disabled = false;
-    }
-    else {
-        createGearButton.disabled = true;
-    }
-    //if the crafting button has not been shown yet, show it
-    if (!game.unlockedCraftingButton) {
-        game.unlockedCraftingButton = true;
-        craftingResource.style.display = "block";
-        createGearButton.style.display = "block";
-    }
-}
-let craftingCost = 5;
-//create-gear
-const createGearButton = document.getElementById('create-gear');
-createGearButton.disabled = true;
-createGearButton.innerHTML = `Craft Gear (🔨${craftingCost})`;
-//if the craft button is clicked, craft the item
-createGearButton.onclick = function () {
-    unlockCrafting();
-    createRandomGear();
-};
 //add a button in the item options to delete the item
 let deleteButton = document.createElement('button');
 deleteButton.innerHTML = "Delete";

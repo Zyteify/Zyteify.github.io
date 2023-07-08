@@ -1,12 +1,5 @@
 //create an enum for resource types
-enum ResourceType {
-    food,
-    wood,
-    stone,
-    gems,
-    metal,
-    coins,
-}
+type ResourceType =  'food' | 'wood' | 'stone' | 'copper' | 'silver'| 'gold' | 'coins'
 
 //resource list
 //food - 🍞
@@ -19,12 +12,13 @@ enum ResourceType {
 
 
 const resourceIconMap: Record<ResourceType, string> = {
-    [ResourceType.food]: "🍞",
-    [ResourceType.wood]: "🌲",
-    [ResourceType.stone]: "⛰️",
-    [ResourceType.gems]: "💎",
-    [ResourceType.metal]: "⚙️",
-    [ResourceType.coins]: "💰",
+    'food': "🍞",
+    'wood': "🌲",
+    'stone': "⛰️",
+    'copper': "⚙️",
+    'silver': "🥈",
+    'gold': "🥇",
+    'coins': "💰",
 }
 
 

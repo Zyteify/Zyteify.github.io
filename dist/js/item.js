@@ -2,7 +2,6 @@
 class Item {
     id;
     type;
-    gear;
     image;
     //display
     div;
@@ -16,23 +15,13 @@ class Item {
     setup = false;
     setupHover = false;
     static count = 0;
-    constructor(type, gear, baseType, rarity) {
+    constructor(type, baseType, rarity) {
         this.id = Item.count++;
         this.type = type;
-        if (!gear) {
-            gear = generateGear();
-        }
-        this.gear = gear;
-        if (!baseType) {
-            baseType = generateBaseType();
-        }
         this.baseType = baseType;
-        if (!rarity) {
-            rarity = generateRarity();
-        }
         this.rarity = rarity;
         //generate the affixes
-        let affixes = generateAffixes(this.rarity, this.gear);
+        let affixes = generateAffixes(this.rarity, this.baseType.gearType);
         for (let i = 0; i < affixes.length; i++) {
             if (affixes[i].affix == "Prefix") {
                 this.prefixes.push(affixes[i]);
@@ -188,7 +177,7 @@ class Item {
             let itemGear = document.createElement('p');
             itemGear.classList.add("item-gear");
             itemGear.classList.add("small-margin");
-            itemGear.innerHTML = `${this.gear}`;
+            itemGear.innerHTML = `${this.baseType.gearType}`;
             itemGearDiv.appendChild(itemGear);
             let itemStat = [];
             let itemStatDiv = [];
@@ -240,7 +229,7 @@ class Item {
             }
             let itemName = document.createElement('p');
             itemName.classList.add("item-name");
-            itemName.innerHTML = `${this.rarity} ${this.baseType} ${this.gear}`;
+            itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
             itemNameDiv.appendChild(itemName);
         }
     }
@@ -284,7 +273,7 @@ class Item {
                 let itemGear = document.createElement('p');
                 itemGear.classList.add("item-gear");
                 itemGear.classList.add("small-margin");
-                itemGear.innerHTML = `${this.gear}`;
+                itemGear.innerHTML = `${this.baseType.gearType}`;
                 itemGearDiv.appendChild(itemGear);
                 let itemStat = [];
                 let itemStatDiv = [];
@@ -336,13 +325,13 @@ class Item {
                 }
                 let itemName = document.createElement('p');
                 itemName.classList.add("item-name");
-                itemName.innerHTML = `${this.rarity} ${this.baseType} ${this.gear}`;
+                itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
                 itemNameDiv.appendChild(itemName);
             }
             //set the item picture
             let itemPicture = document.createElement('img');
             itemPicture.classList.add("item-picture");
-            let itempicture = this.gear.toLocaleLowerCase();
+            let itempicture = this.baseType.gearType.toLocaleLowerCase();
             itemPicture.src = `../dist/img/${itempicture}.png`;
             itemPicture.draggable = false;
             itemPictureDiv.appendChild(itemPicture);

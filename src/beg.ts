@@ -37,7 +37,7 @@ class Beg {
             button.className = "beg"
             let resourceText = "";
             switch (this.resource.name) {
-                case ResourceType.coins:
+                case 'coins':
                     resourceText = `Beg for ${this.amount} ${this.resource.icon}`
                     break;
                 default:
@@ -82,32 +82,48 @@ function createFakeBegButton() {
 function unlockStarterGear() {
     // Call upgrade function with the name of the upgrade
     let gearCreation: boolean = false;
+    let baseType: BaseType | null;
     switch (fakeBegs) {
         case 0:
-            gearCreation = createGear("Weapon", "Hoe", 'Wooden', 'Starter');
-            if (gearCreation) {
-                game.unlockedHoe = true;
-                fakeBegs++;
+            baseType = findBaseTypeByNameandGearType("Scrap", 'Hoe')
+            if (baseType) {
+                gearCreation = createGear("Weapon", "Hoe", baseType, 'Starter');
+                if (gearCreation) {
+                    game.unlockedHoe = true;
+                    fakeBegs++;
+                }
+                break;
             }
 
-
-            break;
         case 1:
-            gearCreation = createGear("Weapon", "Axe", 'Wooden', 'Starter');
-            if (gearCreation) {
-                game.unlockedAxe = true;
-                setResourceActive(ResourceType.wood);
-                fakeBegs++;
+            baseType = findBaseTypeByNameandGearType("Scrap", 'Axe')
+            if (baseType) {
+                gearCreation = createGear("Weapon", "Axe", baseType, 'Starter');
+                if (gearCreation) {
+                    game.unlockedAxe = true;
+                    setResourceActive('wood');
+                    fakeBegs++;
+                }
+                break;
             }
-            break;
         case 2:
-            gearCreation = createGear("Weapon", "Hammer", 'Wooden', 'Starter');
-            if (gearCreation) {
-                game.unlockedHammer = true;
-                unlockMaterials()
-                fakeBegs++;
+            baseType = findBaseTypeByNameandGearType("Scrap", 'Hammer')
+            if (baseType) {
+                gearCreation = createGear("Weapon", "Hammer", baseType, 'Starter');
+                if (gearCreation) {
+                    game.unlockedHammer = true;
+                    unlockMaterials()
+                    unlockCrafting()
+                    fakeBegs++;
+
+                    game.unlockedPickaxe = true;
+                    setResourceActive('stone');
+                    setResourceActive('copper');
+                    setResourceActive('silver');
+                    setResourceActive('gold');
+                }
+                break;
             }
-            break;
         default:
             console.log(`error in fakeBegs switch statement, fakeBegs: ${fakeBegs}`);
             break;
@@ -115,7 +131,7 @@ function unlockStarterGear() {
     showFakeBegButton();
 }
 function showFakeBegButton() {
-    if (game.gearCountMax > fakeBegs && !game.unlockedHammer) {
+    if (game.workerCountMax > fakeBegs && !game.unlockedHammer) {
         fakeBegButton.style.display = "block";
     }
     else {

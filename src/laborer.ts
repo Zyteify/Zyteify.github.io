@@ -131,7 +131,7 @@ class Laborer {
             this.vocation = new Vocation('Beggar');
         }
         else {
-            let gearType: GearType = <GearType>this.weapon[0]?.gear;
+            let gearType: GearType = <GearType>this.weapon[0]?.baseType.gearType;
             if (vocationMap.hasOwnProperty(gearType)) {
                 this.vocation.name = vocationMap[gearType];
             } else {
@@ -274,7 +274,7 @@ class Laborer {
     //consume food to do get the work speed back to normal
     eat() {
 
-        let food = getResourceByName(ResourceType.food);
+        let food = getResourceByName('food');
 
         if (food != null && food.amount > 0 && this.workSpeed < Laborer.workSpeedDefault) {
             food.amount -= 1;
@@ -403,7 +403,7 @@ class Laborer {
 
     farm() {
         //add food to the worker
-        let resource = new Resource(ResourceType.food, 2)
+        let resource = new Resource('food', 2)
         this.addResource(resource);
     }
 
@@ -411,19 +411,24 @@ class Laborer {
         //have an x chance of getting a resource
         //add a resource to the worker
         let stoneChance = 0.8
-        let gemsChance = 0.1
-        let metalChance = 0.1
-        let random = Math.random();
+        let copperChance = 0.1
+        let silverChance = 0.1
+        let goldChance = 0.01
+        let totalWinChance = stoneChance + copperChance + silverChance + goldChance;
+        let random = Math.random() * totalWinChance;
 
         switch (true) {
             case (random < stoneChance):
-                this.addResource(new Resource(ResourceType.stone, 1))
+                this.addResource(new Resource('stone', 1))
                 break;
-            case (random < stoneChance + gemsChance):
-                this.addResource(new Resource(ResourceType.gems, 1))
+            case (random < stoneChance + copperChance):
+                this.addResource(new Resource('copper', 1))
                 break;
-            case (random < stoneChance + gemsChance + metalChance):
-                this.addResource(new Resource(ResourceType.metal, 1))
+            case (random < stoneChance + copperChance + silverChance):
+                this.addResource(new Resource('silver', 1))
+                break;
+            case (random < stoneChance + copperChance + silverChance+ goldChance):
+                this.addResource(new Resource('gold', 1))
                 break;
             default:
                 console.log('failed to mine');
@@ -441,11 +446,11 @@ class Laborer {
 
     chop() {
         //add wood to the worker
-        this.addResource(new Resource(ResourceType.wood, 1));
+        this.addResource(new Resource('wood', 1));
     }
 
     craft() {
-        craftResource += 1;
+        craftWork += 1;
         updateCraftButton()
     }
 
@@ -466,10 +471,10 @@ class Laborer {
         let random = Math.random();
         if (random < huntChance) {
             //add food to the worker
-            let resource = new Resource(ResourceType.food, 10)
+            let resource = new Resource('food', 10)
             this.addResource(resource);
         }
-        this.addResource(new Resource(ResourceType.food, 0));
+        this.addResource(new Resource('food', 0));
     }
 
     tax() {
@@ -482,7 +487,7 @@ class Laborer {
         }
         let amount = workerCount * 1;
         if (amount > 0) {
-            let resource = new Resource(ResourceType.coins, amount)
+            let resource = new Resource('coins', amount)
             this.addResource(resource);
         }
     }
@@ -515,11 +520,11 @@ class Laborer {
                     console.log('error chances in gambler');
                     break;
             }
-            let resource = new Resource(ResourceType.coins, amount)
+            let resource = new Resource('coins', amount)
             this.addResource(resource);
         }
 
-        new Resource(ResourceType.coins, 0)
+        new Resource('coins', 0)
     }
 
 
@@ -541,14 +546,14 @@ class Laborer {
             let random = Math.random() * totalWinChance;
             switch (true) {
                 case (random < chanceCoin):
-                    resource = new Resource(ResourceType.coins, amount)
+                    resource = new Resource('coins', amount)
                     break;
                 case (random < chanceCoin + chanceFood):
-                    resource = new Resource(ResourceType.food, amount)
+                    resource = new Resource('food', amount)
                     break;
                 default:
                     console.log('error chances in beg');
-                    resource = new Resource(ResourceType.coins, 0)
+                    resource = new Resource('coins', 0)
                     break;
 
 
@@ -556,9 +561,9 @@ class Laborer {
             this.addResource(resource);
         }
         //always add 0 coinds and food to show that the worker is begging
-        resource = new Resource(ResourceType.coins, 0)
+        resource = new Resource('coins', 0)
         this.addResource(resource);
-        resource = new Resource(ResourceType.food, 0)
+        resource = new Resource('food', 0)
         this.addResource(resource);
 
     }

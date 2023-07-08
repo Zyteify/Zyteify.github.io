@@ -3,12 +3,13 @@
 let workers = [];
 //create resources list of initial resources available
 let resources = [
-    new Resource(ResourceType.food, 0),
-    new Resource(ResourceType.wood, 0),
-    new Resource(ResourceType.stone, 0),
-    new Resource(ResourceType.gems, 0),
-    new Resource(ResourceType.metal, 0),
-    new Resource(ResourceType.coins, 0),
+    new Resource('food', 0),
+    new Resource('wood', 0),
+    new Resource('stone', 0),
+    new Resource('copper', 0),
+    new Resource('silver', 0),
+    new Resource('gold', 0),
+    new Resource('coins', 0),
 ];
 function setResourceActive(name) {
     //set the default resource to be active
@@ -18,8 +19,8 @@ function setResourceActive(name) {
         }
     }
 }
-setResourceActive(ResourceType.food);
-setResourceActive(ResourceType.coins);
+setResourceActive('food');
+setResourceActive('coins');
 //list of gems  
 let gems = [
     new Gem("Diamond", "💎", 0, false),
@@ -56,8 +57,8 @@ function convertHoursToTime(hours) {
 let begList = [];
 function createBegList() {
     //get the food resource from the resources
-    let food = getResourceByName(ResourceType.food);
-    let coins = getResourceByName(ResourceType.coins);
+    let food = new Resource('food', 0);
+    let coins = new Resource('coins', 0);
     return [
         new Beg("food", food, 1, 10),
         new Beg("coins", coins, 1, 10),
@@ -117,6 +118,41 @@ loadJson('../dist/data/affixes.json').then(data => {
 });
 //todo verify the affixList is indeed an array of affixes at runtime
 //this is not checked and may introduce bugs
+const baseTypes = [];
+//load the json data for basetypes
+let baseTypeList = [];
+loadJson('../dist/data/basetypes.json').then(data => {
+    baseTypeList = data;
+    //create a basetype for each in the list
+    for (let i = 0; i < baseTypeList.length; i++) {
+        let baseType = baseTypeList[i];
+        let name = baseType.name;
+        let gearType = baseType.gearType;
+        let resourceCost = baseType.resourceCost;
+        let resource = baseType.resource;
+        let itemPower = baseType.itemPower;
+        let implicit = baseType.implicit;
+        let value = baseType.value;
+        let craftingCost = baseType.craftingCost;
+        //create arrays for each item in the string for resourceCost and resource
+        let resourceCostArray = [];
+        let resourceArray = [];
+        if (resourceCost && resource) {
+            //split the string into an array
+            resourceCost = resourceCost.split(", ");
+            resource = resource.split(", ");
+            for (let j = 0; j < resourceCost.length; j++) {
+                resourceCostArray.push(parseInt(resourceCost[j]));
+            }
+            for (let j = 0; j < resource.length; j++) {
+                resourceArray.push(resource[j]);
+            }
+        }
+        let newBaseType = new BaseType(name, gearType, resourceCostArray, resourceArray, itemPower, implicit, value, craftingCost);
+        baseTypes.push(newBaseType);
+    }
+    initializeCrafting();
+});
 function updateGameTime() {
     //game-time
     game.minutes += 15;
@@ -132,12 +168,16 @@ function updateGameTime() {
 function areArraysEqual(array1, array2) {
     return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
 }
-function moveGear2(item, source, sourceArray, sourceDiv, destination, destinationArray, destinationDiv) {
+function moveGear(item, source, sourceArray, sourceDiv, destination, destinationArray, destinationDiv) {
     let sourceWorker;
     let sourceString;
     let destinationWorker;
     let destinationString;
     let swap = false;
+    if (source == destination) {
+        console.log("source and destination are the same");
+        return;
+    }
     if (source instanceof Laborer) {
         sourceWorker = source;
     }
@@ -157,7 +197,7 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
             swap = true;
         }
         else {
-            console.log(`no room available in ${destination} to move ${item.gear}`);
+            console.log(`no room available in ${destination} to move ${item.baseType.gearType}`);
             return;
         }
     }
@@ -174,14 +214,14 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     if (destinationWorker) {
         //if the destination worker already has an item equipped, move it back to the source
         if (destinationWorker.weapon[0]) {
-            moveGear2(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationWorker.gearDiv, source, sourceArray, sourceDiv);
+            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationWorker.gearDiv, source, sourceArray, sourceDiv);
         }
         destinationWorker.equipItem(item);
     }
     //if the destination is a string, add the item to the array
     if (destinationString) {
         if (swap) {
-            moveGear2(destinationArray[0], destination, destinationArray, destinationDiv, source, sourceArray, sourceDiv);
+            moveGear(destinationArray[0], destination, destinationArray, destinationDiv, source, sourceArray, sourceDiv);
         }
         destinationArray.push(item);
     }
@@ -189,7 +229,6 @@ function moveGear2(item, source, sourceArray, sourceDiv, destination, destinatio
     item.setParentDiv(destinationDiv);
     emptyGearDisplay();
     displayText();
-    console.log(`moved item from ${source} to ${destination}`);
 }
 function removeItem(item, array) {
     const index = array.indexOf(item);
@@ -204,26 +243,26 @@ function createWorker() {
         //add the new worker to the list of workers
         workers.push(newWorker);
         game.workerCountCurrent++;
+        showFakeBegButton();
     }
     displayText();
 }
 //create a few upgrades
 let upgradeList = [
-    new Upgrade("Unlock Workers", true, 10, 0, new Resource(ResourceType.coins, 0), 1, unlockWorkers, ["Worker"], ["Worker"]),
-    new Upgrade("Unlock Gear", false, 10, 0, new Resource(ResourceType.coins, 0), 1, unlockGear, ["Worker"], ["Gear"]),
-    new Upgrade("Hire Worker", false, 10, 0, new Resource(ResourceType.food, 0), 10, createWorker, ["Worker"], ["WorkHire"]),
-    new Upgrade("Increase Gear Slots", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseGearCountMax, ["Gear"]),
+    new Upgrade("Unlock Workers", true, 10, 0, new Resource('coins', 0), 1, unlockWorkers, ["Worker"], ["Worker"]),
+    new Upgrade("Unlock Gear", false, 10, 0, new Resource('coins', 0), 1, unlockGear, ["Worker"], ["Gear"]),
+    new Upgrade("Hire Worker", false, 10, 0, new Resource('food', 0), 10, createWorker, ["Worker"], ["WorkHire"]),
+    new Upgrade("Increase Gear Slots", false, 10, 0, new Resource('coins', 0), 10, increaseGearCountMax, ["Gear"]),
     //max worker slots
-    new Upgrade("Increase Worker Slots", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerMax, ["WorkHire"]),
+    new Upgrade("Increase Worker Slots", false, 10, 0, new Resource('coins', 0), 10, increaseWorkerMax, ["WorkHire"]),
     //increase worker speed
-    new Upgrade("Increase Worker Speed", false, 10, 0, new Resource(ResourceType.coins, 0), 10, increaseWorkerSpeed, ["WorkHire"]),
+    new Upgrade("Increase Worker Speed", false, 10, 0, new Resource('coins', 0), 10, increaseWorkerSpeed, ["WorkHire"]),
 ];
 function increaseWorkerMax() {
     game.workerCountMax++;
 }
 function increaseGearCountMax() {
     game.gearCountMax++;
-    showFakeBegButton();
 }
 function unlockGear() {
     //if this upgrade is to unlock a div, show it
@@ -313,7 +352,7 @@ function controlWorkers() {
     }
 }
 function workersEat() {
-    let food = getResourceByName(ResourceType.food);
+    let food = getResourceByName('food');
     //while we have food left and the workers are hungry, eat
     let maxIterations = 1000;
     while (food.amount > 0 && workersAreHungry() && maxIterations > 0) {

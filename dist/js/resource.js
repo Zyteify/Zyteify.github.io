@@ -1,14 +1,4 @@
 "use strict";
-//create an enum for resource types
-var ResourceType;
-(function (ResourceType) {
-    ResourceType[ResourceType["food"] = 0] = "food";
-    ResourceType[ResourceType["wood"] = 1] = "wood";
-    ResourceType[ResourceType["stone"] = 2] = "stone";
-    ResourceType[ResourceType["gems"] = 3] = "gems";
-    ResourceType[ResourceType["metal"] = 4] = "metal";
-    ResourceType[ResourceType["coins"] = 5] = "coins";
-})(ResourceType || (ResourceType = {}));
 //resource list
 //food - 🍞
 //wood - 🌲
@@ -18,12 +8,13 @@ var ResourceType;
 //coins - 💰
 //gourmet food - 🍖
 const resourceIconMap = {
-    [ResourceType.food]: "🍞",
-    [ResourceType.wood]: "🌲",
-    [ResourceType.stone]: "⛰️",
-    [ResourceType.gems]: "💎",
-    [ResourceType.metal]: "⚙️",
-    [ResourceType.coins]: "💰",
+    'food': "🍞",
+    'wood': "🌲",
+    'stone': "⛰️",
+    'copper': "⚙️",
+    'silver': "🥈",
+    'gold': "🥇",
+    'coins': "💰",
 };
 class Resource {
     name;

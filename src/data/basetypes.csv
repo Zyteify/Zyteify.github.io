@@ -1,0 +1,46 @@
+﻿name,gearType,resourceCost,resource,itemPower,implicit,value,craftingCost
+Scrap,Hoe,,,2,,,0
+Scrap,Potion,,,1,,,0
+Scrap,Hammer,,,1,,,0
+Scrap,Bow,,,1,,,0
+Scrap,Chisel,,,1,,,0
+Scrap,Quill,,,1,,,0
+Scrap,Dice,,,1,,,0
+Scrap,Pickaxe,,,1,,,0
+Scrap,Axe,,,1,,,0
+Wooden,Hoe,5,wood,3,,,5
+Wooden,Potion,5,wood,2,,,5
+Wooden,Hammer,5,wood,2,,,5
+Wooden,Bow,5,wood,2,,,5
+Wooden,Chisel,5,wood,2,,,5
+Wooden,Quill,5,wood,2,,,5
+Wooden,Dice,5,wood,2,,,5
+Wooden,Pickaxe,5,wood,2,,,5
+Wooden,Axe,5,wood,2,,,5
+Copper,Hoe,"5, 5","wood, copper",4,,,20
+Copper,Potion,"5, 5","wood, copper",3,,,20
+Copper,Hammer,"5, 5","wood, copper",3,,,20
+Copper,Bow,"5, 5","wood, copper",3,,,20
+Copper,Chisel,"5, 5","wood, copper",3,,,20
+Copper,Quill,"5, 5","wood, copper",3,,,20
+Copper,Dice,"5, 5","wood, copper",3,,,20
+Copper,Pickaxe,"5, 5","wood, copper",3,,,20
+Copper,Axe,"5, 5","wood, copper",3,,,20
+Silver,Hoe,"5, 5","wood, silver",5,,,100
+Silver,Potion,"5, 5","wood, silver",4,,,100
+Silver,Hammer,"5, 5","wood, silver",4,,,100
+Silver,Bow,"5, 5","wood, silver",4,,,100
+Silver,Chisel,"5, 5","wood, silver",4,,,100
+Silver,Quill,"5, 5","wood, silver",4,,,100
+Silver,Dice,"5, 5","wood, silver",4,,,100
+Silver,Pickaxe,"5, 5","wood, silver",4,,,100
+Silver,Axe,"5, 5","wood, silver",4,,,100
+Gold,Hoe,"5, 5","wood, gold",10,,,1000
+Gold,Potion,"5, 5","wood, gold",9,,,1000
+Gold,Hammer,"5, 5","wood, gold",9,,,1000
+Gold,Bow,"5, 5","wood, gold",9,,,1000
+Gold,Chisel,"5, 5","wood, gold",9,,,1000
+Gold,Quill,"5, 5","wood, gold",9,,,1000
+Gold,Dice,"5, 5","wood, gold",9,,,1000
+Gold,Pickaxe,"5, 5","wood, gold",9,,,1000
+Gold,Axe,"5, 5","wood, gold",9,,,1000

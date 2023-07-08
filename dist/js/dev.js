@@ -27,7 +27,7 @@ if (window.location.hostname == "127.0.0.1") {
     let buttonCrafting = document.createElement('button');
     buttonCrafting.innerHTML = '🔨';
     buttonCrafting.onclick = function () {
-        craftResource += 1000;
+        craftWork += 1000;
         updateCraftButton();
     };
     let craftingContainer = document.getElementById('materials');

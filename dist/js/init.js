@@ -13,8 +13,14 @@ const workerCountMax = document.getElementById('worker-count-max');
 const workerList = document.getElementById('worker-list');
 //Materials
 const materialsDiv = document.getElementById('materials');
+//Materials-create-gear
+const materialsCreateGearButton = document.getElementById('materials-create-gear');
+//Materials-item-dropdown
+const materialsItemDropdown = document.getElementById('material-basetypename-dropdown');
+//Materials-gear-dropdown
+const materialsGearDropdown = document.getElementById('material-geartype-dropdown');
 //Materials-progress
-const craftingResource = document.getElementById('materials-resource');
+const materialsResource = document.getElementById('materials-resource');
 //gear
 const gearContainer = document.getElementById('gear');
 //gear
@@ -67,6 +73,5 @@ let game = {
     unlockedCrafting: false,
     unlockedMaterials: false,
 };
-let points = 0;
-let craftResource = 0;
+let craftWork = 0;
 let upgradePoints = 0;
