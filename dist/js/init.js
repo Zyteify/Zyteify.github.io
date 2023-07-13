@@ -21,6 +21,9 @@ const materialsItemDropdown = document.getElementById('material-basetypename-dro
 const materialsGearDropdown = document.getElementById('material-geartype-dropdown');
 //Materials-progress
 const materialsResource = document.getElementById('materials-resource');
+const materialsGemList = document.getElementById('materials-list');
+//resources
+const resourceList = document.getElementById('resource-list');
 //gear
 const gearContainer = document.getElementById('gear');
 //gear
@@ -40,6 +43,8 @@ const craftingItemGearDiv = document.getElementById('crafting-item-gear');
 const craftingItemStatsDiv = document.getElementById('crafting-item-stats');
 const craftingOptionsDiv = document.getElementById('crafting-options');
 const craftingMaterialsListDiv = document.getElementById('crafting-materials-list');
+//upgrades
+const upgradeButtonList = document.getElementById('upgrade-list');
 //hide the gear and worker containers
 gearContainer.style.display = "none";
 workerContainer.style.display = "none";
@@ -63,7 +68,7 @@ let game = {
     gearCountCurrent: 0,
     gearCountMax: 0,
     //player state
-    unlockedHoe: false,
+    unlockedSpade: false,
     unlockedAxe: false,
     unlockedHammer: false,
     unlockedWorkers: false,

@@ -6,7 +6,7 @@ function updateCraftButton() {
         //get the icon from the resource
         const resource = getResourceByName(value.type);
         if (resource) {
-            text += ` ${resource.icon} ${value.amount}`
+            text += ` ${resource.name} ${value.amount}`
         }
     }
     materialsCreateGearButton.innerHTML = `Craft Gear (🔨${craftingCosts.craftingWork}${text})`;

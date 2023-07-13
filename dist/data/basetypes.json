@@ -1,7 +1,7 @@
 ﻿[
   {
     "name": "Scrap",
-    "gearType": "Hoe",
+    "gearType": "Spade",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -12,7 +12,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -27,7 +27,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -42,7 +42,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -57,7 +57,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -72,7 +72,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -87,7 +87,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -102,7 +102,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -117,7 +117,7 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Scrap",
@@ -132,11 +132,11 @@
     ],
     "implicit": null,
     "value": null,
-    "craftingCost": 0
+    "craftingCost": 5
   },
   {
     "name": "Wooden",
-    "gearType": "Hoe",
+    "gearType": "Spade",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -271,7 +271,7 @@
   },
   {
     "name": "Copper",
-    "gearType": "Hoe",
+    "gearType": "Spade",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -406,7 +406,7 @@
   },
   {
     "name": "Silver",
-    "gearType": "Hoe",
+    "gearType": "Spade",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -541,7 +541,7 @@
   },
   {
     "name": "Gold",
-    "gearType": "Hoe",
+    "gearType": "Spade",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [

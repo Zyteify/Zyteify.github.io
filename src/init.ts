@@ -23,7 +23,11 @@ const materialsItemDropdown = <HTMLSelectElement>document.getElementById('materi
 const materialsGearDropdown = <HTMLSelectElement>document.getElementById('material-geartype-dropdown');
 //Materials-progress
 const materialsResource = <HTMLElement>document.getElementById('materials-resource');
+const materialsGemList = document.getElementById('materials-list') as HTMLDivElement;
 
+
+//resources
+const resourceList = document.getElementById('resource-list') as HTMLDivElement;
 
 //gear
 const gearContainer = document.getElementById('gear') as HTMLDivElement;
@@ -47,6 +51,9 @@ const craftingItemStatsDiv = <HTMLElement>document.getElementById('crafting-item
 const craftingOptionsDiv = <HTMLElement>document.getElementById('crafting-options');
 const craftingMaterialsListDiv = <HTMLElement>document.getElementById('crafting-materials-list');
 
+//upgrades
+const upgradeButtonList = <HTMLDivElement>document.getElementById('upgrade-list');
+
 //hide the gear and worker containers
 gearContainer.style.display = "none"
 workerContainer.style.display = "none"
@@ -55,8 +62,6 @@ craftingDiv.style.display = "none"
 
 let hoursStart = 8;
 let hoursEnd = 20;
-
-
 
 
 //initialize game variables
@@ -75,7 +80,7 @@ let game = {
     gearCountCurrent: 0,
     gearCountMax: 0,
     //player state
-    unlockedHoe: false,
+    unlockedSpade: false,
     unlockedAxe: false,
     unlockedHammer: false,
     unlockedWorkers: false,

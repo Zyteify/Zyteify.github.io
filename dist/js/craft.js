@@ -12,12 +12,12 @@ craftingItemMaterials.innerHTML = "Item Materials";
 craftingMaterialsListDiv.appendChild(craftingItemMaterials);
 const itemTypes = ["Weapon", "Boot"];
 const gearTypes = [
-    "Hoe",
+    "Spade",
     //"Mace",
     "Potion",
     "Hammer",
     //"Knife",
-    "Bow",
+    "Spear",
     "Chisel",
     "Quill",
     "Dice",
@@ -28,12 +28,12 @@ const gearTypes = [
     "Axe",
 ];
 const vocationMap = {
-    'Hoe': 'Farmer',
+    'Spade': 'Farmer',
     'Mace': 'Guard',
     'Potion': 'Nurse',
     'Hammer': 'Blacksmith',
     'Knife': 'Cook',
-    'Bow': 'Hunter',
+    'Spear': 'Hunter',
     'Chisel': 'Gemcutter',
     'Quill': 'Taxer',
     'Dice': 'Gambler',
@@ -106,7 +106,7 @@ function generateBaseType(gearType) {
     return baseType;
 }
 function generateGear() {
-    let gear = "Hoe";
+    let gear = "Spade";
     let random = Math.random() * gearTypes.length;
     //set gear to a random gear type
     gear = gearTypes[Math.floor(random)];

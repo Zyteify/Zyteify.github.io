@@ -1,4 +1,4 @@
-class Beg {
+/* class Beg {
     name: string;
     resource: Resource;
     amount: number;
@@ -38,10 +38,10 @@ class Beg {
             let resourceText = "";
             switch (this.resource.name) {
                 case 'coins':
-                    resourceText = `Beg for ${this.amount} ${this.resource.icon}`
+                    resourceText = `Beg for ${this.amount} ${this.resource}`
                     break;
                 default:
-                    resourceText = `Scavange for ${this.amount} ${this.resource.icon}`
+                    resourceText = `Scavange for ${this.amount} ${this.resource}`
                     break;
             }
             button.innerHTML = resourceText;
@@ -85,11 +85,11 @@ function unlockStarterGear() {
     let baseType: BaseType | null;
     switch (fakeBegs) {
         case 0:
-            baseType = findBaseTypeByNameandGearType("Scrap", 'Hoe')
+            baseType = findBaseTypeByNameandGearType("Scrap", 'Spade')
             if (baseType) {
-                gearCreation = createGear("Weapon", "Hoe", baseType, 'Starter');
+                gearCreation = createGear("Weapon", "Spade", baseType, 'Starter');
                 if (gearCreation) {
-                    game.unlockedHoe = true;
+                    game.unlockedSpade = true;
                     fakeBegs++;
                 }
                 break;
@@ -137,4 +137,4 @@ function showFakeBegButton() {
     else {
         fakeBegButton.style.display = "none";
     }
-}
+} */

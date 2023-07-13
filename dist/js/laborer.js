@@ -8,6 +8,7 @@ class Vocation {
 //create the class worker
 class Laborer {
     name;
+    gender = 'female';
     vocation;
     id;
     static count = 0;
@@ -26,19 +27,56 @@ class Laborer {
     gearDiv;
     //actions
     vocationActions; // Mapping of vocation to function
-    workSpeed = 10;
-    static workSpeedDefault = 10;
-    hunger = 0;
+    static workSpeedUpgradeable = 10;
+    energy = 0;
     rested = true;
-    workSpeedMin = 1;
+    hunger = 0;
     workProgress = 0;
-    constructor(name) {
+    mods = {
+        itemPower: 0,
+        itemPowerLocalAddition: 0,
+        itemPowerLocalMultiplier: 0,
+        duplicateWork: 0,
+        adjacentWorkPower: 0,
+        chanceToRepeatGreatestWork: 0,
+        otherModTiers: 0,
+        criticalWorkChance: 0,
+        criticalWorkMultiplier: 0,
+        chanceToNotConsumeEnergy: 0,
+        multiplyStock: 0,
+    };
+    properties = {
+        workPower: 0,
+        energyMax: 0,
+        energyMin: 0,
+        workProgress: 0,
+        duplicateWorkChance: 0,
+        chanceToRepeatGreatestWork: 0,
+        criticalWorkChance: 0,
+        criticalWorkMultiplier: 0,
+        chanceToNotConsumeEnergy: 0,
+        multiplyStock: 0,
+        repeatGreatestWorkCount: 0,
+    };
+    flags = {
+        duplicateWork: false,
+        repeatGreatestWork: false,
+        criticalWork: false,
+        notConsumeEnergy: false,
+        multiplyStock: false,
+    };
+    constructor(name, gender) {
+        if (gender) {
+            this.gender = gender;
+        }
         this.id = Laborer.count++;
         this.name = 'temp';
         this.vocation = new Vocation('Beggar');
         this.resources = [];
         this.weapon = [];
         this.boot = [];
+        this.energy = 10;
+        this.calculateMods();
         //actions
         this.vocationActions = {
             Beggar: this.beg,
@@ -72,12 +110,71 @@ class Laborer {
         this.paragraphDiv.id = "worker-paragraph-div" + this.id.toString();
         this.resourceDiv = document.createElement('div');
         this.resourceDiv.id = "worker-resources-div" + this.id.toString();
+        this.resourceDiv.classList.add('worker-resources-div');
         this.gearDiv = document.createElement('div');
         this.gearDiv.id = "worker-gear-div" + this.id.toString();
         this.setName(name);
         this.setupDiv();
     }
+    calculateMods() {
+        //reset mods
+        this.mods = {
+            itemPower: 0,
+            itemPowerLocalAddition: 0,
+            itemPowerLocalMultiplier: 0,
+            duplicateWork: 0,
+            adjacentWorkPower: 0,
+            chanceToRepeatGreatestWork: 0,
+            otherModTiers: 0,
+            criticalWorkChance: 0,
+            criticalWorkMultiplier: 0,
+            chanceToNotConsumeEnergy: 0,
+            multiplyStock: 0,
+        };
+        // Loop through each item in the worker's inventory
+        this.weapon.reduce((acc, weaponItem) => {
+            const weaponMods = weaponItem.mods;
+            Object.keys(acc).forEach((key) => {
+                acc[key] += weaponMods[key];
+            });
+            return acc;
+        }, this.mods);
+        this.calculateProperties();
+    }
+    calculateProperties() {
+        //reset properties
+        this.properties = {
+            workPower: 0,
+            energyMax: 0,
+            energyMin: 0,
+            workProgress: 0,
+            duplicateWorkChance: 0,
+            chanceToRepeatGreatestWork: 0,
+            criticalWorkChance: 0,
+            criticalWorkMultiplier: 0,
+            chanceToNotConsumeEnergy: 0,
+            multiplyStock: 0,
+            repeatGreatestWorkCount: 0,
+        };
+        this.properties.workPower = (this.mods.itemPower + this.mods.itemPowerLocalAddition) * (1 + (this.mods.itemPowerLocalMultiplier / 100));
+        this.properties.duplicateWorkChance = this.mods.duplicateWork;
+        this.properties.chanceToRepeatGreatestWork = this.mods.chanceToRepeatGreatestWork;
+        this.properties.criticalWorkChance = 0.05 + this.mods.criticalWorkChance;
+        this.properties.criticalWorkMultiplier = 1 + this.mods.criticalWorkMultiplier;
+        this.properties.chanceToNotConsumeEnergy = this.mods.chanceToNotConsumeEnergy;
+        this.properties.multiplyStock = this.mods.multiplyStock;
+        this.properties.repeatGreatestWorkCount = 0;
+        //energy
+        this.properties.energyMax = Laborer.workSpeedUpgradeable;
+        this.properties.energyMin = 1;
+    }
     randomiseName() {
+        if (this.gender == 'male') {
+            var nameList = nameListBoy;
+        }
+        else {
+            var nameList = NameListGirl;
+        }
         if (nameList.length == 0) {
             console.log('error');
             return this.id.toString();
@@ -117,20 +214,76 @@ class Laborer {
         //when they change vocation, they should lose their work progress
         this.workProgress = 0;
     }
-    doWork() {
-        this.workProgress += this.workSpeed;
-        if (this.workProgress >= 100) {
-            this.workProgress -= 100;
-            this.vocationActions[this.vocation.name].call(this);
-            this.workSpeed -= 1;
-            this.hunger += 1;
+    calculateDuplicateWork() {
+        //reset duplicate work
+        this.flags.duplicateWork = false;
+        //duplicate work
+        if (Math.random() < this.properties.duplicateWorkChance) {
+            this.flags.duplicateWork = true;
         }
-        this.rested = false;
+    }
+    calculateChances() {
+        //reset flags
+        this.flags = {
+            duplicateWork: false,
+            repeatGreatestWork: false,
+            criticalWork: false,
+            notConsumeEnergy: false,
+            multiplyStock: false,
+        };
+        //critical work
+        if (Math.random() < this.properties.criticalWorkChance) {
+            this.flags.criticalWork = true;
+        }
+        //not consume energy
+        if (Math.random() < this.properties.chanceToNotConsumeEnergy) {
+            this.flags.notConsumeEnergy = true;
+        }
+        //multiply stock
+        if (Math.random() < this.properties.multiplyStock) {
+            this.flags.multiplyStock = true;
+        }
+    }
+    doWork() {
+        let numWorks = 1;
+        this.calculateDuplicateWork();
+        if (this.flags.duplicateWork) {
+            numWorks = 2;
+        }
+        for (let i = 0; i < numWorks; i++) {
+            this.calculateChances();
+            let workPower = this.properties.workPower;
+            //if critical work
+            if (this.flags.criticalWork) {
+                workPower = this.properties.workPower * this.properties.criticalWorkMultiplier;
+            }
+            workPower = Math.floor(workPower);
+            //doing work now
+            this.workProgress += this.energy;
+            if (this.workProgress >= 100) {
+                this.workProgress -= 100;
+                //do the work
+                this.vocationActions[this.vocation.name].call(this, workPower);
+                if (!this.flags.notConsumeEnergy) {
+                    this.energy -= 1;
+                }
+                this.hunger += 1;
+            }
+            this.rested = false;
+            if (this.flags.multiplyStock) {
+                //loop through each resource in the worker's inventory
+                for (let i = 0; i < this.resources.length; i++) {
+                    //multiply the amount by 1.1
+                    this.resources[i].amount = Math.floor(1.1 * this.resources[i].amount);
+                }
+            }
+        }
         this.setParagraph();
     }
     //add a resource to the worker
     addResource(resource) {
         let resourceExistsFlag = false;
+        let existingResource = null;
         //check to see if the worker already has the resource
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
@@ -139,18 +292,28 @@ class Laborer {
                 //add the resource to the worker's inventory
                 this.resources[i].amount += resource.amount;
                 resourceExistsFlag = true;
+                existingResource = this.resources[i];
             }
         }
         if (!resourceExistsFlag) {
             //the worker does not have the resource, add it to the worker's inventory
             this.resources.push(resource);
+            resource.active = true;
+            resource.display();
+        }
+        else {
+            if (existingResource) {
+                existingResource.display();
+            }
+            //remove the extra resource
+            resource.div.remove();
         }
         this.setResourcesDisplay();
     }
     //remove a resource from the worker
     removeResource(resource) {
-        resource.paragraph.id = "";
-        resource.paragraph.remove();
+        this.resourceDiv.removeChild(resource.div);
+        resource.div.remove();
         let index = this.resources.indexOf(resource);
         if (index > -1) {
             this.resources.splice(index, 1);
@@ -166,6 +329,7 @@ class Laborer {
         }
         this.setItemParent();
         this.setVocation();
+        this.calculateMods();
     }
     //unequip an item
     unequipItem(item) {
@@ -180,6 +344,7 @@ class Laborer {
                 console.log('unknown weapon type');
                 break;
         }
+        this.calculateMods();
     }
     setItemParent() {
         //append the gear div to the worker div if it hasnt already
@@ -211,6 +376,7 @@ class Laborer {
         //clear the worker's inventory
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
+            this.resources[i].display();
             //if the resource has an amount of 0, remove it from the worker's inventory
             if (this.resources[i].amount <= 0) {
                 this.removeResource(this.resources[i]);
@@ -221,19 +387,19 @@ class Laborer {
     //consume food to do get the work speed back to normal
     eat() {
         let food = getResourceByName('food');
-        if (food != null && food.amount > 0 && this.workSpeed < Laborer.workSpeedDefault) {
+        if (food != null && food.amount > 0 && this.energy < this.properties.energyMax) {
             food.amount -= 1;
-            this.workSpeed += 1;
+            this.energy += 1;
             this.hunger -= 1;
             this.setParagraph();
         }
     }
     //rest to get the work speed up
     rest() {
-        if (this.workSpeed < Laborer.workSpeedDefault) {
-            this.workSpeed += 1;
-            if (this.workSpeed < Laborer.workSpeedDefault) {
-                this.workSpeed += 1;
+        if (this.energy < this.properties.energyMax) {
+            this.energy += 1;
+            if (this.energy < this.properties.energyMax) {
+                this.energy += 1;
                 this.setParagraph();
             }
             this.setParagraph();
@@ -244,9 +410,10 @@ class Laborer {
         //if the image id has not been set, initialise the image
         if (this.image.id == "") {
             // Set the source attribute of the image
-            this.image.src = 'dist/img/person.png';
+            this.image.src = 'dist/img/characters/char.png';
             this.image.id = "worker-image" + this.id.toString();
             this.image.draggable = false;
+            this.image.classList.add('worker-image');
             if (this.image.parentElement == null) {
                 this.div.appendChild(this.image);
             }
@@ -276,7 +443,7 @@ class Laborer {
                     this.paragraph[i].innerHTML = "Work Progress: " + this.workProgress.toString();
                     break;
                 case (2):
-                    this.paragraph[i].innerHTML = "Work Speed: " + this.workSpeed.toString();
+                    this.paragraph[i].innerHTML = "Work Speed: " + this.energy.toString();
                     break;
                 default:
                     console.log('error');
@@ -289,17 +456,17 @@ class Laborer {
         if (this.resourceDiv.parentElement == null) {
             this.div.appendChild(this.resourceDiv);
         }
-        //check to see if a paragraph element exists for each resource and create it if neccessary
-        for (let i = 0; i < this.resources.length; i++) {
-            if (this.resources[i].paragraph.id == "") {
-                this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
-                this.resourceDiv.appendChild(this.resources[i].paragraph);
-                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-            }
-            if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
-                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-            }
-        }
+        /*         //check to see if a paragraph element exists for each resource and create it if neccessary
+                for (let i = 0; i < this.resources.length; i++) {
+                    if (this.resources[i].paragraph.id == "") {
+                        this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
+                        this.resourceDiv.appendChild(this.resources[i].paragraph);
+                        this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
+                    }
+                    if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
+                        this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
+                    }
+                } */
     }
     setupDiv() {
         //append the div to the container if it hasnt already
@@ -318,16 +485,21 @@ class Laborer {
         //append the resources to the div if they havent already
         this.setResourcesDisplay();
     }
-    guard() {
+    guard(workPower) {
     }
-    cook() {
+    cook(workPower) {
     }
-    farm() {
+    farm(workPower) {
         //add food to the worker
-        let resource = new Resource('food', 2);
+        let resource = new Resource('food', this.resourceDiv, workPower);
         this.addResource(resource);
     }
-    mine() {
+    mine(workPower) {
+        for (let i = 0; i < workPower; i++) {
+            this.mineOnce();
+        }
+    }
+    mineOnce() {
         //have an x chance of getting a resource
         //add a resource to the worker
         let stoneChance = 0.8;
@@ -338,55 +510,56 @@ class Laborer {
         let random = Math.random() * totalWinChance;
         switch (true) {
             case (random < stoneChance):
-                this.addResource(new Resource('stone', 1));
+                this.addResource(new Resource('stone', this.resourceDiv, 1));
                 break;
             case (random < stoneChance + copperChance):
-                this.addResource(new Resource('copper', 1));
+                this.addResource(new Resource('copper', this.resourceDiv, 1));
                 break;
             case (random < stoneChance + copperChance + silverChance):
-                this.addResource(new Resource('silver', 1));
+                this.addResource(new Resource('silver', this.resourceDiv, 1));
                 break;
             case (random < stoneChance + copperChance + silverChance + goldChance):
-                this.addResource(new Resource('gold', 1));
+                this.addResource(new Resource('gold', this.resourceDiv, 1));
                 break;
             default:
-                console.log('failed to mine');
+                console.log('incorrect chances in mineOnce');
                 break;
         }
     }
-    merchant() {
+    merchant(workPower) {
     }
-    priest() {
+    priest(workPower) {
     }
-    chop() {
+    chop(workPower) {
         //add wood to the worker
-        this.addResource(new Resource('wood', 1));
+        this.addResource(new Resource('wood', this.resourceDiv, workPower));
     }
-    craft() {
-        craftWork += 1;
+    craft(workPower) {
+        craftWork += workPower;
         updateCraftButton();
     }
     //give energy to all other workers
-    nurse() {
+    nurse(workPower) {
+        //todo make workpower do something
         for (let i = 0; i < workers.length; i++) {
             if (workers[i].id != this.id) {
                 workers[i].rest();
             }
         }
     }
-    gemcut() {
+    gemcut(workPower) {
     }
-    hunt() {
+    hunt(workPower) {
         let huntChance = 0.35;
         let random = Math.random();
         if (random < huntChance) {
             //add food to the worker
-            let resource = new Resource('food', 10);
+            let resource = new Resource('food', this.resourceDiv, 10 * workPower);
             this.addResource(resource);
         }
-        this.addResource(new Resource('food', 0));
+        this.addResource(new Resource('food', this.resourceDiv, 0));
     }
-    tax() {
+    tax(workPower) {
         //get the number of workers who aren't vagrants or taxers
         let workerCount = 0;
         for (let i = 0; i < workers.length; i++) {
@@ -394,13 +567,13 @@ class Laborer {
                 workerCount++;
             }
         }
-        let amount = workerCount * 1;
+        let amount = workerCount * workPower;
         if (amount > 0) {
-            let resource = new Resource('coins', amount);
+            let resource = new Resource('coins', this.resourceDiv, amount);
             this.addResource(resource);
         }
     }
-    gamble() {
+    gamble(workPower) {
         let winChance = 0.15;
         let random = Math.random();
         if (random < winChance) {
@@ -413,28 +586,31 @@ class Laborer {
             let random = Math.random() * totalWinChance;
             switch (true) {
                 case (random < winChanceSmall):
-                    amount = 10;
+                    amount = 10 * workPower;
                     break;
                 case (random < winChanceSmall + winChanceBig):
-                    amount = 100;
+                    amount = 100 * workPower;
                     break;
                 case (random < winChanceSmall + winChanceBig + winChanceHuge):
-                    amount = 1000;
+                    amount = 1000 * workPower;
                     break;
                 default:
                     amount = 1;
                     console.log('error chances in gambler');
                     break;
             }
-            let resource = new Resource('coins', amount);
+            let resource = new Resource('coins', this.resourceDiv, amount);
             this.addResource(resource);
         }
-        new Resource('coins', 0);
+        new Resource('coins', this.resourceDiv, 0);
     }
-    research() {
-        upgradePoints += 1;
+    research(workPower) {
+        upgradePoints += workPower;
     }
-    beg() {
+    beg(workPower) {
+        if (workPower == 0) {
+            workPower = 1;
+        }
         let resource;
         //10% chance to get 1 coin/food
         let chance = 0.4;
@@ -447,22 +623,22 @@ class Laborer {
             let random = Math.random() * totalWinChance;
             switch (true) {
                 case (random < chanceCoin):
-                    resource = new Resource('coins', amount);
+                    resource = new Resource('coins', this.resourceDiv, workPower);
                     break;
                 case (random < chanceCoin + chanceFood):
-                    resource = new Resource('food', amount);
+                    resource = new Resource('food', this.resourceDiv, workPower);
                     break;
                 default:
                     console.log('error chances in beg');
-                    resource = new Resource('coins', 0);
+                    resource = new Resource('coins', this.resourceDiv, 0);
                     break;
             }
             this.addResource(resource);
         }
-        //always add 0 coinds and food to show that the worker is begging
-        resource = new Resource('coins', 0);
+        //always add 1 coins and food to show that the worker is begging
+        resource = new Resource('coins', this.resourceDiv, 1);
         this.addResource(resource);
-        resource = new Resource('food', 0);
+        resource = new Resource('food', this.resourceDiv, 0);
         this.addResource(resource);
     }
 }

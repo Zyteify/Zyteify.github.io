@@ -14,7 +14,7 @@ craftingItemMaterials.id = "crafting-item-materials";
 craftingItemMaterials.innerHTML = "Item Materials";
 craftingMaterialsListDiv.appendChild(craftingItemMaterials);
 
-type GearType = "Hoe" | "Mace" | "Potion" | "Hammer" | "Knife" | "Bow" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
+type GearType = "Spade" | "Mace" | "Potion" | "Hammer" | "Knife" | "Spear" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
 type ItemType = "Weapon" | "Boot"
 
 type RarityType = "Starter" | "Common" | "Magic" | "Rare" | "Unique"
@@ -22,12 +22,12 @@ type RarityType = "Starter" | "Common" | "Magic" | "Rare" | "Unique"
 const itemTypes: ItemType[] = ["Weapon", "Boot"]
 
 const gearTypes: GearType[] = [
-    "Hoe",
+    "Spade",
     //"Mace",
     "Potion",
     "Hammer",
     //"Knife",
-    "Bow",
+    "Spear",
     "Chisel",
     "Quill",
     "Dice",
@@ -39,12 +39,12 @@ const gearTypes: GearType[] = [
 ];
 
 const vocationMap: Record<GearType, ClassType> = {
-    'Hoe': 'Farmer',
+    'Spade': 'Farmer',
     'Mace': 'Guard',
     'Potion': 'Nurse',
     'Hammer': 'Blacksmith',
     'Knife': 'Cook',
-    'Bow': 'Hunter',
+    'Spear': 'Hunter',
     'Chisel': 'Gemcutter',
     'Quill': 'Taxer',
     'Dice': 'Gambler',
@@ -128,7 +128,7 @@ function generateBaseType(gearType: GearType): BaseType {
 }
 
 function generateGear(): GearType {
-    let gear: GearType = "Hoe";
+    let gear: GearType = "Spade";
 
     let random = Math.random() * gearTypes.length;
 

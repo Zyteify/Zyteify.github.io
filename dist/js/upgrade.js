@@ -1,27 +1,25 @@
 "use strict";
 class Upgrade {
     name;
-    cost;
-    resourceRequired;
+    resourcesRequired = [];
     level;
     maxLevel;
     active = true;
     costMultiplier = 2;
     upgradeAction;
+    //display
+    resourceSpan;
     //list of upgrades that are set to be locked initially based on the tags
     static unavailableUpgrades = ["Worker", "Gear", "WorkHire"];
     unlocks = [];
     //tag the upgrade if it needs to be unlocked later
     tags = [];
-    //the constructor for the upgrade class
-    constructor(name, active, cost, level, resourceRequired, maxLevel, upgradeAction, tags, 
+    constructor(name, active, level, maxLevel, upgradeAction, tags, 
     //optional parameter
     unlocks) {
         this.active = active;
         this.name = name;
-        this.cost = cost;
         this.level = level;
-        this.resourceRequired = resourceRequired;
         this.maxLevel = maxLevel;
         this.upgradeAction = upgradeAction;
         this.tags = tags;
@@ -37,24 +35,22 @@ class Upgrade {
                 this.costMultiplier = 2;
                 break;
         }
+        this.resourceSpan = document.createElement('span');
+        this.resourceSpan.id = `upgrade-resource-span-${this.name}`;
+        this.resourceSpan.className = 'upgrade-span-resource';
     }
     upgrade() {
         let spent = false;
         if (this.level < this.maxLevel) {
             //spend the cost of the upgrade
-            for (let i = 0; i < resources.length; i++) {
-                if (resources[i].name == this.resourceRequired.name && resources[i].amount >= this.cost) {
-                    resources[i].amount -= this.cost;
-                    spent = true;
-                }
-            }
+            spent = this.spendResources();
         }
         if (spent == false) {
-            console.log(`not enough ${this.resourceRequired.name} to upgrade ${this.name}`);
+            console.log(`not enough resources to upgrade ${this.name}`);
         }
         else {
             this.level++;
-            this.cost = Math.floor(this.cost * this.costMultiplier);
+            this.increaseResourcesCost();
             this.upgradeAction();
             if (this.unlocks.length > 0) {
                 //loop through the list of upgrades that are set to be unlocked
@@ -83,11 +79,7 @@ class Upgrade {
             ready = true;
         }
         //check to see if the player has enough resources
-        for (let i = 0; i < resources.length; i++) {
-            if (resources[i].name == this.resourceRequired.name && resources[i].amount >= this.cost) {
-                resourcesAvailable = true;
-            }
-        }
+        resourcesAvailable = this.resourceAvailable();
         //check to see if the player has slots available
         switch (this.name) {
             case "Hire Worker":
@@ -108,16 +100,30 @@ class Upgrade {
             button = document.createElement('button');
             button.id = 'upgrade' + this.name;
             button.className = 'upgrade';
+            //create a span element for the button
+            const span = document.createElement('span');
+            span.id = 'upgrade' + this.name + 'span';
+            span.className = 'upgrade-span';
+            button.appendChild(span);
             // Set the button text to the upgrade name, resouce required, and cost
-            button.textContent = `${this.name}  ${this.level}/${this.maxLevel} (${this.resourceRequired.icon}${this.cost})`;
-            const container = document.getElementById('upgrade-list');
-            container.appendChild(button);
+            span.textContent = `${this.name}  ${this.level}/${this.maxLevel})`;
+            //create a span element for the button
+            button.appendChild(this.resourceSpan);
+            //create a div element for the button inside the span
+            const div = document.createElement('div');
+            div.id = 'upgrade-span-resource' + this.name + 'div';
+            div.className = 'upgrade-span-resource-div';
+            this.resourceSpan.appendChild(div);
+            upgradeButtonList.appendChild(button);
             button.onclick = () => {
                 // Call upgrade function with the name of the upgrade
                 this.upgrade();
             };
         }
-        button.textContent = `${this.name}  ${this.level}/${this.maxLevel} (${this.resourceRequired.icon}${this.cost})`;
+        //loop through the resources required for the upgrade and display them
+        for (let i = 0; i < this.resourcesRequired.length; i++) {
+            this.resourcesRequired[i].display();
+        }
         //if the upgrade not available, make the button disabled
         if (!this.isAvailable()) {
             button.disabled = true;
@@ -133,7 +139,52 @@ class Upgrade {
     displayActive() {
         let button = document.getElementById('upgrade' + this.name);
         if (this.active) {
-            button.style.display = "block";
+            //remove the none display
+            button.style.display = "";
         }
     }
+    addResourceCost(resource) {
+        resource.active = true;
+        this.resourcesRequired.push(resource);
+    }
+    resourceAvailable() {
+        let result = false;
+        for (let i = 0; i < this.resourcesRequired.length; i++) {
+            for (let j = 0; j < resources.length; j++) {
+                if (this.resourcesRequired[i].name == resources[j].name && this.resourcesRequired[i].amount <= resources[j].amount) {
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+    spendResources() {
+        let spent = true;
+        for (let i = 0; i < this.resourcesRequired.length; i++) {
+            let resourcespent = false;
+            for (let j = 0; j < resources.length; j++) {
+                if (this.resourcesRequired[i].name == resources[j].name && this.resourcesRequired[i].amount <= resources[j].amount) {
+                    resources[j].amount -= this.resourcesRequired[i].amount;
+                    resourcespent = true;
+                }
+            }
+            if (resourcespent == false) {
+                spent = false;
+            }
+        }
+        return spent;
+    }
+    increaseResourcesCost() {
+        for (let i = 0; i < this.resourcesRequired.length; i++) {
+            this.resourcesRequired[i].amount = Math.floor(this.resourcesRequired[i].amount * this.costMultiplier);
+        }
+    }
+}
+function getUpgradeByName(name) {
+    for (let i = 0; i < upgradeList.length; i++) {
+        if (upgradeList[i].name === name) {
+            return upgradeList[i];
+        }
+    }
+    return null;
 }

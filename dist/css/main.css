@@ -1,12 +1,33 @@
+@font-face {
+    font-family: 'CuteFont';
+    src: url('../font/delicate.woff2') format('woff2'),
+        url('../font/delicate.woff') format('woff');
+}
+
 html {
     width: 100%;
     height: 100%;
 }
 
+button {
+    font-family: 'CuteFont', sans-serif;
+    font-size: larger;
+    display: flex;
+    align-items: center;
+  }
+
 body {
+    font-family: 'CuteFont', sans-serif;
     margin: auto;
     width: 100%;
     height: 100%;
+    letter-spacing: 1px;
+
+    /* background-image: url('../img/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-image 1s ease; */
 
 }
 
@@ -17,7 +38,6 @@ body {
 }
 
 .main {
-    border: 1px solid black;
     padding: 5px;
 
 }
@@ -26,8 +46,6 @@ body {
     flex-basis: 0;
     flex-grow: 1;
 }
-
-
 
 #worker-list {
     display: flex;
@@ -39,13 +57,16 @@ body {
     flex-wrap: wrap;
     min-width: 50px;
     min-height: 50px;
-    border: 1px solid black;
 }
 
 .worker-div {
-    border: 1px solid black;
     padding: 5px;
     margin: 5px;
+}
+
+.dev-div{
+    display:flex;
+    width: 200px;
 }
 
 
@@ -62,7 +83,6 @@ body {
 }
 
 .gear-div {
-    border: 1px solid black;
     padding: 5px;
     margin: 5px;
 }
@@ -110,76 +130,180 @@ body {
     justify-content: flex-start;
 }
 
-.item{
+.item {
     display: flex;
     border: 1px solid black;
     flex-direction: column;
     align-items: center;
-    max-width: 200px;
 }
-.item-gear{
+
+.item-gear {
     margin-block-start: 0.1em;
     margin-block-end: 0.1em;
     border-bottom: 1px solid black;
 }
 
-.small-margin{
+.small-margin {
     margin-block-start: 0.1em;
     margin-block-end: 0.1em;
 }
 
-.item-name{
+.item-name {
     font-weight: bold;
     font-size: large;
 }
 
-.item-statDiv{
+.item-statDiv {
     display: flex;
     width: 100%
 }
 
-.item-stats{
+.item-stats {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.item-stat{
+.item-stat {
     text-align: center;
     margin: auto;
 }
 
-.hover{
+.hover {
     min-width: 200px;
     min-height: 200px;
     position: fixed;
 }
 
-#hover-container{
+#hover-container {
     min-height: 0px;
     min-width: 0px;
 }
 
-.item-background{
+.item-background {
     background-color: rgb(234, 250, 255);
 }
 
-.item-starter{
-    border: 1px solid rgb(79, 52, 30);
+
+
+.worker-image {
+    height: 200px;
 }
 
-.item-common{
-    border: 1px solid rgb(72, 72, 72);
+.item-image {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 10
 }
 
-.item-magic{
-    border: 1px solid rgb(80, 255, 159);
+.item-image-bg {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+
+    filter: brightness(0.8) contrast(1.2) saturate(1.5) hue-rotate(90deg);
+
 }
 
-.item-rare{
-    border: 1px solid rgb(255, 74, 122);
+.item-pictureDiv {
+    height: 100px;
+    width: 100px;
+    position: relative;
 }
 
-.item-unique{
-    border: 1px solid rgb(31, 11, 255);
+
+
+.crafting-item-size-big {
+    height: 300px;
+    width: 300px;
+    
+}
+
+
+
+#section-title {
+    /* bg image */
+    background-image: url('../img/brushes/brush.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left;
+
+    padding: 5px;
+    width: fit-content;
+
+    margin: 0;
+
+
+}
+
+.item-starter {
+    filter: brightness(0.1) opacity(0.5)
+}
+
+.item-common {
+    filter: brightness(0.6) opacity(0.5);
+}
+
+.item-magic {
+    filter: brightness(1)
+}
+
+.item-rare {
+    filter: brightness(0.8) contrast(1.2) saturate(1.5) hue-rotate(90deg)
+}
+
+.item-unique {
+    filter: brightness(1) saturate(1.5) hue-rotate(250deg)
+}
+
+.gem-div-image{
+    position: relative;
+    height: 50px;
+    width: 50px;
+}
+
+.gem-image{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+}
+
+.gem-image-bg{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+    filter: brightness(0.8) contrast(1.2) saturate(1.5) hue-rotate(90deg);
+}
+
+.resource-div-image{
+    height: 25px;
+    width: 25px;
+    
+}
+
+.resource-image{
+    height: 100%;
+    width: 100%;
+}
+
+.resource-div{
+    display: flex;
+    align-items: center;
+}
+
+.worker-resources-div{
+    display: flex;
+}
+
+.upgrade-span-resource{
+    margin-left: 3px;
+}
+
+.dev-hide
+{
+    display: none;
 }

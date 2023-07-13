@@ -27,6 +27,8 @@ class Item {
     hoverDiv;
     hoverInsideDiv;
     container;
+    imageDiv;
+    imageBG;
     setup = false;
     setupHover = false;
     static count = 0;
@@ -64,9 +66,13 @@ class Item {
         this.hoverInsideDiv.draggable = false;
         this.hoverInsideDiv.classList.add("item");
         this.hoverInsideDiv.classList.add("item-background");
+        //create an item picture div
+        this.imageDiv = document.createElement('div');
+        //set the item picture div class
+        this.imageDiv.classList.add("item-pictureDiv");
+        this.imageBG = new Image();
         //by default make the parent container the crafting window
         this.container = document.getElementById('crafting-item-section');
-        this.setRarityBorder();
         this.setupDiv();
         this.setParentDiv();
         this.setHoverDiv();
@@ -107,24 +113,19 @@ class Item {
     setRarityBorder() {
         switch (this.rarity) {
             case 'Starter':
-                this.div.classList.add("item-starter");
-                this.hoverInsideDiv.classList.add("item-starter");
+                this.imageBG.classList.add("item-starter");
                 break;
             case 'Common':
-                this.div.classList.add("item-common");
-                this.hoverInsideDiv.classList.add("item-common");
+                this.imageBG.classList.add("item-common");
                 break;
             case 'Magic':
-                this.div.classList.add("item-magic");
-                this.hoverInsideDiv.classList.add("item-magic");
+                this.imageBG.classList.add("item-magic");
                 break;
             case 'Rare':
-                this.div.classList.add("item-rare");
-                this.hoverInsideDiv.classList.add("item-rare");
+                this.imageBG.classList.add("item-rare");
                 break;
             case 'Unique':
-                this.div.classList.add("item-unique");
-                this.hoverInsideDiv.classList.add("item-unique");
+                this.imageBG.classList.add("item-unique");
                 break;
             default:
                 console.log(`cannot find rarity ${this.rarity}`);
@@ -141,6 +142,17 @@ class Item {
         }
         this.container = parent;
         this.container.appendChild(this.div);
+        this.setImageSize();
+    }
+    setImageSize() {
+        //if the item is in the crafting div
+        if (this.container == craftingItemSectionDiv) {
+            //add the classlist to the div
+            this.imageDiv.classList.add("crafting-item-size-big");
+        }
+        else {
+            this.imageDiv.classList.remove("crafting-item-size-big");
+        }
     }
     resetDiv() {
         //destory the div and resetup div
@@ -242,12 +254,12 @@ class Item {
         const foundItemMod = this.baseType.itemMod.find((itemMod) => itemMod.modName === 'itemPower');
         if (foundItemMod != null) {
             itemPowerText = `Item Power: ${foundItemMod.modValue}`;
+            itemPower.innerHTML = `${itemPowerText}`;
+            itemGearDiv.appendChild(itemPower);
         }
         else {
             itemPowerText = `Item Power: 0`;
         }
-        itemPower.innerHTML = `${itemPowerText}`;
-        itemGearDiv.appendChild(itemPower);
         let itemStat = [];
         let itemStatDiv = [];
         let itemStatAffix = [];
@@ -305,21 +317,25 @@ class Item {
     setupDiv() {
         if (!this.setup) {
             this.setup = true;
-            //create an item picture div
-            const itemPictureDiv = document.createElement('div');
-            //set the item picture div class
-            itemPictureDiv.classList.add("item-pictureDiv");
-            this.div.appendChild(itemPictureDiv);
+            this.div.appendChild(this.imageDiv);
             if (this.container == craftingItemSectionDiv) {
                 this.createFullText(this.div);
             }
             //set the item picture
             let itemPicture = document.createElement('img');
-            itemPicture.classList.add("item-picture");
-            let itempicture = this.baseType.gearType.toLocaleLowerCase();
-            itemPicture.src = `../dist/img/${itempicture}.png`;
+            itemPicture.classList.add("item-image");
+            let picture = this.baseType.gearType.toLocaleLowerCase();
+            itemPicture.src = `../dist/img/${picture}.png`;
             itemPicture.draggable = false;
-            itemPictureDiv.appendChild(itemPicture);
+            this.imageDiv.appendChild(itemPicture);
+            //set the item picture background
+            this.imageBG = document.createElement('img');
+            this.imageBG.classList.add("item-image-bg");
+            let pictureBG = this.baseType.gearType.toLocaleLowerCase() + '-bg';
+            this.imageBG.src = `../dist/img/${pictureBG}.png`;
+            this.imageBG.draggable = false;
+            this.imageDiv.appendChild(this.imageBG);
+            this.setRarityBorder();
         }
     }
 }
