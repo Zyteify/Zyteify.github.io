@@ -1,3 +1,5 @@
+declare function ClassTransformer(): (target: any) => void;
+
 //get html elements for assigning text
 //game-time
 const days = <HTMLElement>document.getElementById('game-time-days');
