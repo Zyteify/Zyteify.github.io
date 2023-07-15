@@ -75,6 +75,24 @@ class Resource {
             this.div.style.display = "";
         }
     }
+    remove() {
+        //remove a resource from its container and list
+        this.container.removeChild(this.div);
+        this.div.remove();
+        let index = resources.indexOf(this);
+        if (index > -1) {
+            resources.splice(index, 1);
+        }
+    }
+    export() {
+        let resource = {
+            id: this.id,
+            name: this.name,
+            amount: this.amount,
+            active: this.active,
+        };
+        return resource;
+    }
 }
 function getResourceByName(name) {
     for (let i = 0; i < resources.length; i++) {

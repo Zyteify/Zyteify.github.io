@@ -1,11 +1,10 @@
 
 
 //list of workers
-let workers: Laborer[] = [];
+let workers: WorkerClass[] = [];
 
 //create resources list of initial resources available
 let resources: Resource[] = [
-
     new Resource('food', resourceList, 0),
     new Resource('wood', resourceList, 0),
     new Resource('stone', resourceList, 0),
@@ -28,15 +27,12 @@ function setResourceActive(name: ResourceType) {
 setResourceActive('food');
 setResourceActive('coins');
 
-
-
 //list of gems  
 let gems: Gem[] = [
-    new Gem("1", 1, materialsGemList, 0, false),
-    new Gem("2", 2, materialsGemList, 0, false),
-    new Gem("3", 3, materialsGemList, 0, false),
+    new Gem("1", 'gem1.png', 0, false),
+    new Gem("2", 'gem2.png', 0, false),
+    new Gem("3", 'gem3.png', 0, false),
 ]
-
 
 function setGemActive(name: string) {
     //set the default resource to be active
@@ -68,36 +64,20 @@ function convertHoursToTime(hours: number) {
     return time;
 }
 
-
-/* let begList: Beg[] = [];
-function createBegList() {
-    //get the food resource from the resources
-    let food: Resource = new Resource('food', 0)
-    let coins: Resource = new Resource('coins', 0)
-
-    return [
-        new Beg("food", food, 1, 10),
-        new Beg("coins", coins, 1, 10),
-    ];
-}
-//todo fix begging
-begList = createBegList(); */
-
-
 //list of items
-let items: Item[] = [];
+let itemsInventory: Item[] = [];
 
 function roomAvailable(array: Item[]) {
     //if the array is the same as items
-    if (array == items) {
-        if (items.length < game.gearCountMax) {
+    if (array == itemsInventory) {
+        if (itemsInventory.length < game.gearCountMax) {
             return true
         }
         else {
             return false
         }
-    } else if (array == craftingItems) {
-        if (craftingItems.length < craftingItemsMax) {
+    } else if (array == itemsCrafting) {
+        if (itemsCrafting.length < game.craftingItemsMax) {
             return true
         }
         else {
@@ -112,12 +92,10 @@ function roomAvailable(array: Item[]) {
 }
 
 //list of items
-let craftingItems: Item[] = [];
-
-let craftingItemsMax = 1;
+let itemsCrafting: Item[] = [];
 
 //list of items
-let deletedItems: Item[] = [];
+let itemsDeleted: Item[] = [];
 
 function loadJson(url: string) {
     return fetch(url).then(response => {
@@ -196,10 +174,6 @@ loadJson('../dist/data/basetypes.json').then(data => {
 
 });
 
-
-
-
-
 function updateGameTime() {
     //game-time
     game.minutes += 15;
@@ -211,6 +185,7 @@ function updateGameTime() {
         game.hours = 0;
         game.days++;
     }
+    displayText();
 }
 
 function areArraysEqual(array1: any[], array2: any[]): boolean {
@@ -219,16 +194,16 @@ function areArraysEqual(array1: any[], array2: any[]): boolean {
 
 function moveGear(
     item: Item,
-    source: string | Laborer,
+    source: string | WorkerClass,
     sourceArray: Item[],
     sourceDiv: HTMLDivElement,
-    destination: string | Laborer,
+    destination: string | WorkerClass,
     destinationArray: Item[],
     destinationDiv: HTMLDivElement
 ) {
-    let sourceWorker: Laborer | undefined;
+    let sourceWorker: WorkerClass | undefined;
     let sourceString: string | undefined;
-    let destinationWorker: Laborer | undefined;
+    let destinationWorker: WorkerClass | undefined;
     let destinationString: string | undefined;
     let swap = false;
 
@@ -236,13 +211,13 @@ function moveGear(
         console.log("source and destination are the same")
         return
     }
-    if (source instanceof Laborer) {
+    if (source instanceof WorkerClass) {
         sourceWorker = source;
     } else {
         sourceString = source as string;
     }
 
-    if (destination instanceof Laborer) {
+    if (destination instanceof WorkerClass) {
         destinationWorker = destination;
     } else {
         destinationString = destination as string;
@@ -250,7 +225,7 @@ function moveGear(
 
     //check if the destination array is able to accept the item
     if (!destinationWorker && !roomAvailable(destinationArray)) {
-        if (destinationArray == craftingItems) {
+        if (destinationArray == itemsCrafting) {
             //swap the items
             swap = true;
         }
@@ -296,7 +271,6 @@ function moveGear(
     displayText();
 }
 
-
 function removeItem(item: any, array: any[]): void {
     const index = array.indexOf(item);
     if (index !== -1) {
@@ -308,7 +282,7 @@ function createWorker() {
     if (game.workerCountCurrent < game.workerCountMax) {
 
         //create a new worker
-        let newWorker = new Laborer();
+        let newWorker = new WorkerClass();
         //add the new worker to the list of workers
         workers.push(newWorker);
         game.workerCountCurrent++;
@@ -322,12 +296,8 @@ function createWorker() {
     displayText();
 }
 
-
-
-
-
 //create a few upgrades
-let upgradeList: Upgrade[] = [
+let upgrades: Upgrade[] = [
     new Upgrade("Unlock Workers", true, 0, 1, unlockWorkers, ["Worker"], ["Worker"]),
     new Upgrade("Unlock Gear", false, 0, 1, unlockGear, ["Worker"], ["Gear"]),
     new Upgrade("Hire Worker", false, 0, 10, createWorker, ["Worker"], ["WorkHire"]),
@@ -339,8 +309,8 @@ let upgradeList: Upgrade[] = [
 ];
 
 //add the costs to the upgrades
-for (let i = 0; i < upgradeList.length; i++) {
-    let upgrade = <Upgrade>getUpgradeByName(upgradeList[i].name)
+for (let i = 0; i < upgrades.length; i++) {
+    let upgrade = <Upgrade>getUpgradeByName(upgrades[i].name)
     switch (upgrade.name) {
         case "Unlock Workers":
             upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 0));
@@ -366,19 +336,13 @@ for (let i = 0; i < upgradeList.length; i++) {
     }
 }
 
-
-
 function increaseWorkerMax() {
-
-
     game.workerCountMax++;
 }
 
 function increaseGearCountMax() {
     game.gearCountMax++;
     unlockStarterGear()
-
-    
 }
 
 function unlockStarterGear() {
@@ -438,22 +402,17 @@ function unlockStarterGear() {
     }
 }
 
-
 function unlockGear() {
-
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedGear) {
         game.unlockedGear = true;
 
-        gearContainer.style.display = "block"
+        gearContainer.style.display = ""
         increaseGearCountMax()
-        
-
     }
 }
 
 function unlockMaterials() {
-
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedMaterials) {
         materialsDiv.style.display = "block"
@@ -462,26 +421,23 @@ function unlockMaterials() {
 }
 
 function unlockCrafting() {
-
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedCrafting) {
-        craftingDiv.style.display = "block"
+        craftingDiv.style.display = ""
         game.unlockedCrafting = true;
     }
 }
 
 function unlockWorkers() {
     if (!game.unlockedWorkers) {
-        workerContainer.style.display = "block"
+        workerContainer.style.display = ""
         game.workerCountMax++;
         game.unlockedWorkers = true;
     }
-
-
 }
 
 function increaseWorkerSpeed() {
-    Laborer.workSpeedUpgradeable += 5;
+    WorkerClass.workSpeedUpgradeable += 5;
     //loop through each worker and display
     for (let i = 0; i < workers.length; i++) {
         workers[i].energy += 5;
@@ -492,31 +448,27 @@ function increaseWorkerSpeed() {
 
 //loop through the list of upgrades and if they are not available, make them available
 function unlockUpgrades() {
-    for (let i = 0; i < upgradeList.length; i++) {
-        if (upgradeList[i].active == false) {
+    for (let i = 0; i < upgrades.length; i++) {
+        if (upgrades[i].active == false) {
             //if all the tags arent in the unavailable upgrades list, make it available
             let allTagsAvailable = true;
-            if (upgradeList[i].tags.length > 0) {
-                for (let j = 0; j < upgradeList[i].tags.length; j++) {
-                    if (Upgrade.unavailableUpgrades.includes(upgradeList[i].tags[j])) {
+            if (upgrades[i].tags.length > 0) {
+                for (let j = 0; j < upgrades[i].tags.length; j++) {
+                    if (Upgrade.unavailableUpgrades.includes(upgrades[i].tags[j])) {
                         allTagsAvailable = false;
                     }
                 }
             }
 
             if (allTagsAvailable) {
-                upgradeList[i].active = true;
-                upgradeList[i].displayActive();
+                upgrades[i].active = true;
+                upgrades[i].displayActive();
             }
 
         }
     }
-    showUpgrades()
+    displayUpgrades()
 }
-
-
-
-
 
 function controlWorkers() {
     let tempWorkers = workers;
@@ -585,6 +537,7 @@ function findHungriestWorker() {
     return tempWorkers[0];
 }
 
+gameLoop();
 //do the game loop every 100 milliseconds
 setInterval(gameLoop, 100);
 
@@ -592,10 +545,10 @@ setInterval(gameLoop, 100);
 function gameLoop() {
     updateGameTime();
     controlWorkers();
-    displayText();
 }
 
-gameLoop();
+//initial display
 displayResources()
 displayGems()
 controlCraftingButtons()
+displayUpgrades()

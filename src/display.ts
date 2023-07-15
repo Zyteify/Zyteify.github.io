@@ -1,3 +1,12 @@
+function displayAll(){
+    displayText();
+    displayGear();
+    displayResources();
+    displayGems();
+    displayCraftWork();
+    displayUpgrades();
+}
+
 function displayText() {
     //game-time
     days.innerHTML = `day ${game.days.toString()}`
@@ -10,47 +19,33 @@ function displayText() {
     workerCountMax.innerHTML = game.workerCountMax.toString();
     //gear
     //gear-count-current
-    gearCountCurrent.innerHTML = items.length.toString();
+    gearCountCurrent.innerHTML = itemsInventory.length.toString();
     //gear-count-max
     gearCountMax.innerHTML = game.gearCountMax.toString();
 
     //crafting
     //crafting-progress
-    materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
+    
 
     updateEventListeners()
-    displayResources()
-    showUpgrades()
-    /* showBegging() */
+    
     
     updateCraftButton()
-
-    //displayGems()
-
 }
-
-displayResources()
-
-
 
 function displayGear() {
     //each item in items
-    for (let i = 0; i < items.length; i++) {
-
-        items[i].setParentDiv(gearListContainer)
-        items[i].resetDiv()
-
+    for (let i = 0; i < itemsInventory.length; i++) {
+        itemsInventory[i].setParentDiv(gearListContainer)
+        itemsInventory[i].resetDiv()
     }
     //and each item in craftingItems
-    for (let i = 0; i < craftingItems.length; i++) {
-
-        craftingItems[i].setParentDiv(craftingItemSectionDiv)
-        craftingItems[i].resetDiv()
-
+    for (let i = 0; i < itemsCrafting.length; i++) {
+        itemsCrafting[i].setParentDiv(craftingItemSectionDiv)
+        itemsCrafting[i].resetDiv()
     }
     for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon[0] != null) {
-
             workers[i].weapon[0]?.setParentDiv(workers[i].gearDiv)
             workers[i].weapon[0]?.resetDiv()
         }
@@ -59,7 +54,6 @@ function displayGear() {
 }
 
 function displayResources() {
-
     //loop through each resource and create a paragraph element for them if it doesn't exist
     for (let i = 0; i < resources.length; i++) {
         resources[i].display()
@@ -80,9 +74,9 @@ function emptyGearDisplay() {
     controlCraftingButtons()
 }
 
-function showUpgrades() {
-    for (let i = 0; i < upgradeList.length; i++) {
-        upgradeList[i].display()
+function displayUpgrades() {
+    for (let i = 0; i < upgrades.length; i++) {
+        upgrades[i].display()
     }
 }
 
@@ -113,4 +107,8 @@ function setTextfromAffixes(stringText: string, stringValue: number): string {
         text = `${stringText.slice(0, position)}${stringValue}${stringText.slice(position + 1)}`;
     }
     return text
+}
+
+function displayCraftWork() {
+    materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
 }

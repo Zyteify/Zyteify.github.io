@@ -77,6 +77,7 @@ let game = {
     unlockedCraftingButton: false,
     unlockedCrafting: false,
     unlockedMaterials: false,
+    craftingItemsMax: 1
 };
 let craftWork = 0;
 let upgradePoints = 0;

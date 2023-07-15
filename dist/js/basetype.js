@@ -21,6 +21,20 @@ class BaseType {
         this.value = value;
         this.craftingCost = craftingCost;
     }
+    export() {
+        let baseType = {
+            id: this.id,
+            name: this.name,
+            gearType: this.gearType,
+            resourceCost: this.resourceCost,
+            resource: this.resource,
+            itemMod: this.itemMod,
+            implicit: this.implicit,
+            value: this.value,
+            craftingCost: this.craftingCost
+        };
+        return baseType;
+    }
 }
 function findBaseTypeByNameandGearType(name, gearType) {
     for (let i = 0; i < baseTypes.length; i++) {

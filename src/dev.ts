@@ -1,9 +1,9 @@
 let dev = false;
-if (window.location.hostname == "127.0.0.1") {
+if (window.location.hostname == "127.0.0.1" || window.location.hostname == "localhost") {
     dev = true;
 }
 
-dev = false;
+/* dev = false; */
 
 function unlockDev() {
 
@@ -66,13 +66,15 @@ function unlockDev() {
         }
 
         //loop through all upgrades and unlock them
-        for (let i = 0; i < upgradeList.length; i++) {
-            upgradeList[i].upgrade();
-            unlockUpgrades();
+        for (let i = 0; i < upgrades.length; i++) {
+            upgrades[i].upgrade();
 
         }
+        displayAll()
 
-        unlockCrafting();
+
+
+
     }
 }
 

@@ -6,7 +6,7 @@ class Vocation {
     }
 }
 //create the class worker
-class Laborer {
+class WorkerClass {
     name;
     gender = 'female';
     vocation;
@@ -65,17 +65,24 @@ class Laborer {
         notConsumeEnergy: false,
         multiplyStock: false,
     };
-    constructor(name, gender) {
-        if (gender) {
-            this.gender = gender;
+    constructor(full) {
+        this.id = WorkerClass.count++;
+        if (full) {
+            this.name = full.name;
+            this.energy = full.energy;
+            this.rested = full.rested;
+            this.hunger = full.hunger;
+            this.workProgress = full.workProgress;
         }
-        this.id = Laborer.count++;
-        this.name = 'temp';
+        else {
+            this.name = 'temp';
+            this.setName();
+        }
         this.vocation = new Vocation('Beggar');
         this.resources = [];
         this.weapon = [];
         this.boot = [];
-        this.energy = 10;
+        this.energy;
         this.calculateMods();
         //actions
         this.vocationActions = {
@@ -113,7 +120,6 @@ class Laborer {
         this.resourceDiv.classList.add('worker-resources-div');
         this.gearDiv = document.createElement('div');
         this.gearDiv.id = "worker-gear-div" + this.id.toString();
-        this.setName(name);
         this.setupDiv();
     }
     calculateMods() {
@@ -165,7 +171,7 @@ class Laborer {
         this.properties.multiplyStock = this.mods.multiplyStock;
         this.properties.repeatGreatestWorkCount = 0;
         //energy
-        this.properties.energyMax = Laborer.workSpeedUpgradeable;
+        this.properties.energyMax = WorkerClass.workSpeedUpgradeable;
         this.properties.energyMin = 1;
     }
     randomiseName() {
@@ -383,6 +389,7 @@ class Laborer {
             }
         }
         this.setResourcesDisplay();
+        displayResources();
     }
     //consume food to do get the work speed back to normal
     eat() {
@@ -456,17 +463,6 @@ class Laborer {
         if (this.resourceDiv.parentElement == null) {
             this.div.appendChild(this.resourceDiv);
         }
-        /*         //check to see if a paragraph element exists for each resource and create it if neccessary
-                for (let i = 0; i < this.resources.length; i++) {
-                    if (this.resources[i].paragraph.id == "") {
-                        this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
-                        this.resourceDiv.appendChild(this.resources[i].paragraph);
-                        this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-                    }
-                    if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
-                        this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-                    }
-                } */
     }
     setupDiv() {
         //append the div to the container if it hasnt already
@@ -484,6 +480,24 @@ class Laborer {
         this.setItemParent();
         //append the resources to the div if they havent already
         this.setResourcesDisplay();
+    }
+    remove() {
+        //remove resources and items from the worker
+        for (let i = 0; i < this.resources.length; i++) {
+            this.removeResource(this.resources[i]);
+        }
+        for (let i = 0; i < this.weapon.length; i++) {
+            this.weapon[i].remove();
+        }
+        //if the container has the div as a child
+        if (this.container.contains(this.div)) {
+            this.container.removeChild(this.div);
+        }
+        this.div.remove();
+        let index = workers.indexOf(this);
+        if (index > -1) {
+            workers.splice(index, 1);
+        }
     }
     guard(workPower) {
     }
@@ -536,6 +550,7 @@ class Laborer {
     }
     craft(workPower) {
         craftWork += workPower;
+        displayCraftWork();
         updateCraftButton();
     }
     //give energy to all other workers
@@ -640,6 +655,30 @@ class Laborer {
         this.addResource(resource);
         resource = new Resource('food', this.resourceDiv, 0);
         this.addResource(resource);
+    }
+    export() {
+        let exportObject = {
+            full: {
+                name: this.name,
+                energy: this.energy,
+                rested: this.rested,
+                hunger: this.hunger,
+                workProgress: this.workProgress,
+            },
+            name: this.name,
+            vocation: this.vocation.name,
+            id: this.id,
+            resources: this.resources,
+            weapon: this.weapon,
+            boot: this.boot,
+            energy: this.energy,
+            workProgress: this.workProgress,
+            hunger: this.hunger,
+            mods: this.mods,
+            properties: this.properties,
+            flags: this.flags,
+        };
+        return exportObject;
     }
 }
 function getWorkerById(id) {

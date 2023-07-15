@@ -27,24 +27,31 @@ class Item {
     hoverDiv;
     hoverInsideDiv;
     container;
+    containerNumber;
     imageDiv;
     imageBG;
     setup = false;
     setupHover = false;
     static count = 0;
-    constructor(type, baseType, rarity) {
+    constructor(type, baseType, rarity, full) {
         this.id = Item.count++;
         this.type = type;
         this.baseType = baseType;
         this.rarity = rarity;
-        //generate the affixes
-        let affixes = generateAffixes(this.rarity, this.baseType.gearType);
-        for (let i = 0; i < affixes.length; i++) {
-            if (affixes[i].affix == "Prefix") {
-                this.prefixes.push(affixes[i]);
-            }
-            else if (affixes[i].affix == "Suffix") {
-                this.suffixes.push(affixes[i]);
+        if (full) {
+            this.prefixes = full.prefixes;
+            this.suffixes = full.suffixes;
+        }
+        else {
+            //generate the affixes
+            let affixes = generateAffixes(this.rarity, this.baseType.gearType);
+            for (let i = 0; i < affixes.length; i++) {
+                if (affixes[i].affix == "Prefix") {
+                    this.prefixes.push(affixes[i]);
+                }
+                else if (affixes[i].affix == "Suffix") {
+                    this.suffixes.push(affixes[i]);
+                }
             }
         }
         this.populateItemMods();
@@ -73,6 +80,7 @@ class Item {
         this.imageBG = new Image();
         //by default make the parent container the crafting window
         this.container = document.getElementById('crafting-item-section');
+        this.containerNumber = -1;
         this.setupDiv();
         this.setParentDiv();
         this.setHoverDiv();
@@ -142,11 +150,13 @@ class Item {
         }
         this.container = parent;
         this.container.appendChild(this.div);
+        this.trackContainer();
         this.setImageSize();
+        this.resetDiv();
     }
     setImageSize() {
         //if the item is in the crafting div
-        if (this.container == craftingItemSectionDiv) {
+        if (this.containerNumber == -1) {
             //add the classlist to the div
             this.imageDiv.classList.add("crafting-item-size-big");
         }
@@ -159,13 +169,53 @@ class Item {
         removeAllChildren(this.div);
         this.setup = false;
         this.setupDiv();
+        this.trackContainer();
     }
-    delete() {
-        //if the container has the div as a child
-        if (this.container.contains(this.div)) {
-            this.container.removeChild(this.div);
+    trackContainer() {
+        //if the item is in the crafting div
+        if (this.container == craftingItemSectionDiv) {
+            this.containerNumber = -1;
         }
-        deletedItems.push(this);
+        else if (this.container == gearListContainer) {
+            this.containerNumber = -2;
+        }
+        //otherwise the item is on a worker
+        else {
+            //get the worker number
+            let workerNumber = this.container.id.slice(15, this.container.id.length);
+            this.containerNumber = parseInt(workerNumber);
+        }
+    }
+    remove() {
+        //remove a resource from its container and list
+        this.container.removeChild(this.div);
+        this.div.remove();
+        let index = -5;
+        switch (this.containerNumber) {
+            case -1:
+                index = itemsCrafting.indexOf(this);
+                if (index > -1) {
+                    itemsCrafting.splice(index, 1);
+                }
+                break;
+            case -2:
+                index = itemsInventory.indexOf(this);
+                if (index > -1) {
+                    itemsInventory.splice(index, 1);
+                }
+                break;
+            default:
+                //convert the container number to a worker number
+                let workerNumber = this.containerNumber.toString();
+                //get the worker
+                let worker = getWorkerById(parseInt(workerNumber));
+                //remove the item from the worker
+                if (worker) {
+                    worker.unequipItem(this);
+                }
+                break;
+        }
+        itemsDeleted.push(this);
         //remove event listeners
     }
     handleHover(event) {
@@ -337,5 +387,19 @@ class Item {
             this.imageDiv.appendChild(this.imageBG);
             this.setRarityBorder();
         }
+    }
+    export() {
+        let item = {
+            id: this.id,
+            type: this.type,
+            baseType: this.baseType,
+            prefixes: this.prefixes,
+            suffixes: this.suffixes,
+            rarity: this.rarity,
+            itemMods: this.itemMods,
+            mods: this.mods,
+            containerNumber: this.containerNumber,
+        };
+        return item;
     }
 }

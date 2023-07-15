@@ -9,6 +9,7 @@ class Upgrade {
 
     //display
     resourceSpan: HTMLElement;
+    button: HTMLButtonElement;
 
 
     //list of upgrades that are set to be locked initially based on the tags
@@ -46,11 +47,13 @@ class Upgrade {
                 this.costMultiplier = 2;
                 break
         }
+        this.button = document.createElement('button');
         this.resourceSpan = document.createElement('span');
         this.resourceSpan.id = `upgrade-resource-span-${this.name}`;
         this.resourceSpan.className = 'upgrade-span-resource';
 
     }
+
     upgrade(): void {
         let spent = false;
         if (this.level < this.maxLevel) {
@@ -79,6 +82,7 @@ class Upgrade {
         }
 
     }
+
     downgrade(): void {
         if (this.level > 0) {
             this.level--;
@@ -114,24 +118,23 @@ class Upgrade {
     }
 
     display(): void {
-        let button = document.getElementById('upgrade' + this.name) as HTMLButtonElement;
 
-        if (!button) {
-            button = document.createElement('button');
-            button.id = 'upgrade' + this.name;
-            button.className = 'upgrade';
+        if (this.button.id == "") {
+            this.button = document.createElement('button');
+            this.button.id = 'upgrade' + this.name;
+            this.button.className = 'upgrade';
 
             //create a span element for the button
             const span = document.createElement('span');
             span.id = 'upgrade' + this.name + 'span';
             span.className = 'upgrade-span';
-            button.appendChild(span);
+            this.button.appendChild(span);
 
             // Set the button text to the upgrade name, resouce required, and cost
             span.textContent = `${this.name}  ${this.level}/${this.maxLevel})`;
 
             //create a span element for the button
-            button.appendChild(this.resourceSpan);
+            this.button.appendChild(this.resourceSpan);
 
             //create a div element for the button inside the span
             const div = document.createElement('div');
@@ -139,9 +142,9 @@ class Upgrade {
             div.className = 'upgrade-span-resource-div';
             this.resourceSpan.appendChild(div);
 
-            upgradeButtonList.appendChild(button);
+            upgradeButtonList.appendChild(this.button);
 
-            button.onclick = () => {
+            this.button.onclick = () => {
                 // Call upgrade function with the name of the upgrade
                 this.upgrade();
             };
@@ -155,15 +158,15 @@ class Upgrade {
         //if the upgrade not available, make the button disabled
 
         if (!this.isAvailable()) {
-            button.disabled = true;
+            this.button.disabled = true;
         }
         else {
-            button.disabled = false;
+            this.button.disabled = false;
         }
 
         //if the upgrade is at max level or the upgrade is unavailable, hide the button
         if (this.isMaxLevel() || this.active == false) {
-            button.style.display = "none";
+            this.button.style.display = "none";
         }
 
     }
@@ -216,14 +219,38 @@ class Upgrade {
         }
     }
 
+    remove(){
+        //remove a upgrade from its container and list
+        upgradeButtonList.removeChild(this.button);
+        this.button.remove();
 
+        let index = upgrades.indexOf(this);
+        if (index > -1) {
+            upgrades.splice(index, 1);
+        }
+    }
+
+    export() {
+        let upgrade = {
+            name: this.name,
+            resourcesRequired: this.resourcesRequired,
+            level: this.level,
+            maxLevel: this.maxLevel,
+            active: this.active,
+            costMultiplier: this.costMultiplier,
+            upgradeAction: this.upgradeAction,
+            tags: this.tags,
+            unlocks: this.unlocks
+        }
+        return upgrade;
+    }
 }
 
 
 function getUpgradeByName(name: string) {
-    for (let i = 0; i < upgradeList.length; i++) {
-        if (upgradeList[i].name === name) {
-            return upgradeList[i];
+    for (let i = 0; i < upgrades.length; i++) {
+        if (upgrades[i].name === name) {
+            return upgrades[i];
         }
     }
     return null;

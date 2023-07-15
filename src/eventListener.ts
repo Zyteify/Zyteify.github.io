@@ -48,9 +48,9 @@ function isChildOf(child: HTMLElement, parent: HTMLElement): boolean {
 
 class DragDiv {
     origin: {
-        source: "items" | 'worker' | 'craftingItems' | Laborer | 'unknown';
+        source: "items" | 'worker' | 'craftingItems' | WorkerClass | 'unknown';
         item: Item;
-        worker?: Laborer;
+        worker?: WorkerClass;
         div: HTMLDivElement;
         sourceArray: Item[];
     }
@@ -60,7 +60,7 @@ class DragDiv {
     setItem(item: Item) {
         this.origin.item = item;
     }
-    setWorker(worker: Laborer) {
+    setWorker(worker: WorkerClass) {
         this.origin.worker = worker;
     }
     hasItem() {
@@ -104,7 +104,7 @@ function updateEventListeners() {
                 event.preventDefault();
                 if (dragDiv.hasItem()) {
                     let workerid: number = parseInt(myElement.id.replace('worker-div', ''));
-                    let dragWorkerDest = <Laborer>getWorkerById(workerid);
+                    let dragWorkerDest = <WorkerClass>getWorkerById(workerid);
                     if (dragWorkerDest.weapon[0] == null) {
                         if (isChildOf(dragDiv.origin.div as HTMLElement, myElement) || dragDiv.origin.div === event.target) {
                             return; // Exit the event handler
@@ -168,10 +168,10 @@ function mouseoverEventStart(myElement: HTMLElement, event: Event) {
     //get the gear that is being dragged
     let gearid: string = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker
-    let item = items.find(item => item.id === parseInt(gearid));
+    let item = itemsInventory.find(item => item.id === parseInt(gearid));
     //also check the crafting items
     if (!item) {
-        item = craftingItems.find(item => item.id === parseInt(gearid));
+        item = itemsCrafting.find(item => item.id === parseInt(gearid));
         if (item) {
         }
         //loop through each worker and see if they are wearing the item
@@ -195,10 +195,10 @@ function mouseLeaveEventStart(myElement: HTMLElement, event: Event) {
         //get the gear that is being dragged
         let gearid: string = myElement.id.replace('gear-div', '');
         //find the item from the list of items in storage or on a worker
-        let item = items.find(item => item.id === parseInt(gearid));
+        let item = itemsInventory.find(item => item.id === parseInt(gearid));
         //also check the crafting items
         if (!item) {
-            item = craftingItems.find(item => item.id === parseInt(gearid));
+            item = itemsCrafting.find(item => item.id === parseInt(gearid));
             if (item) {
             }
             //loop through each worker and see if they are wearing the item
@@ -228,17 +228,17 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             //get the gear that is being dragged
             let workerId: number = getWorkerId(myElement);
             //get the worker with the workerid
-            let worker = <Laborer>getWorkerById(workerId)
+            let worker = <WorkerClass>getWorkerById(workerId)
 
             moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, myElement as HTMLDivElement);
         }
         //if the element being dropped on is the gear list container
         else if (myElement === gearListContainer) {
-            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'items', items, myElement as HTMLDivElement);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'items', itemsInventory, myElement as HTMLDivElement);
         }
         //if dropped on the crafting section
         else if (myElement === craftingItemSectionDiv) {
-            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'craftingItems', craftingItems, myElement as HTMLDivElement);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, 'craftingItems', itemsCrafting, myElement as HTMLDivElement);
         }
         else if (myElement === deleteDiv) {
             let myItem = <Item>dragDiv.origin.item
@@ -249,20 +249,20 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             }
             //delete the item and remove it from either the inventory or the workers inventory
             if (dragDiv.hasWorker()) {
-                let dragWorker = <Laborer>dragDiv.origin.worker
+                let dragWorker = <WorkerClass>dragDiv.origin.worker
                 dragWorker.unequipItem(<Item>dragDiv.origin.item);
                 dragWorker.setVocation();
             }
             else if (dragDiv.origin.source == 'items') {
-                removeItem(myItem, items)
+                removeItem(myItem, itemsInventory)
             }
             else if (dragDiv.origin.source == 'craftingItems') {
-                removeItem(myItem, craftingItems)
+                removeItem(myItem, itemsCrafting)
             }
             emptyGearDisplay();
             displayText();
             console.log(`deleting ${myItem.baseType.gearType}`);
-            myItem.delete();
+            myItem.remove();
         }
         else {
             console.log(`dropped on ${myElement.id} without an item found`);
@@ -289,19 +289,19 @@ function dragEventStart(myElement: HTMLElement, event: Event) {
     let gearid: string = dragSource.id.replace('gear-div', '');
 
     //find the item from the list of items in storage or on a worker
-    let item = items.find(item => item.id === parseInt(gearid));
+    let item = itemsInventory.find(item => item.id === parseInt(gearid));
     if (item) {
         dragDiv.setItem(item);
         dragDiv.origin.source = 'items';
-        dragDiv.origin.sourceArray = items;
+        dragDiv.origin.sourceArray = itemsInventory;
     }
     //also check the crafting items
     if (!item) {
-        item = craftingItems.find(item => item.id === parseInt(gearid));
+        item = itemsCrafting.find(item => item.id === parseInt(gearid));
         if (item) {
             dragDiv.setItem(item);
             dragDiv.origin.source = 'craftingItems';
-            dragDiv.origin.sourceArray = craftingItems;
+            dragDiv.origin.sourceArray = itemsCrafting;
         }
     }
 
@@ -359,7 +359,7 @@ trackEventListeners(gearListContainer, 'drop', function (event) {
 trackEventListeners(gearListContainer, 'dragover', function (event) {
     event.preventDefault();
     if (dragDiv.hasItem() && dragDiv.origin.source != 'items') {
-        roomAvailable(items) ? gearListContainer.classList.add('highlightCanMove') : gearListContainer.classList.add('highlightCannotMove');
+        roomAvailable(itemsInventory) ? gearListContainer.classList.add('highlightCanMove') : gearListContainer.classList.add('highlightCannotMove');
     }
     return false;
 });
@@ -394,7 +394,7 @@ trackEventListeners(deleteDiv, 'drop', function (event) {
 trackEventListeners(craftingItemSectionDiv, 'dragover', function (event) {
     event.preventDefault(); // Necessary. Allows us to drop.    
     if (dragDiv.hasItem() && dragDiv.origin.source != 'craftingItems') {
-        roomAvailable(craftingItems) ? craftingItemSectionDiv.classList.add('highlightCanMove') : craftingItemSectionDiv.classList.add('highlightCannotMove');
+        roomAvailable(itemsCrafting) ? craftingItemSectionDiv.classList.add('highlightCanMove') : craftingItemSectionDiv.classList.add('highlightCannotMove');
     }
     return false;
 });

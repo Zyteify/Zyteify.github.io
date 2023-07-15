@@ -89,6 +89,7 @@ let game = {
     unlockedCraftingButton: false,
     unlockedCrafting: false,
     unlockedMaterials: false,
+    craftingItemsMax: 1
 
 }
 

@@ -387,11 +387,11 @@ function createGear(itemType: ItemType, gearType: GearType, baseType?: BaseType,
     let locationDiv;
     //starter gear goes directly into inventory
     if (rarity == 'Starter') {
-        location = items
+        location = itemsInventory
         locationDiv = gearListContainer
     }
     else {
-        location = craftingItems
+        location = itemsCrafting
         locationDiv = craftingItemSectionDiv;
     }
 
@@ -410,11 +410,11 @@ function createGear(itemType: ItemType, gearType: GearType, baseType?: BaseType,
 
     //if the location to put the new item is items and the player has room for it and the player has the resources, create the item
     let locationHasRoom = false;
-    if (location == items) {
-        locationHasRoom = roomAvailable(items);
+    if (location == itemsInventory) {
+        locationHasRoom = roomAvailable(itemsInventory);
     }
-    else if (location == craftingItems) {
-        locationHasRoom = roomAvailable(craftingItems);
+    else if (location == itemsCrafting) {
+        locationHasRoom = roomAvailable(itemsCrafting);
     }
 
     let resourceCostSuccess = false;
@@ -467,10 +467,10 @@ function createGear(itemType: ItemType, gearType: GearType, baseType?: BaseType,
     }
     else {
         if (!locationHasRoom) {
-            if (location == items) {
-                console.log(`failed to create gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`);
+            if (location == itemsInventory) {
+                console.log(`failed to create gear, gear count current: ${itemsInventory.length}, gear count max: ${game.gearCountMax}`);
             } else {
-                console.log(`failed to create gear, crafting items current: ${craftingItems.length}, crafting items max: ${craftingItemsMax}`);
+                console.log(`failed to create gear, crafting items current: ${itemsCrafting.length}, crafting items max: ${game.craftingItemsMax}`);
             }
         }
         else if (!resourceCostSuccess) {
@@ -504,9 +504,9 @@ craftingOptionsDiv.appendChild(addToGearButton);
 //todo add and remove event listeners for the crafting items list
 function deleteItem() {
     //get the item from the crafting items list
-    let item = craftingItems[0];
+    let item = itemsCrafting[0];
     //remove the item from the crafting items list
-    craftingItems.splice(0, 1);
+    itemsCrafting.splice(0, 1);
     //remove the itemDiv from the crafting item section
     craftingItemSectionDiv.removeChild(item.div);
     //update the crafting button
@@ -515,35 +515,35 @@ function deleteItem() {
 }
 
 function addToGear() {
-    if (roomAvailable(items)) {
+    if (roomAvailable(itemsInventory)) {
         //get the item from the crafting items list
-        let item = craftingItems[0];
+        let item = itemsCrafting[0];
         //remove the item from the crafting items list
-        craftingItems.splice(0, 1);
+        itemsCrafting.splice(0, 1);
         //set the parent div to the gear list
         item.setParentDiv(gearListContainer)
         item.resetDiv();
         //add the item to the items list
-        items.push(item);
+        itemsInventory.push(item);
         //update the crafting button
         updateCraftButton();
         controlCraftingButtons()
     }
     else {
-        console.log(`failed to add to gear, gear count current: ${items.length}, gear count max: ${game.gearCountMax}`)
+        console.log(`failed to add to gear, gear count current: ${itemsInventory.length}, gear count max: ${game.gearCountMax}`)
     }
 }
 
 function controlCraftingButtons() {
-    if (craftingItems.length > 0) {
+    if (itemsCrafting.length > 0) {
         deleteButton.disabled = false;
         addToGearButton.disabled = false;
     }
-    if (craftingItems.length == 0) {
+    if (itemsCrafting.length == 0) {
         deleteButton.disabled = true;
         addToGearButton.disabled = true;
     }
-    if (!roomAvailable(items)) {
+    if (!roomAvailable(itemsInventory)) {
         addToGearButton.disabled = true;
     }
 }

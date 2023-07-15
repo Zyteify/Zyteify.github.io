@@ -8,14 +8,12 @@ class Vocation {
 
     constructor(name: ClassType) {
         this.name = name;
-
-
     }
 }
 
 
 //create the class worker
-class Laborer {
+class WorkerClass {
     name: string;
     gender: string = 'female';
     vocation: Vocation;
@@ -83,18 +81,26 @@ class Laborer {
         multiplyStock: false,
     }
 
-    constructor(name?: string, gender?: string) {
-        if(gender){
-            this.gender=gender
+    constructor(full?: any) {
+        this.id = WorkerClass.count++;
+        if (full) {
+            this.name = full.name;
+            this.energy = full.energy;
+            this.rested = full.rested;
+            this.hunger = full.hunger;
+            this.workProgress = full.workProgress;
+        } else {
+            this.name = 'temp';
+            this.setName()
         }
-        this.id = Laborer.count++;
-        this.name = 'temp';
+
+
         this.vocation = new Vocation('Beggar');
 
         this.resources = [];
         this.weapon = [];
         this.boot = [];
-        this.energy = 10
+        this.energy
 
         this.calculateMods()
 
@@ -138,7 +144,7 @@ class Laborer {
         this.gearDiv = document.createElement('div');
         this.gearDiv.id = "worker-gear-div" + this.id.toString();
 
-        this.setName(name)
+
         this.setupDiv()
 
 
@@ -189,7 +195,7 @@ class Laborer {
             repeatGreatestWorkCount: 0,
         }
 
-        this.properties.workPower = (this.mods.itemPower + this.mods.itemPowerLocalAddition) * (1 + (this.mods.itemPowerLocalMultiplier/100));
+        this.properties.workPower = (this.mods.itemPower + this.mods.itemPowerLocalAddition) * (1 + (this.mods.itemPowerLocalMultiplier / 100));
         this.properties.duplicateWorkChance = this.mods.duplicateWork;
         this.properties.chanceToRepeatGreatestWork = this.mods.chanceToRepeatGreatestWork;
         this.properties.criticalWorkChance = 0.05 + this.mods.criticalWorkChance;
@@ -199,16 +205,16 @@ class Laborer {
         this.properties.repeatGreatestWorkCount = 0;
 
         //energy
-        this.properties.energyMax = Laborer.workSpeedUpgradeable
+        this.properties.energyMax = WorkerClass.workSpeedUpgradeable
         this.properties.energyMin = 1
 
     }
 
     randomiseName() {
-        if(this.gender == 'male'){
+        if (this.gender == 'male') {
             var nameList = nameListBoy;
         }
-        else{
+        else {
             var nameList = NameListGirl;
         }
         if (nameList.length == 0) {
@@ -222,8 +228,6 @@ class Laborer {
             nameList.splice(randomIndex, 1);
             return name
         }
-
-
     }
 
     setName(name?: string) {
@@ -362,8 +366,8 @@ class Laborer {
             resource.active = true;
             resource.display();
         }
-        else{
-            if(existingResource){
+        else {
+            if (existingResource) {
                 existingResource.display();
             }
             //remove the extra resource
@@ -376,7 +380,7 @@ class Laborer {
     removeResource(resource: Resource) {
         this.resourceDiv.removeChild(resource.div);
         resource.div.remove();
-        
+
 
         let index = this.resources.indexOf(resource);
         if (index > -1) {
@@ -452,12 +456,13 @@ class Laborer {
             if (this.resources[i].amount <= 0) {
                 this.removeResource(this.resources[i]);
             }
-            
+
 
 
         }
 
         this.setResourcesDisplay();
+        displayResources()
 
 
 
@@ -547,17 +552,6 @@ class Laborer {
         if (this.resourceDiv.parentElement == null) {
             this.div.appendChild(this.resourceDiv);
         }
-/*         //check to see if a paragraph element exists for each resource and create it if neccessary
-        for (let i = 0; i < this.resources.length; i++) {
-            if (this.resources[i].paragraph.id == "") {
-                this.resources[i].paragraph.id = "workerResources" + this.resources[i].name;
-                this.resourceDiv.appendChild(this.resources[i].paragraph);
-                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-            }
-            if (this.resources[i].paragraph.innerHTML != `${this.resources[i].icon} ${this.resources[i].amount}`) {
-                this.resources[i].paragraph.innerHTML = `${this.resources[i].icon} ${this.resources[i].amount}`;
-            }
-        } */
     }
 
     setupDiv() {
@@ -583,6 +577,28 @@ class Laborer {
         this.setResourcesDisplay()
     }
 
+    remove() {
+        //remove resources and items from the worker
+        for (let i = 0; i < this.resources.length; i++) {
+            this.removeResource(this.resources[i]);
+        }
+        for (let i = 0; i < this.weapon.length; i++) {
+            this.weapon[i].remove()
+        }
+
+        //if the container has the div as a child
+        if (this.container.contains(this.div)) {
+            this.container.removeChild(this.div);
+        }
+        this.div.remove();
+
+
+        let index = workers.indexOf(this);
+        if (index > -1) {
+            workers.splice(index, 1);
+        }
+    }
+
     guard(workPower: number) {
     }
 
@@ -591,7 +607,7 @@ class Laborer {
 
     farm(workPower: number) {
         //add food to the worker
-        let resource = new Resource('food', this.resourceDiv,  workPower,)
+        let resource = new Resource('food', this.resourceDiv, workPower,)
         this.addResource(resource);
     }
 
@@ -645,6 +661,8 @@ class Laborer {
 
     craft(workPower: number) {
         craftWork += workPower;
+        displayCraftWork()
+
         updateCraftButton()
     }
 
@@ -729,7 +747,7 @@ class Laborer {
     }
 
     beg(workPower: number) {
-        if(workPower == 0){
+        if (workPower == 0) {
             workPower = 1;
         }
         let resource: Resource;
@@ -764,6 +782,33 @@ class Laborer {
         resource = new Resource('food', this.resourceDiv, 0)
         this.addResource(resource);
 
+    }
+
+    export() {
+        let exportObject = {
+            full: {
+                name: this.name,
+                energy: this.energy,
+                rested: this.rested,
+                hunger: this.hunger,
+                workProgress: this.workProgress,
+
+            },
+            name: this.name,
+            vocation: this.vocation.name,
+            id: this.id,
+            resources: this.resources,
+            weapon: this.weapon,
+            boot: this.boot,
+            energy: this.energy,
+            workProgress: this.workProgress,
+            hunger: this.hunger,
+            mods: this.mods,
+            properties: this.properties,
+            flags: this.flags,
+        }
+
+        return exportObject
     }
 }
 

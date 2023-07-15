@@ -6,17 +6,20 @@ class Gem {
     imageDirectory: string = "dist/img/gems/";
     imageName: string;
     imageNameBackground: string = "-bg";
-    container: HTMLDivElement;
+    container: HTMLElement;
+    div: HTMLDivElement;
     static count: number = 0;
-    constructor(name: string, imageName: number, container: HTMLDivElement, amount: number, active: boolean) {
+    constructor(name: string, imageName: string, amount: number, active: boolean) {
         this.id = Item.count++;
         this.name = name;
         this.amount = amount;
         this.active = active;
-        this.container = container;
 
-        this.imageName = "gem" + imageName + ".png";
-        this.imageNameBackground = "gem" + imageName + this.imageNameBackground + ".png";
+        this.imageName = imageName
+        //add -bg before .png
+        this.imageNameBackground = this.imageName.slice(0, this.imageName.length - 4) + this.imageNameBackground + this.imageName.slice(this.imageName.length - 4, this.imageName.length)
+        this.container = materialsGemList
+        this.div = document.createElement('div');
     }
     add(amount: number) {
         this.amount += amount;
@@ -27,13 +30,12 @@ class Gem {
 
     display() {
 
+        
         //check to see if a div element exists for this resource
-        let div = document.getElementById("gem" + this.id + 'div')
-        if (div == null) {
-            div = document.createElement('div');
-            div.id = "gem" + this.id + 'div';
-            div.className = "gem-div"
-            this.container.appendChild(div);
+        if (this.div.id != "gem" + this.id + 'div') {
+            this.div.id = "gem" + this.id + 'div';
+            this.div.className = "gem-div"
+            this.container.appendChild(this.div);
         }
 
         //check to see if a div element exists for this resource
@@ -42,7 +44,7 @@ class Gem {
             divImage = document.createElement('div');
             divImage.id = "gem" + this.id + 'imagediv';
             divImage.className = "gem-div-image"
-            div.appendChild(divImage);
+            this.div.appendChild(divImage);
         }
 
         //check to see if a image element exists for this resource
@@ -74,18 +76,45 @@ class Gem {
             paragraph.className = "gem"
 
             const container = document.getElementById('materials-list') as HTMLDivElement;
-            div.appendChild(paragraph);
+            this.div.appendChild(paragraph);
         }
 
         paragraph.innerHTML = this.amount.toString();
 
         if (!this.active) {
-            div.style.display = "none";
+            this.div.style.display = "none";
         }
         else {
-            div.style.display = "flex";
+            this.div.style.display = "flex";
         }
 
+    }
+
+    remove() {
+        //remove a resource from its container and list
+
+        //if the container has the div as a child
+        if (this.container.contains(this.div)) {
+            this.container.removeChild(this.div);
+        }
+        this.div.remove();
+
+
+        let index = gems.indexOf(this);
+        if (index > -1) {
+            gems.splice(index, 1);
+        }
+    }
+
+    export (){
+        let gem = {
+            id: this.id,
+            imageName: this.imageName,
+            name: this.name,
+            amount: this.amount,
+            active: this.active
+        }
+        return gem
     }
 
 }
