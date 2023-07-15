@@ -100,7 +100,7 @@ class WorkerClass {
         this.resources = [];
         this.weapon = [];
         this.boot = [];
-        this.energy
+        this.energy = 10;
 
         this.calculateMods()
 
