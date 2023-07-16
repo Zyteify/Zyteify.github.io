@@ -164,7 +164,7 @@ function updateEventListeners() {
 }
 
 function mouseoverEventStart(myElement: HTMLElement, event: Event) {
-    let dragSource = event.target as HTMLElement;
+    let dragSource = myElement as HTMLElement;
     //get the gear that is being dragged
     let gearid: string = dragSource.id.replace('gear-div', '');
     //find the item from the list of items in storage or on a worker
@@ -181,6 +181,7 @@ function mouseoverEventStart(myElement: HTMLElement, event: Event) {
             }
         }
     }
+
     if (item) {
         item.handleHover(event as MouseEvent);
     }
@@ -230,7 +231,10 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             //get the worker with the workerid
             let worker = <WorkerClass>getWorkerById(workerId)
 
-            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, myElement as HTMLDivElement);
+            //get the gear slot that the item is being dropped on
+            let workerItemDiv = worker.getItemDiv(dragDiv.origin.item.baseType)
+
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, workerItemDiv);
         }
         //if the element being dropped on is the gear list container
         else if (myElement === gearListContainer) {

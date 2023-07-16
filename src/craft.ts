@@ -14,12 +14,11 @@ craftingItemMaterials.id = "crafting-item-materials";
 craftingItemMaterials.innerHTML = "Item Materials";
 craftingMaterialsListDiv.appendChild(craftingItemMaterials);
 
-type GearType = "Spade" | "Mace" | "Potion" | "Hammer" | "Knife" | "Spear" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
-type ItemType = "Weapon" | "Boot"
+
 
 type RarityType = "Starter" | "Common" | "Magic" | "Rare" | "Unique"
 
-const itemTypes: ItemType[] = ["Weapon", "Boot"]
+const itemTypes: GearSlot[] = ["Weapon", "Boot"]
 
 const gearTypes: GearType[] = [
     "Spade",
@@ -381,7 +380,7 @@ function createSelectedGear(): boolean {
 }
 
 
-function createGear(itemType: ItemType, gearType: GearType, baseType?: BaseType, rarity?: RarityType): boolean {
+function createGear(itemType: GearSlot, gearType: GearType, baseType?: BaseType, rarity?: RarityType): boolean {
 
     let location;
     let locationDiv;

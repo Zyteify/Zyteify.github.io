@@ -256,6 +256,7 @@ class Item {
             //attach the hoverdiv to the hover-container
             const hoverContainer = document.getElementById('hover-container');
             hoverContainer.appendChild(this.hoverDiv);
+            this.hoverDiv.style.zIndex = "1000";
             //attach the hoverinside div to the hover div
             this.hoverDiv.appendChild(this.hoverInsideDiv);
             this.createFullText(this.hoverInsideDiv);

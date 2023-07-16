@@ -35,7 +35,6 @@ const gearCountMax = document.getElementById('gear-count-max');
 //delete-div
 const deleteDiv = document.getElementById('delete-div');
 //crafting
-const craftingDiv = document.getElementById('crafting');
 const craftingItemSectionDiv = document.getElementById('crafting-item-section');
 const craftingItemNameDiv = document.getElementById('crafting-item-name');
 const craftingItemPictureDiv = document.getElementById('crafting-item-picture');
@@ -45,11 +44,48 @@ const craftingOptionsDiv = document.getElementById('crafting-options');
 const craftingMaterialsListDiv = document.getElementById('crafting-materials-list');
 //upgrades
 const upgradeButtonList = document.getElementById('upgrade-list');
+let buttonUpgrades = document.getElementById(`button-upgrade`);
+let upgradeDiv = document.getElementById(`upgrades`);
+let buttonCrafting = document.getElementById(`button-crafting`);
+let craftingDiv = document.getElementById(`crafting`);
+let buttonQuests = document.getElementById(`button-quests`);
+let questDiv = document.getElementById(`quests`);
+let buttonWorld = document.getElementById(`button-world`);
+let worldDiv = document.getElementById(`world`);
+let emptyDiv = document.getElementById(`empty`);
+let buttonImageUpgrades = document.getElementById(`button-image-upgrade`);
+let buttonImageCrafting = document.getElementById(`button-image-crafting`);
+let buttonImageQuests = document.getElementById(`button-image-quests`);
+let buttonImageWorld = document.getElementById(`button-image-world`);
+//for the main section, which buttons control which div
+let buttons = [];
+buttons = [
+    {
+        name: 'upgrades',
+        div: upgradeDiv,
+        button: buttonUpgrades,
+        image: buttonImageUpgrades
+    },
+    {
+        name: 'crafting',
+        div: craftingDiv,
+        button: buttonCrafting,
+        image: buttonImageCrafting
+    },
+    {
+        name: 'quests',
+        div: questDiv,
+        button: buttonQuests,
+        image: buttonImageQuests
+    },
+    {
+        name: 'world',
+        div: worldDiv,
+        button: buttonWorld,
+        image: buttonImageWorld
+    }
+];
 //hide the gear and worker containers
-gearContainer.style.display = "none";
-workerContainer.style.display = "none";
-materialsDiv.style.display = "none";
-craftingDiv.style.display = "none";
 let hoursStart = 8;
 let hoursEnd = 20;
 //initialize game variables

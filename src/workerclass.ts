@@ -24,17 +24,28 @@ class WorkerClass {
     //empty array of items
     weapon: Item[] = [];
     boot: Item[] = [];
+    shirt: Item[] = [];
+    hat: Item[] = [];
     image: HTMLImageElement;
-
+    placeholderImages: HTMLImageElement[] = [];
 
     //display
     div: HTMLDivElement;
     container: HTMLDivElement;
-    paragraph: HTMLParagraphElement[];
     paragraphDiv: HTMLDivElement;
     resourcesParagraphs: HTMLParagraphElement[];
     resourceDiv: HTMLDivElement;
-    gearDiv: HTMLDivElement;
+    displayWeaponDiv: HTMLDivElement;
+    displayBootDiv: HTMLDivElement;
+    displayShirtDiv: HTMLDivElement;
+    displayHatDiv: HTMLDivElement;
+    displayName: HTMLParagraphElement;
+    displayVocation: HTMLParagraphElement;
+    displayProgress: HTMLProgressElement;
+    displayEnergy: HTMLParagraphElement;
+    displayActivity: HTMLParagraphElement;
+    displayStat: HTMLParagraphElement;
+    displayHunger: HTMLParagraphElement;
 
     //actions
     vocationActions: Record<ClassType, (workPower: number) => void>; // Mapping of vocation to function
@@ -44,6 +55,7 @@ class WorkerClass {
     rested: boolean = true
     hunger: number = 0;
     workProgress: number = 0;
+    activity: string = 'resting'
 
     mods: Mods = {
         itemPower: 0,
@@ -100,7 +112,7 @@ class WorkerClass {
         this.resources = [];
         this.weapon = [];
         this.boot = [];
-        this.energy = 10;
+        this.energy = WorkerClass.workSpeedUpgradeable;
 
         this.calculateMods()
 
@@ -125,25 +137,29 @@ class WorkerClass {
 
         //div
         this.div = document.createElement('div');
-        this.div.id = "worker-div" + this.id.toString();
-        this.div.className = "worker-div";
 
         //image
         this.image = new Image();
         //container
         this.container = document.getElementById('worker-list') as HTMLDivElement;
-        //paragraph
-        this.paragraph = []
+        this.displayName = document.createElement('p');
+        this.displayVocation = document.createElement('p');
+        this.displayProgress = document.createElement('progress');
+        this.displayEnergy = document.createElement('p');
+        this.displayActivity = document.createElement('p');
+        this.displayStat = document.createElement('p');
+        this.displayHunger = document.createElement('p');
+        this.displayWeaponDiv = document.createElement('div');
+        this.displayBootDiv = document.createElement('div');
+        this.displayShirtDiv = document.createElement('div');
+        this.displayHatDiv = document.createElement('div');
+
         this.resourcesParagraphs = [];
         this.paragraphDiv = document.createElement('div');
         this.paragraphDiv.id = "worker-paragraph-div" + this.id.toString();
         this.resourceDiv = document.createElement('div');
         this.resourceDiv.id = "worker-resources-div" + this.id.toString();
         this.resourceDiv.classList.add('worker-resources-div');
-
-        this.gearDiv = document.createElement('div');
-        this.gearDiv.id = "worker-gear-div" + this.id.toString();
-
 
         this.setupDiv()
 
@@ -255,7 +271,7 @@ class WorkerClass {
 
 
         //update text
-        this.setParagraph()
+        this.updateDisplayVocation()
 
         //when they change vocation, they should lose their work progress
         this.workProgress = 0;
@@ -341,7 +357,10 @@ class WorkerClass {
             }
 
         }
-        this.setParagraph()
+        this.updateDisplayActivity()
+        this.updateDisplayEnergy()
+        this.updateDisplayHunger()
+        this.updateDisplayProgress()
     }
 
     //add a resource to the worker
@@ -373,7 +392,7 @@ class WorkerClass {
             //remove the extra resource
             resource.div.remove();
         }
-        this.setResourcesDisplay();
+        this.updateResourceDiv();
     }
 
     //remove a resource from the worker
@@ -413,23 +432,12 @@ class WorkerClass {
                 console.log('unknown weapon type');
                 break;
         }
+        this.setItemParent();
         this.calculateMods();
     }
 
-    setItemParent() {
-        //append the gear div to the worker div if it hasnt already
-        if (this.gearDiv.parentElement == null) {
-            this.div.appendChild(this.gearDiv);
-        }
-
-        if (this.weapon[0]) {
-            this.weapon[0].setParentDiv(this.gearDiv);
-        }
-
-
-    }
-
-    depositResources(amount: number) {
+    depositResources(amount: number): boolean {
+        let deposited: boolean = false
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
             //check to see if the stockpile has the resource
@@ -442,6 +450,9 @@ class WorkerClass {
                 homeResource.amount += resourceToAdd;
                 //subtract the resource from the worker's inventory
                 workerResource.amount -= resourceToAdd;
+                deposited = true
+                break
+
             } else {
                 //log error
                 console.log("Error: Resource not found in home stockpile");
@@ -456,101 +467,201 @@ class WorkerClass {
             if (this.resources[i].amount <= 0) {
                 this.removeResource(this.resources[i]);
             }
-
-
-
         }
-
-        this.setResourcesDisplay();
+        this.updateResourceDiv();
         displayResources()
 
-
-
+        return deposited
     }
 
     //consume food to do get the work speed back to normal
     eat() {
         let food = getResourceByName('food');
+        //check if we have food and if we need to eat
+        //loop through each resource in the worker's inventory
+        for (let i = 0; i < this.resources.length; i++) {
+            //check to see if the worker has food
+            if (this.resources[i].name === 'food') {
+                food = this.resources[i];
+            }
+        }
 
         if (food != null && food.amount > 0 && this.energy < this.properties.energyMax) {
             food.amount -= 1;
             this.energy += 1;
             this.hunger -= 1;
-            this.setParagraph()
+            this.activity = 'eating'
+            food.display();
+            this.updateDisplayActivity()
+            this.updateDisplayEnergy()
+            this.updateDisplayHunger()
+        }
+        else if (this.depositResources(1)) {
+            this.activity = 'depositing'
+            this.updateDisplayActivity()
+        }
+        else {
+            this.activity = 'sleeping'
+            this.updateDisplayActivity()
         }
     }
 
     //rest to get the work speed up
     rest() {
         if (this.energy < this.properties.energyMax) {
-            this.energy += 1;
-            if (this.energy < this.properties.energyMax) {
-                this.energy += 1;
-                this.setParagraph()
-            }
-            this.setParagraph()
+            let energyRestored = Math.min(this.properties.energyMax - this.energy, 2)
+            this.energy += energyRestored;
+            this.hunger -= energyRestored;
+            this.updateDisplayEnergy()
+            this.activity = 'resting'
+            this.updateDisplayActivity()
         }
         this.rested = true;
     }
 
-    setImage() {
-        //if the image id has not been set, initialise the image
-        if (this.image.id == "") {
-            // Set the source attribute of the image
-            this.image.src = 'dist/img/characters/char.png';
-            this.image.id = "worker-image" + this.id.toString();
-            this.image.draggable = false
-            this.image.classList.add('worker-image');
-            if (this.image.parentElement == null) {
-                this.div.appendChild(this.image);
-            }
+    //set the parent div of the items or the placeholder div
+    setItemParent() {
+        if (this.weapon[0]) {
+            //remove the placeholder image
+            this.placeholderImages[0].remove();
+            this.weapon[0].setParentDiv(this.displayWeaponDiv);
         }
-
-    }
-
-    setParagraph() {
-        if (this.paragraphDiv.parentElement == null) {
-            this.div.appendChild(this.paragraphDiv);
+        else {
+            this.displayWeaponDiv.appendChild(this.placeholderImages[0]);
         }
-        if (this.paragraph.length == 0) {
-            this.paragraph.push(document.createElement('p'));
-            this.paragraph.push(document.createElement('p'));
-            this.paragraph.push(document.createElement('p'));
+        if (this.shirt[0]) {
+            //remove the placeholder image
+            this.placeholderImages[1].remove();
+            this.boot[0].setParentDiv(this.displayShirtDiv);
         }
-        //loop through each paragraph element and create it if it doesn't exist
-        for (let i = 0; i < this.paragraph.length; i++) {
-
-            //check to see if a paragraph element exists for this resource
-            if (this.paragraph[i].id == '') {
-                this.paragraph[i].id = "worker" + this.id.toString();
-
-                this.paragraphDiv.appendChild(this.paragraph[i]);
-
-            }
-            switch (i) {
-
-                case (0):
-                    this.paragraph[i].innerHTML = this.name + ": " + this.vocation.name
-                    break;
-                case (1):
-                    this.paragraph[i].innerHTML = "Work Progress: " + this.workProgress.toString()
-                    break;
-                case (2):
-                    this.paragraph[i].innerHTML = "Work Speed: " + this.energy.toString()
-                    break;
-                default:
-                    console.log('error');
-                    break;
-
-
-            }
+        else {
+            this.displayShirtDiv.appendChild(this.placeholderImages[1]);
+        }
+        if (this.hat[0]) {
+            //remove the placeholder image
+            this.placeholderImages[2].remove();
+            this.hat[0].setParentDiv(this.displayHatDiv);
+        }
+        else {
+            this.displayHatDiv.appendChild(this.placeholderImages[2]);
+        }
+        if (this.boot[0]) {
+            //remove the placeholder image
+            this.placeholderImages[3].remove();
+            this.boot[0].setParentDiv(this.displayBootDiv);
+        }
+        else {
+            this.displayBootDiv.appendChild(this.placeholderImages[3]);
         }
     }
 
-    setResourcesDisplay() {
-        //append the resource div to the worker div if it hasnt already
-        if (this.resourceDiv.parentElement == null) {
-            this.div.appendChild(this.resourceDiv);
+    getItemDiv(baseType: BaseType) {
+        switch (baseType.gearSlot) {
+            case 'Weapon':
+                return this.displayWeaponDiv
+            case 'Shirt':
+                return this.displayShirtDiv
+            case 'Hat':
+                return this.displayBootDiv
+            case 'Boot':
+                return this.displayBootDiv
+            default:
+                console.log('unknown gear type');
+                return this.displayWeaponDiv
+        }
+    }
+
+    updateResourceDiv() {
+        //loop through each resource in the worker's inventory
+        for (let i = 0; i < this.resources.length; i++) {
+            this.resources[i].display();
+        }
+    }
+
+    setCharacterImage(div: HTMLDivElement) {
+        // Set the source attribute of the image
+        this.image.src = 'dist/img/characters/char.png';
+        this.image.id = "worker-image" + this.id.toString();
+        this.image.draggable = false
+        this.image.classList.add('worker-image');
+        div.appendChild(this.image);
+    }
+
+    setPlaceholderImages() {
+        // Set the source attribute of the image
+        this.placeholderImages = [
+            new Image(),
+            new Image(),
+            new Image(),
+            new Image(),
+        ];
+        this.placeholderImages[0].src = 'dist/img/placeholders/weapon-image.png';
+        this.placeholderImages[0].id = "worker-image" + this.id.toString();
+        this.placeholderImages[0].draggable = false
+        this.placeholderImages[0].classList.add('image');
+        this.placeholderImages[0].classList.add('placeholder-image');
+        this.placeholderImages[1].src = 'dist/img/placeholders/shirt-image.png';
+        this.placeholderImages[1].id = "worker-image" + this.id.toString();
+        this.placeholderImages[1].draggable = false
+        this.placeholderImages[1].classList.add('image');
+        this.placeholderImages[1].classList.add('placeholder-image');
+        this.placeholderImages[2].src = 'dist/img/placeholders/hat-image.png';
+        this.placeholderImages[2].id = "worker-image" + this.id.toString();
+        this.placeholderImages[2].draggable = false
+        this.placeholderImages[2].classList.add('image');
+        this.placeholderImages[2].classList.add('placeholder-image');
+        this.placeholderImages[3].src = 'dist/img/placeholders/boots-image.png';
+        this.placeholderImages[3].id = "worker-image" + this.id.toString();
+        this.placeholderImages[3].draggable = false
+        this.placeholderImages[3].classList.add('image');
+        this.placeholderImages[3].classList.add('placeholder-image');
+    }
+
+    updateDisplayVocation() {
+        if (this.displayVocation.innerHTML = this.vocation.name) {
+            this.displayVocation.innerHTML = this.vocation.name;
+        }
+    }
+
+    updateDisplayProgress() {
+        if (this.displayProgress.value = this.workProgress) {
+            this.displayProgress.value = this.workProgress;
+            this.displayProgress.max = 100;
+        }
+    }
+
+    updateDisplayEnergy() {
+        if (this.displayEnergy.innerHTML != `🔋${this.energy.toString()}`) {
+            this.displayEnergy.innerHTML = `🔋${this.energy.toString()}`
+        }
+    }
+
+    updateDisplayHunger() {
+        if (this.displayHunger.innerHTML != `${this.hunger}`) {
+            this.displayHunger.innerHTML = `${this.hunger}`
+        }
+    }
+
+    updateDisplayActivity() {
+        if (this.displayActivity.innerHTML != `${this.activity}`) {
+            this.displayActivity.innerHTML = `${this.activity}`
+        }
+    }
+
+    updateDisplayStat() {
+        //loop through each mod
+        for (let i = 0; i < Object.keys(this.mods).length; i++) {
+            let modName = Object.keys(this.mods)[i] as keyof Mods;
+            let modValue = this.mods[modName];
+            if (modValue != 0) {
+                //create a paragraph for the stat
+                const p = document.createElement('p');
+                p.id = `worker-name${this.id.toString()}${modName}`;
+                p.classList.add('worker-stat-item');
+                p.innerHTML = `${modName}: ${modValue}`;
+                this.displayStat.appendChild(p);
+            }
+
         }
     }
 
@@ -561,20 +672,152 @@ class WorkerClass {
         }
 
         //set the id and class of the div
-        this.div.id = "worker-div" + this.id.toString();
-        this.div.className = "worker-div";
+        if (this.div.id != `worker-div${this.id.toString()}`) {
+            this.div.id = `worker-div${this.id.toString()}`;
+            this.div.className = "worker-div";
 
-        //append the paragraph to the div if it hasnt already
-        this.setParagraph()
+            //left most panel
+            {
+                //worker inventory+name div
+                const workerinventoryNameDiv = document.createElement('div');
+                workerinventoryNameDiv.id = "worker-inventory-name-div" + this.id.toString();
+                workerinventoryNameDiv.classList.add('worker-inventory-name-div');
+                this.div.appendChild(workerinventoryNameDiv);
 
-        //append the image to the div if it hasnt already
-        this.setImage()
+                //display name
+                this.displayName.id = `worker-name${this.id.toString()}displayName`;
+                this.displayName.classList.add('worker-name');
+                this.displayName.innerHTML = this.name;
+                workerinventoryNameDiv.appendChild(this.displayName);
+
+                //worker inventory div
+                const workerInventoryDiv = document.createElement('div');
+                workerInventoryDiv.id = "worker-inventory-div" + this.id.toString();
+                workerInventoryDiv.classList.add('worker-inventory-div');
+                workerinventoryNameDiv.appendChild(workerInventoryDiv);
+
+                //worker image
+                this.setCharacterImage(workerInventoryDiv)
+
+                //worker inventory gear div
+                const workerInventoryGearDiv = document.createElement('div');
+                workerInventoryGearDiv.id = "worker-inventory-gear-div" + this.id.toString();
+                workerInventoryGearDiv.classList.add('worker-inventory-gear-div');
+                workerInventoryDiv.appendChild(workerInventoryGearDiv);
+
+                //worker weapon-shirt div
+                const workerWeaponShirtDiv = document.createElement('div');
+                workerWeaponShirtDiv.id = "worker-weapon-shirt-div" + this.id.toString();
+                workerWeaponShirtDiv.classList.add('worker-weapon-shirt-div');
+                workerInventoryGearDiv.appendChild(workerWeaponShirtDiv);
+
+                //worker weapon div
+                this.displayWeaponDiv.id = "worker-weapon-div" + this.id.toString();
+                this.displayWeaponDiv.classList.add('worker-weapon-div');
+                this.displayWeaponDiv.classList.add('image-div')
+                workerWeaponShirtDiv.appendChild(this.displayWeaponDiv);
+
+                //worker shirt div
+                this.displayShirtDiv.id = "worker-shirt-div" + this.id.toString();
+                this.displayShirtDiv.classList.add('worker-shirt-div');
+                this.displayShirtDiv.classList.add('image-div')
+                workerWeaponShirtDiv.appendChild(this.displayShirtDiv);
+
+                //worker boots-hat div
+                const workerBootsHatDiv = document.createElement('div');
+                workerBootsHatDiv.id = "worker-boots-hat-div" + this.id.toString();
+                workerBootsHatDiv.classList.add('worker-boots-hat-div');
+                workerInventoryGearDiv.appendChild(workerBootsHatDiv);
+
+                //worker hat div
+                this.displayHatDiv.id = "worker-hat-div" + this.id.toString();
+                this.displayHatDiv.classList.add('worker-hat-div');
+                this.displayHatDiv.classList.add('image-div')
+                workerBootsHatDiv.appendChild(this.displayHatDiv);
+
+                //worker boots div
+                this.displayBootDiv.id = "worker-boots-div" + this.id.toString();
+                this.displayBootDiv.classList.add('worker-boots-div');
+                this.displayBootDiv.classList.add('image-div')
+                workerBootsHatDiv.appendChild(this.displayBootDiv);
+
+                this.setPlaceholderImages()
+            }
+
+            //right panel
+            {
+                //worker stat container div@
+                const workerStatContainerDiv = document.createElement('div');
+                workerStatContainerDiv.id = "worker-stat-container-div" + this.id.toString();
+                workerStatContainerDiv.classList.add('worker-stat-container-div');
+                this.div.appendChild(workerStatContainerDiv);
+
+                //display vocation
+                this.displayVocation.id = `worker-name${this.id.toString()}vocation`;
+                this.displayVocation.classList.add('worker-vocation');
+                workerStatContainerDiv.appendChild(this.displayVocation);
+                this.updateDisplayVocation()
+
+                //worker activity
+                this.displayActivity.id = `worker-name${this.id.toString()}activity`;
+                this.displayActivity.classList.add('worker-activity');
+                workerStatContainerDiv.appendChild(this.displayActivity);
+                this.updateDisplayActivity()
+
+                //worker progress div
+                const workerProgressDiv = document.createElement('div');
+                workerProgressDiv.id = "worker-progress-div" + this.id.toString();
+                workerProgressDiv.classList.add('worker-progress-div');
+                workerStatContainerDiv.appendChild(workerProgressDiv);
+
+                //worker progress bar
+                this.displayProgress.id = `worker-name${this.id.toString()}progress`;
+                this.displayProgress.classList.add('worker-progress');
+                workerProgressDiv.appendChild(this.displayProgress);
+                this.updateDisplayProgress()
+
+                //worker energy
+                this.displayEnergy.id = `worker-name${this.id.toString()}energy`;
+                this.displayEnergy.classList.add('worker-energy');
+                workerProgressDiv.appendChild(this.displayEnergy);
+                this.updateDisplayEnergy()
+                this.displayEnergy.innerHTML = `🔋${this.energy.toString()}`
+
+                //worker hunger
+                this.displayHunger.id = `worker-name${this.id.toString()}hunger`;
+                this.displayHunger.classList.add('worker-hunger');
+                workerProgressDiv.appendChild(this.displayHunger);
+                this.updateDisplayHunger()
+
+                //worker stats div
+                const workerStatsDiv = document.createElement('div');
+                workerStatsDiv.id = "worker-stats-div" + this.id.toString();
+                workerStatsDiv.classList.add('worker-stats-div');
+                workerStatContainerDiv.appendChild(workerStatsDiv);                
+
+                //worker resources div
+                this.resourceDiv.id = "worker-resources-div" + this.id.toString();
+                this.resourceDiv.classList.add('worker-resources-div');
+                workerStatsDiv.appendChild(this.resourceDiv);
+
+                //worker stat list div
+                const workerStatListDiv = document.createElement('div');
+                workerStatListDiv.id = "worker-stat-list-div" + this.id.toString();
+                workerStatListDiv.classList.add('worker-stat-list-div');
+                workerStatContainerDiv.appendChild(workerStatListDiv);
+
+                //worker stat
+                workerStatListDiv.id = "worker-stat-div" + this.id.toString();
+                workerStatListDiv.classList.add('worker-stat-div');
+                workerStatContainerDiv.appendChild(workerStatListDiv);
+                this.updateDisplayStat()
+
+            }
+        }
 
         //append the gear to the div if it hasnt already
         this.setItemParent()
 
-        //append the resources to the div if they havent already
-        this.setResourcesDisplay()
     }
 
     remove() {
@@ -600,18 +843,22 @@ class WorkerClass {
     }
 
     guard(workPower: number) {
+        this.activity = 'guarding'
     }
 
     cook(workPower: number) {
+        this.activity = 'cooking'
     }
 
     farm(workPower: number) {
+        this.activity = 'farming'
         //add food to the worker
         let resource = new Resource('food', this.resourceDiv, workPower,)
         this.addResource(resource);
     }
 
     mine(workPower: number) {
+        this.activity = 'mining'
         for (let i = 0; i < workPower; i++) {
             this.mineOnce()
         }
@@ -649,17 +896,21 @@ class WorkerClass {
     }
 
     merchant(workPower: number) {
+        this.activity = 'trading'
     }
 
     priest(workPower: number) {
+        this.activity = 'praying'
     }
 
     chop(workPower: number) {
+        this.activity = 'chopping'
         //add wood to the worker
         this.addResource(new Resource('wood', this.resourceDiv, workPower));
     }
 
     craft(workPower: number) {
+        this.activity = 'crafting'
         craftWork += workPower;
         displayCraftWork()
 
@@ -668,6 +919,7 @@ class WorkerClass {
 
     //give energy to all other workers
     nurse(workPower: number) {
+        this.activity = 'nursing'
         //todo make workpower do something
         for (let i = 0; i < workers.length; i++) {
             if (workers[i].id != this.id) {
@@ -677,9 +929,11 @@ class WorkerClass {
     }
 
     gemcut(workPower: number) {
+        this.activity = 'gemcutting'
     }
 
     hunt(workPower: number) {
+        this.activity = 'hunting'
         let huntChance = 0.35
         let random = Math.random();
         if (random < huntChance) {
@@ -691,6 +945,7 @@ class WorkerClass {
     }
 
     tax(workPower: number) {
+        this.activity = 'taxing'
         //get the number of workers who aren't vagrants or taxers
         let workerCount = 0;
         for (let i = 0; i < workers.length; i++) {
@@ -706,6 +961,7 @@ class WorkerClass {
     }
 
     gamble(workPower: number) {
+        this.activity = 'gambling'
         let winChance = 0.15
 
         let random = Math.random();
@@ -743,10 +999,12 @@ class WorkerClass {
 
 
     research(workPower: number) {
+        this.activity = 'researching'
         upgradePoints += workPower;
     }
 
     beg(workPower: number) {
+        this.activity = 'begging'
         if (workPower == 0) {
             workPower = 1;
         }

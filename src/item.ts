@@ -1,6 +1,6 @@
 class Item {
     id: number;
-    type: ItemType;
+    type: GearSlot;
     image: HTMLImageElement;
 
     //mods
@@ -37,7 +37,7 @@ class Item {
     setup: boolean = false;
     setupHover: boolean = false;
     static count: number = 0;
-    constructor(type: ItemType, baseType: BaseType, rarity: RarityType, full?: any
+    constructor(type: GearSlot, baseType: BaseType, rarity: RarityType, full?: any
     ) {
 
         this.id = Item.count++;
@@ -306,6 +306,7 @@ class Item {
             //attach the hoverdiv to the hover-container
             const hoverContainer = document.getElementById('hover-container') as HTMLDivElement;
             hoverContainer.appendChild(this.hoverDiv);
+            this.hoverDiv.style.zIndex = "1000";
 
             //attach the hoverinside div to the hover div
             this.hoverDiv.appendChild(this.hoverInsideDiv);

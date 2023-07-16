@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "c:\\Users\\Michael\\Documents\\Website\\call-to-vocation\\dist\\index.html"
+    "livePreview.defaultPreviewPath": "c:\\Users\\Michael\\Documents\\Website\\call-to-vocation\\dist\\index.html",
+    "liveServer.settings.port": 5501
 }

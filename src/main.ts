@@ -141,11 +141,10 @@ loadJson('../dist/data/basetypes.json').then(data => {
         let baseType = baseTypeList[i];
         let name = baseType.name;
         let gearType = baseType.gearType;
+        let gearSlot = baseType.gearSlot;
         let resourceCost = baseType.resourceCost;
         let resource = baseType.resource;
         let itemMods = baseType.itemMods;
-        let implicit = baseType.implicit;
-        let value = baseType.value;
         let craftingCost = baseType.craftingCost;
 
         //create arrays for each item in the string for resourceCost and resource
@@ -166,7 +165,7 @@ loadJson('../dist/data/basetypes.json').then(data => {
         //create an itemMod for the item power
 
 
-        let newBaseType = new BaseType(name, gearType, resourceCostArray, resourceArray, itemMods, implicit, value, craftingCost);
+        let newBaseType = new BaseType(name, gearType, gearSlot, resourceCostArray, resourceArray, itemMods, craftingCost);
         baseTypes.push(newBaseType);
     }
 
@@ -253,7 +252,7 @@ function moveGear(
     if (destinationWorker) {
         //if the destination worker already has an item equipped, move it back to the source
         if (destinationWorker.weapon[0]) {
-            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationWorker.gearDiv, source, sourceArray, sourceDiv)
+            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationDiv, source, sourceArray, sourceDiv)
         }
         destinationWorker.equipItem(item)
     }
@@ -292,7 +291,8 @@ function createWorker() {
     if (upgrade.resourcesRequired[0].amount < 10) {
         upgrade.resourcesRequired[0].amount += 10;
     }
-
+    worldDiv.classList.remove('initial-hide');
+    buttonWorld.classList.remove('initial-hide');
     displayText();
 }
 
@@ -357,25 +357,25 @@ function unlockStarterGear() {
                 if (gearCreation) {
                     game.unlockedSpade = true;
                 }
-                else{
+                else {
                     console.log("error creating spade")
                 }
                 break;
             }
 
-/*         case 3:
-            baseType = findBaseTypeByNameandGearType("Scrap", 'Axe')
-            if (baseType) {
-                gearCreation = createGear("Weapon", "Axe", baseType, 'Starter');
-                if (gearCreation) {
-                    game.unlockedAxe = true;
-                    setResourceActive('wood');
-                }
-                else{
-                    console.log("error creating axe")
-                }
-                break;
-            } */
+        /*         case 3:
+                    baseType = findBaseTypeByNameandGearType("Scrap", 'Axe')
+                    if (baseType) {
+                        gearCreation = createGear("Weapon", "Axe", baseType, 'Starter');
+                        if (gearCreation) {
+                            game.unlockedAxe = true;
+                            setResourceActive('wood');
+                        }
+                        else{
+                            console.log("error creating axe")
+                        }
+                        break;
+                    } */
         case 2:
             baseType = findBaseTypeByNameandGearType("Scrap", 'Hammer')
             if (baseType) {
@@ -392,7 +392,7 @@ function unlockStarterGear() {
                     setResourceActive('gold');
                     setResourceActive('wood');
                 }
-                else{
+                else {
                     console.log("error creating hammer")
                 }
                 break;
@@ -407,7 +407,7 @@ function unlockGear() {
     if (!game.unlockedGear) {
         game.unlockedGear = true;
 
-        gearContainer.style.display = ""
+        gearContainer.classList.remove('initial-hide');
         increaseGearCountMax()
     }
 }
@@ -415,7 +415,10 @@ function unlockGear() {
 function unlockMaterials() {
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedMaterials) {
-        materialsDiv.style.display = "block"
+        materialsDiv.classList.remove('initial-hide');
+        craftingDiv.classList.remove('initial-hide');
+        buttonCrafting.classList.remove('initial-hide');
+        showMainDiv(craftingDiv)
         game.unlockedMaterials = true;
     }
 }
@@ -423,14 +426,15 @@ function unlockMaterials() {
 function unlockCrafting() {
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedCrafting) {
-        craftingDiv.style.display = ""
+        craftingDiv.classList.remove('initial-hide');
         game.unlockedCrafting = true;
     }
 }
 
 function unlockWorkers() {
     if (!game.unlockedWorkers) {
-        workerContainer.style.display = ""
+        workerContainer.classList.remove('initial-hide');
+
         game.workerCountMax++;
         game.unlockedWorkers = true;
     }
@@ -442,7 +446,6 @@ function increaseWorkerSpeed() {
     for (let i = 0; i < workers.length; i++) {
         workers[i].energy += 5;
         workers[i].calculateMods()
-        workers[i].setParagraph();
     }
 }
 
@@ -485,11 +488,7 @@ function controlWorkers() {
     }
     if (!working) {
 
-        //loop through each worker and do work
-        for (let i = 0; i < tempWorkers.length; i++) {
-            tempWorkers[i].depositResources(1);
-        }
-
+        //loop through each worker and do work/eat
         //loop through each worker and do eat
         for (let i = 0; i < tempWorkers.length; i++) {
             tempWorkers[i].eat();
@@ -538,8 +537,9 @@ function findHungriestWorker() {
 }
 
 gameLoop();
+let gamespeed = 5;
 //do the game loop every 100 milliseconds
-setInterval(gameLoop, 100);
+setInterval(gameLoop, 100/gamespeed);
 
 //main game loop
 function gameLoop() {

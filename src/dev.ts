@@ -3,7 +3,7 @@ if (window.location.hostname == "127.0.0.1" || window.location.hostname == "loca
     dev = true;
 }
 
-/* dev = false; */
+dev = false;
 
 function unlockDev() {
 
@@ -60,17 +60,8 @@ function unlockDev() {
     let upgradeDiv: HTMLElement = <HTMLElement>document.getElementById('upgrades');
     upgradeDiv.appendChild(buttonUnlockAll);
     buttonUnlockAll.onclick = function () {
-
-        for (let i = 0; i < resources.length; i++) {
-            resources[i].amount += 1000
-        }
-
-        //loop through all upgrades and unlock them
-        for (let i = 0; i < upgrades.length; i++) {
-            upgrades[i].upgrade();
-
-        }
-        displayAll()
+        devAll()
+        
 
 
 
@@ -78,6 +69,18 @@ function unlockDev() {
     }
 }
 
+function devAll(){
+    for (let i = 0; i < resources.length; i++) {
+        resources[i].amount += 1000
+    }
+
+    //loop through all upgrades and unlock them
+    for (let i = 0; i < upgrades.length; i++) {
+        upgrades[i].upgrade();
+
+    }
+    displayAll()
+}
 
 
 if (dev) {

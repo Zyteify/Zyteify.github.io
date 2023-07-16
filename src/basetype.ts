@@ -1,25 +1,25 @@
 type BaseTypeName = 'Scrap' | 'Wooden' | 'Copper' | 'Silver' | 'Gold'
+type GearType = "Spade" | "Mace" | "Potion" | "Hammer" | "Knife" | "Spear" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
+type GearSlot = "Weapon" | "Boot" | "Shirt" | "Hat"
 
 class BaseType{
     id: number;
     name: BaseTypeName;
     gearType: GearType
+    gearSlot: GearSlot
     resourceCost: number []
     resource: ResourceType []
-    implicit: string
-    value: number
     craftingCost: number
     itemMod: ItemMod[] = []
     static count: number = 0;
-    constructor(name: BaseTypeName, gearType: GearType, resourceCost: number[], resource: ResourceType[], itemMods: ItemMod[], implicit: string, value: number, craftingCost: number){
+    constructor(name: BaseTypeName, gearType: GearType, gearSlot: GearSlot, resourceCost: number[], resource: ResourceType[], itemMods: ItemMod[], craftingCost: number){
         this.id = BaseType.count++;
         this.name = name
         this.gearType = gearType
+        this.gearSlot = gearSlot
         this.resourceCost = resourceCost
         this.resource = resource
         this.itemMod = itemMods
-        this.implicit = implicit
-        this.value = value
         this.craftingCost = craftingCost
     }
 
@@ -31,8 +31,6 @@ class BaseType{
             resourceCost: this.resourceCost,
             resource: this.resource,
             itemMod: this.itemMod,
-            implicit: this.implicit,
-            value: this.value,
             craftingCost: this.craftingCost
         }
         return baseType

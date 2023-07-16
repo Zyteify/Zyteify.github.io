@@ -3,22 +3,20 @@ class BaseType {
     id;
     name;
     gearType;
+    gearSlot;
     resourceCost;
     resource;
-    implicit;
-    value;
     craftingCost;
     itemMod = [];
     static count = 0;
-    constructor(name, gearType, resourceCost, resource, itemMods, implicit, value, craftingCost) {
+    constructor(name, gearType, gearSlot, resourceCost, resource, itemMods, craftingCost) {
         this.id = BaseType.count++;
         this.name = name;
         this.gearType = gearType;
+        this.gearSlot = gearSlot;
         this.resourceCost = resourceCost;
         this.resource = resource;
         this.itemMod = itemMods;
-        this.implicit = implicit;
-        this.value = value;
         this.craftingCost = craftingCost;
     }
     export() {
@@ -29,8 +27,6 @@ class BaseType {
             resourceCost: this.resourceCost,
             resource: this.resource,
             itemMod: this.itemMod,
-            implicit: this.implicit,
-            value: this.value,
             craftingCost: this.craftingCost
         };
         return baseType;

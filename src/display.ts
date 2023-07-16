@@ -1,4 +1,4 @@
-function displayAll(){
+function displayAll() {
     displayText();
     displayGear();
     displayResources();
@@ -25,11 +25,11 @@ function displayText() {
 
     //crafting
     //crafting-progress
-    
+
 
     updateEventListeners()
-    
-    
+
+
     updateCraftButton()
 }
 
@@ -44,12 +44,12 @@ function displayGear() {
         itemsCrafting[i].setParentDiv(craftingItemSectionDiv)
         itemsCrafting[i].resetDiv()
     }
-    for (let i = 0; i < workers.length; i++) {
+    /* for (let i = 0; i < workers.length; i++) {
         if (workers[i].weapon[0] != null) {
             workers[i].weapon[0]?.setParentDiv(workers[i].gearDiv)
             workers[i].weapon[0]?.resetDiv()
         }
-    }
+    } */
 
 }
 
@@ -58,6 +58,8 @@ function displayResources() {
     for (let i = 0; i < resources.length; i++) {
         resources[i].display()
     }
+    //if the resources need to be displayed, also do the upgrades
+    displayUpgrades()
 }
 
 function displayGems() {
@@ -112,3 +114,42 @@ function setTextfromAffixes(stringText: string, stringValue: number): string {
 function displayCraftWork() {
     materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
 }
+
+
+configureShowButtons()
+function configureShowButtons() {
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].image.src = 'dist/img/arrow-left.png';
+        buttons[i].image.classList.add('button-img');
+        buttons[i].button.appendChild(buttons[i].image);
+        buttons[i].button.addEventListener('click', function () {
+            showMainDiv(buttons[i].div)
+        })
+    }
+}
+
+let activeDiv = worldDiv
+function showMainDiv(div: HTMLDivElement) {
+    emptyDiv.classList.add('hide');
+    emptyDiv.classList.remove('show');
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].div.classList.add('hide');
+        buttons[i].div.classList.remove('show');
+        buttons[i].image.classList.remove('flip');
+        if (div == buttons[i].div) {
+            if (activeDiv == div) {
+                buttons[i].image.classList.remove('flip');
+                buttons[i].div.classList.remove('show');
+                activeDiv = emptyDiv
+                emptyDiv.classList.add('show');
+            } else {
+                buttons[i].image.classList.add('flip');
+                buttons[i].div.classList.add('show');
+                activeDiv = div
+            }
+        }
+    }
+}
+
+//initially have the upgrades active
+showMainDiv(upgradeDiv)

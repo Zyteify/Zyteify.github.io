@@ -3,7 +3,7 @@ let dev = false;
 if (window.location.hostname == "127.0.0.1" || window.location.hostname == "localhost") {
     dev = true;
 }
-/* dev = false; */
+dev = false;
 function unlockDev() {
     let craftingContainer = document.getElementById('materials');
     let gearCraftingDiv = document.createElement('div');
@@ -51,15 +51,18 @@ function unlockDev() {
     let upgradeDiv = document.getElementById('upgrades');
     upgradeDiv.appendChild(buttonUnlockAll);
     buttonUnlockAll.onclick = function () {
-        for (let i = 0; i < resources.length; i++) {
-            resources[i].amount += 1000;
-        }
-        //loop through all upgrades and unlock them
-        for (let i = 0; i < upgrades.length; i++) {
-            upgrades[i].upgrade();
-        }
-        displayAll();
+        devAll();
     };
+}
+function devAll() {
+    for (let i = 0; i < resources.length; i++) {
+        resources[i].amount += 1000;
+    }
+    //loop through all upgrades and unlock them
+    for (let i = 0; i < upgrades.length; i++) {
+        upgrades[i].upgrade();
+    }
+    displayAll();
 }
 if (dev) {
     unlockDev();

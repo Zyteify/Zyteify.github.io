@@ -1,0 +1,104 @@
+.image-div{
+    height: 100px;
+    width: 100px;
+}
+
+.image{
+    height: 100%;
+    width: 100%;
+}
+
+.worker-name{
+    margin: 0%;
+}
+
+.worker-inventory-div{
+    display: flex;
+}
+
+.worker-div{
+    display: flex;
+    flex-direction: row;
+    height: 225px;
+    /* to account for padding+margin */
+    width: 480px;
+    
+}
+
+.worker-progress-div{
+    display: flex;
+    width: 100%;
+}
+
+.worker-inventory-name-div{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    align-items: center;
+}
+
+.worker-stat-container-div{
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    align-items: center;
+}
+
+.worker-image{
+    display: flex;
+    width: 40%;
+    height: 200px;
+}
+
+.worker-inventory-gear-div{
+    display: flex;
+    width: 60%;
+}
+
+#workers * p{
+    margin: 0%;
+}
+
+.worker-progress{
+    width: 70%;
+}
+
+.worker-energy{
+    display: flex;
+    width: 30%;
+}
+
+.worker-resources-div{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.worker-stats-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.worker-stat-list-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.worker-stat-item{
+    text-align: center;
+}
+
+#worker-variables{
+    display: flex;
+    align-items: center;
+    direction: ltr;
+}
+
+#worker-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    direction: ltr;
+}

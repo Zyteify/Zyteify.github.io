@@ -4,6 +4,94 @@
         url('../font/delicate.woff') format('woff');
 }
 
+#user-stats {
+    margin: auto;
+    display: flex;
+    height: 100px;
+}
+
+#middle{
+    display: flex;
+    height: calc(100% - 100px)
+}
+
+#resources{
+    flex-grow: 3;
+    flex-basis: 0;
+}
+
+#materials{
+    flex-grow: 2;
+    flex-basis: 0;
+}
+
+#upgrades{
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+#section-interact {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+#workers{
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    direction: rtl
+}
+
+#crafting{
+    flex-grow: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#crafting-title-item{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+
+
+}
+
+#section-main{
+    display: flex;
+    flex-grow: 10;
+}
+
+#show-buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.show-button{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.button-img{
+    width: 50px;
+    height: 50px;
+}
+
+#empty{
+    flex-grow: 1;
+}
+
+
+#gear{
+    flex-grow: 1;
+}
+
 html {
     width: 100%;
     height: 100%;
@@ -31,32 +119,46 @@ body {
 
 }
 
-#user-stats {
-    margin: auto;
-    display: flex;
 
-}
 
 .main {
     padding: 5px;
 
 }
-
+/* 
 .main {
     flex-basis: 0;
     flex-grow: 1;
+} */
+
+#world{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-#worker-list {
-    display: flex;
-    flex-wrap: wrap;
+#world-screen{
+    width: 100%;
 }
+
+#quests{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#quest-list{
+    width: 100%;
+}
+
 
 #gear-list {
     display: flex;
     flex-wrap: wrap;
     min-width: 50px;
     min-height: 50px;
+    /* black border */
+    border: 1px solid black;
 }
 
 .worker-div {
@@ -102,6 +204,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
+    flex-direction: column;
 }
 
 #delete-div {
@@ -110,18 +213,16 @@ body {
     border: 1px solid red;
 }
 
-#section-interact {
-    display: flex;
-    flex-direction: row;
-}
+
 
 #crafting-item-section {
     display: flex;
-    border: 1px solid black;
     flex-direction: column;
     align-items: center;
-    min-width: 100px;
-    min-height: 100px;
+    flex-grow: 1;
+    min-width: 300px;
+    width: 100%;
+    min-height: 300px;
 }
 
 #materials-list {
@@ -130,9 +231,12 @@ body {
     justify-content: flex-start;
 }
 
+#gear-title-count{
+    display: flex;
+}
+
 .item {
     display: flex;
-    border: 1px solid black;
     flex-direction: column;
     align-items: center;
 }
@@ -188,6 +292,7 @@ body {
 
 .worker-image {
     height: 200px;
+    width: 200px;
 }
 
 .item-image {
@@ -220,6 +325,7 @@ body {
     width: 300px;
     
 }
+
 
 
 
@@ -306,4 +412,32 @@ body {
 .dev-hide
 {
     display: none;
+}
+
+.flip{
+    transform: scaleX(-1);
+}
+
+
+#gear-variables{
+    display: flex;
+}
+.worker-div{
+    display: flex;
+    flex-direction: column;
+}
+
+/* hide the element
+used for the button in main */
+.hide{
+    display: none !important;
+}
+
+.show{
+    display: flex !important;
+}
+
+/* for when the player hasn't unlocked the element yet */
+.initial-hide{
+    display: none !important;
 }

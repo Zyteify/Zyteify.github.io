@@ -7,28 +7,22 @@
     <meta name="author" content="Zyteify">
     <title>Vocation Reroll</title>
     <link rel="stylesheet" href="dist/css/main.css">
+    <link rel="stylesheet" href="dist/css/worker.css">
     <!-- set the icon -->
     <link rel="icon" href="dist/img/potion.png" />
 </head>
 
 <body>
     <div id="user-stats">
-
         <div id="game-state" class="main">
             <h1 id="section-title"> Game State: </h1>
             <div id="game-state-variables">
                 <p id="game-time">
                     <span id="game-time-days"> 0 </span>
                     <span id="game-time-hours"> 0am </span>
-
                 </p>
-
-
             </div>
         </div>
-
-
-
         <div id="resources" class="main">
             <h1 id="section-title"> Resources: </h1>
             <div id="resource-variables">
@@ -38,75 +32,110 @@
                 </div>
             </div>
         </div>
-
-
-
-        <div id="materials" class="main">
+        <div id="materials" class="main initial-hide">
             <h1 id="section-title"> Materials: </h1>
             <!-- crete a dropdown -->
-            <select id="material-geartype-dropdown">
-                <option value="all"> geartype Not Loaded </option>
-            </select>
-            <select id="material-basetypename-dropdown">
-                <option value="all"> basetypename Not Loaded </option>
-            </select>
-            <button id="materials-create-gear"> Create gear</button>
-            <div id="materials-resource"> </div>
+
             <div id="materials-list">
             </div>
         </div>
-
-        <div id="upgrades" class="main">
-            <h1 id="section-title"> Upgrades: </h1>
-            <div id="upgrade-list">
-
-            </div>
-        </div>
-
+       
     </div>
-    <div id="section-interact">
-        <div id="workers" class="main">
-            <h1 id="section-title"> Workers: </h1>
+    <div id="middle">
+        <div id="workers" class="main initial-hide">
             <div id="worker-variables">
+                <h1 id="section-title"> Workers: </h1>
                 <p id="worker-count">
                     <span id="worker-count-current"> 0 </span> /
                     <span id="worker-count-max"> 0 </span>
 
                 </p>
-                <div id="worker-list">
+            </div>
+            <div id="worker-list">
+            </div>
+        </div>
+        <div id="section-interact">
+            <div id="section-main">
+                <div id="empty" class="main">
+                </div>
+                <div id="world" class="main initial-hide">
+                    <h1 id="section-title"> World: </h1>
+                    <div id="world-screen">
+                    </div>
+                </div>
+                <div id="crafting" class="main hide initial-hide">
+                    <div id="crafting-title-item">
+                        <h1 id="section-title"> Crafting: </h1>
+                        <div id="crafting-item-section">
+                        </div>
+                    </div>
+                    <div id="crating-options-materials">
+                        <div id="crafting-options">
+                            <select id="material-geartype-dropdown">
+                                <option value="all"> geartype Not Loaded </option>
+                            </select>
+                            <select id="material-basetypename-dropdown">
+                                <option value="all"> basetypename Not Loaded </option>
+                            </select>
+                            <button id="materials-create-gear"> Create gear</button>
+                            <div id="materials-resource"> </div>
+                        </div>
+                        <div id="crafting-materials-list"></div>
+                    </div>
 
+                </div>
+                <div id="upgrades" class="main hide">
+                    <h1 id="section-title"> Upgrades: </h1>
+                    <div id="upgrade-list">
+                    </div>
+                </div>
+                <div id="quests" class="main hide initial-hide">
+                    <h1 id="section-title"> Quests: </h1>
+                    <div id="quest-list">
+                    </div>
+                </div>
+                <div id="show-buttons">
+                    <div id="button-upgrade" class="show-button">
+                        <h1 id="section-title"> Upgrades </h1>
+                        <img id="button-image-upgrade" src='' alt="">
+                    </div>
+                    <div id="button-crafting" class="show-button initial-hide">
+                        <h1 id="section-title"> Crafting </h1>
+                        <img id="button-image-crafting" src='' alt="">
+                    </div>
+                    <div id="button-quests" class="show-button initial-hide"> 
+                        <h1 id="section-title"> Quests </h1>
+                        <img id="button-image-quests" src='' alt="">
+                    </div>
+                    <div id="button-world" class="show-button initial-hide"> 
+                        <h1 id="section-title"> World </h1>
+                        <img id="button-image-world" src='' alt="">
+                    </div>
+                </div>
+            </div>
+            <div id="gear" class="main initial-hide">
+                <div id="gear-title-count">
+                    <h1 id="section-title"> Gear: </h1>
+                    <p id="gear-count">
+                        <span id="gear-count-current"> 0 </span> /
+                        <span id="gear-count-max"> 0 </span>
+
+                    </p>
+                </div>
+                <div id="gear-variables">
+
+                    <div id="gear-list">
+
+                    </div>
+                    <div id="delete-div"></div>
                 </div>
             </div>
         </div>
-        <div id="gear" class="main">
-            <h1 id="section-title"> Gear: </h1>
-            <div id="gear-variables">
-                <p id="gear-count">
-                    <span id="gear-count-current"> 0 </span> /
-                    <span id="gear-count-max"> 0 </span>
 
-                </p>
-                <div id="gear-list">
-
-                </div>
-                <div id="delete-div"></div>
-            </div>
-        </div>
-        <div id="crafting" class="main">
-            <h1 id="section-title"> Crafting: </h1>
-            <div id="crafting-item-section">
-            </div>
-            <div id="crafting-options"></div>
-            <div id="crafting-materials-list"></div>
-
-        </div>
     </div>
-    <!-- <div id="beg">
-        <h1 id="section-title"> Begging: </h1>
-        <div id="beg-list">
 
-        </div>
-    </div> -->
+
+
     <div id="hover-container">
     </div>
     <script src="dist/js/init.js"></script>

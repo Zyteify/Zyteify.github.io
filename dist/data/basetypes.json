@@ -2,6 +2,7 @@
   {
     "name": "Scrap",
     "gearType": "Spade",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -10,13 +11,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Potion",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -25,13 +25,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Hammer",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -40,13 +39,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Bow",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -55,13 +53,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Chisel",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -70,13 +67,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Quill",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -85,13 +81,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Dice",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -100,13 +95,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -115,13 +109,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Scrap",
     "gearType": "Axe",
+    "gearSlot": "Weapon",
     "resourceCost": null,
     "resource": null,
     "itemMods": [
@@ -130,13 +123,12 @@
         "modValue": 1
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Spade",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -145,13 +137,12 @@
         "modValue": 3
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Potion",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -160,13 +151,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Hammer",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -175,13 +165,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Bow",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -190,13 +179,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Chisel",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -205,13 +193,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Quill",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -220,13 +207,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Dice",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -235,13 +221,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -250,13 +235,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Wooden",
     "gearType": "Axe",
+    "gearSlot": "Weapon",
     "resourceCost": "5",
     "resource": "wood",
     "itemMods": [
@@ -265,13 +249,12 @@
         "modValue": 2
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 5
   },
   {
     "name": "Copper",
     "gearType": "Spade",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -280,13 +263,12 @@
         "modValue": 5
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Potion",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -295,13 +277,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Hammer",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -310,13 +291,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Bow",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -325,13 +305,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Chisel",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -340,13 +319,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Quill",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -355,13 +333,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Dice",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -370,13 +347,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -385,13 +361,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Copper",
     "gearType": "Axe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, copper",
     "itemMods": [
@@ -400,13 +375,12 @@
         "modValue": 4
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 20
   },
   {
     "name": "Silver",
     "gearType": "Spade",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -415,13 +389,12 @@
         "modValue": 9
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Potion",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -430,13 +403,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Hammer",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -445,13 +417,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Bow",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -460,13 +431,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Chisel",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -475,13 +445,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Quill",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -490,13 +459,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Dice",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -505,13 +473,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -520,13 +487,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Silver",
     "gearType": "Axe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, silver",
     "itemMods": [
@@ -535,13 +501,12 @@
         "modValue": 8
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 100
   },
   {
     "name": "Gold",
     "gearType": "Spade",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -550,13 +515,12 @@
         "modValue": 20
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Potion",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -565,13 +529,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Hammer",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -580,13 +543,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Bow",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -595,13 +557,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Chisel",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -610,13 +571,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Quill",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -625,13 +585,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Dice",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -640,13 +599,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -655,13 +613,12 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
   },
   {
     "name": "Gold",
     "gearType": "Axe",
+    "gearSlot": "Weapon",
     "resourceCost": "5, 5",
     "resource": "wood, gold",
     "itemMods": [
@@ -670,8 +627,17 @@
         "modValue": 15
       }
     ],
-    "implicit": null,
-    "value": null,
     "craftingCost": 1000
+  },
+  {
+    "name": "Cloth",
+    "gearType": "Hat",
+    "gearSlot": "Hat",
+    "resourceCost": null,
+    "resource": null,
+    "itemMods": [
+      {}
+    ],
+    "craftingCost": 0
   }
 ]
