@@ -210,7 +210,8 @@ function moveGear(item, source, sourceArray, sourceDiv, destination, destination
     if (destinationWorker) {
         //if the destination worker already has an item equipped, move it back to the source
         if (destinationWorker.weapon[0]) {
-            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationDiv, source, sourceArray, sourceDiv);
+            //must move the sourcediv's parent as the sourcediv is actually an item and not the gear container on the worker
+            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationDiv, source, sourceArray, sourceDiv.parentElement);
         }
         destinationWorker.equipItem(item);
     }
@@ -221,7 +222,6 @@ function moveGear(item, source, sourceArray, sourceDiv, destination, destination
         }
         destinationArray.push(item);
     }
-    //set the parent of the item
     item.setParentDiv(destinationDiv);
     emptyGearDisplay();
     displayText();

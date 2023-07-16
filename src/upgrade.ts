@@ -10,6 +10,7 @@ class Upgrade {
     //display
     resourceSpan: HTMLElement;
     button: HTMLButtonElement;
+    flashed: boolean = false;
 
 
     //list of upgrades that are set to be locked initially based on the tags
@@ -78,6 +79,7 @@ class Upgrade {
                 }
             }
             unlockUpgrades()
+            this.button.classList.remove('flash-border-good');
 
         }
 
@@ -131,7 +133,7 @@ class Upgrade {
             this.button.appendChild(span);
 
             // Set the button text to the upgrade name, resouce required, and cost
-            span.textContent = `${this.name}  ${this.level}/${this.maxLevel})`;
+            span.textContent = `${this.name})`;
 
             //create a span element for the button
             this.button.appendChild(this.resourceSpan);
@@ -159,9 +161,16 @@ class Upgrade {
 
         if (!this.isAvailable()) {
             this.button.disabled = true;
+            this.flashed = false;
+            this.button.classList.remove('flash-border-good');
         }
         else {
             this.button.disabled = false;
+            if (!this.flashed) {
+                this.flashed = true;
+                flashUpgradeButton()
+                flashElement(this.button)
+            }
         }
 
         //if the upgrade is at max level or the upgrade is unavailable, hide the button
@@ -176,6 +185,9 @@ class Upgrade {
         if (this.active) {
             //remove the none display
             button.style.display = "";
+            if (!flashUpgradeButton()) {
+                flashElement(button)
+            }
         }
     }
 
@@ -219,7 +231,7 @@ class Upgrade {
         }
     }
 
-    remove(){
+    remove() {
         //remove a upgrade from its container and list
         upgradeButtonList.removeChild(this.button);
         this.button.remove();

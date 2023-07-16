@@ -342,7 +342,11 @@ function removeAllChildren(node: Node) {
 deleteDiv.id = "delete-div";
 deleteDiv.className = "delete-div";
 deleteDiv.draggable = false;
-deleteDiv.innerHTML = "Delete";
+//add a background image to the delete div
+let deleteImage = document.createElement('img');
+deleteImage.src = 'dist/img/trash.png';
+deleteImage.className = 'delete-img';
+deleteDiv.appendChild(deleteImage);
 
 function createRandomGear(): boolean {
 

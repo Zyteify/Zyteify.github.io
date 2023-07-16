@@ -783,11 +783,11 @@ class WorkerClass {
                 this.updateDisplayEnergy()
                 this.displayEnergy.innerHTML = `🔋${this.energy.toString()}`
 
-                //worker hunger
+                /* //worker hunger
                 this.displayHunger.id = `worker-name${this.id.toString()}hunger`;
                 this.displayHunger.classList.add('worker-hunger');
                 workerProgressDiv.appendChild(this.displayHunger);
-                this.updateDisplayHunger()
+                this.updateDisplayHunger() */
 
                 //worker stats div
                 const workerStatsDiv = document.createElement('div');

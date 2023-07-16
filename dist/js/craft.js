@@ -266,7 +266,11 @@ function removeAllChildren(node) {
 deleteDiv.id = "delete-div";
 deleteDiv.className = "delete-div";
 deleteDiv.draggable = false;
-deleteDiv.innerHTML = "Delete";
+//add a background image to the delete div
+let deleteImage = document.createElement('img');
+deleteImage.src = 'dist/img/trash.png';
+deleteImage.className = 'delete-img';
+deleteDiv.appendChild(deleteImage);
 function createRandomGear() {
     let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
     let randomItemType = itemTypes[Math.floor(Math.random() * itemTypes.length)];

@@ -10,6 +10,7 @@ class Upgrade {
     //display
     resourceSpan;
     button;
+    flashed = false;
     //list of upgrades that are set to be locked initially based on the tags
     static unavailableUpgrades = ["Worker", "Gear", "WorkHire"];
     unlocks = [];
@@ -63,6 +64,7 @@ class Upgrade {
                 }
             }
             unlockUpgrades();
+            this.button.classList.remove('flash-border-good');
         }
     }
     downgrade() {
@@ -107,7 +109,7 @@ class Upgrade {
             span.className = 'upgrade-span';
             this.button.appendChild(span);
             // Set the button text to the upgrade name, resouce required, and cost
-            span.textContent = `${this.name}  ${this.level}/${this.maxLevel})`;
+            span.textContent = `${this.name})`;
             //create a span element for the button
             this.button.appendChild(this.resourceSpan);
             //create a div element for the button inside the span
@@ -128,9 +130,16 @@ class Upgrade {
         //if the upgrade not available, make the button disabled
         if (!this.isAvailable()) {
             this.button.disabled = true;
+            this.flashed = false;
+            this.button.classList.remove('flash-border-good');
         }
         else {
             this.button.disabled = false;
+            if (!this.flashed) {
+                this.flashed = true;
+                flashUpgradeButton();
+                flashElement(this.button);
+            }
         }
         //if the upgrade is at max level or the upgrade is unavailable, hide the button
         if (this.isMaxLevel() || this.active == false) {
@@ -142,6 +151,9 @@ class Upgrade {
         if (this.active) {
             //remove the none display
             button.style.display = "";
+            if (!flashUpgradeButton()) {
+                flashElement(button);
+            }
         }
     }
     addResourceCost(resource) {

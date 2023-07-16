@@ -135,15 +135,15 @@ function showMainDiv(div: HTMLDivElement) {
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].div.classList.add('hide');
         buttons[i].div.classList.remove('show');
-        buttons[i].image.classList.remove('flip');
+        buttons[i].button.classList.remove('main-active');
         if (div == buttons[i].div) {
             if (activeDiv == div) {
-                buttons[i].image.classList.remove('flip');
+                buttons[i].button.classList.remove('main-active');
                 buttons[i].div.classList.remove('show');
                 activeDiv = emptyDiv
                 emptyDiv.classList.add('show');
             } else {
-                buttons[i].image.classList.add('flip');
+                buttons[i].button.classList.add('main-active');
                 buttons[i].div.classList.add('show');
                 activeDiv = div
             }
@@ -153,3 +153,25 @@ function showMainDiv(div: HTMLDivElement) {
 
 //initially have the upgrades active
 showMainDiv(upgradeDiv)
+
+function flashUpgradeButton(): boolean {
+    if (activeDiv != upgradeDiv) {
+        buttonUpgrades.classList.remove('flash-border-good');
+        buttonUpgrades.classList.add('flash-border-good');
+        setTimeout(function () {
+            buttonUpgrades.classList.remove('flash-border-good');
+        }, 50000);
+        return true
+    }
+    else {
+        return false
+    }
+}
+
+function flashElement(element: HTMLElement) {
+    element.classList.remove('flash-border-good');
+    element.classList.add('flash-border-good');
+    setTimeout(function () {
+        element.classList.remove('flash-border-good');
+    }, 5000);
+}

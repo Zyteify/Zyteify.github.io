@@ -1,0 +1,37 @@
+@keyframes flash-good {
+    0% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: rgb(64, 240, 70);
+    }
+
+    100% {
+        border-color: transparent;
+    }
+}
+
+@keyframes flash-bad {
+    0% {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: rgb(255, 87, 65);
+    }
+
+    100% {
+        border-color: transparent;
+    }
+}
+
+.flash-border-good {
+    border: 2px solid transparent;
+    animation: flash-good 1s infinite;
+}
+
+.flash-border-bad {
+    border: 2px solid transparent;
+    animation: flash-bad 1s infinite;
+}
