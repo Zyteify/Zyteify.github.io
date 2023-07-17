@@ -1,7 +1,7 @@
 "use strict";
 class Item {
     id;
-    type;
+    gearSlot;
     image;
     //mods
     baseType;
@@ -33,9 +33,9 @@ class Item {
     setup = false;
     setupHover = false;
     static count = 0;
-    constructor(type, baseType, rarity, full) {
+    constructor(gearSlot, baseType, rarity, full) {
         this.id = Item.count++;
-        this.type = type;
+        this.gearSlot = gearSlot;
         this.baseType = baseType;
         this.rarity = rarity;
         if (full) {
@@ -392,7 +392,7 @@ class Item {
     export() {
         let item = {
             id: this.id,
-            type: this.type,
+            type: this.gearSlot,
             baseType: this.baseType,
             prefixes: this.prefixes,
             suffixes: this.suffixes,

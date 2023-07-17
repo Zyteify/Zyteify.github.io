@@ -3,7 +3,7 @@ type ResourceType = 'food' | 'wood' | 'stone' | 'copper' | 'silver' | 'gold' | '
 
 
 class Resource {
-    name: ResourceType;
+    ResourceType: ResourceType;
     amount: number;
     active: boolean = false;
 
@@ -18,13 +18,22 @@ class Resource {
     setup: boolean = false;
 
     static count: number = 0;
-    constructor(name: ResourceType, container: HTMLElement, amount: number) {
+    constructor(name: ResourceType, amount: number, container?: HTMLElement) {
         this.id = Resource.count++;
-        this.name = name;
+        this.ResourceType = name;
         this.amount = amount;
-        this.container = container;
+        if (container) {
+            this.container = container;
+        }
+        else {
 
-        this.imageName = this.name + ".png";
+            //no container was passed in, so create a new one but dont use it
+            this.container = document.createElement('div');
+            this.container.id = "resource" + this.id + 'container';
+            this.container.className = "resource-container"
+        }
+
+        this.imageName = this.ResourceType + ".png";
         this.div = document.createElement('div');
         this.div.id = "resource" + this.id + 'div';
         this.div.className = "resource-div"
@@ -109,7 +118,7 @@ class Resource {
     export() {
         let resource = {
             id: this.id,
-            name: this.name,
+            name: this.ResourceType,
             amount: this.amount,
             active: this.active,
         }
@@ -120,7 +129,7 @@ class Resource {
 
 function getResourceByName(name: ResourceType) {
     for (let i = 0; i < resources.length; i++) {
-        if (resources[i].name === name) {
+        if (resources[i].ResourceType === name) {
             return resources[i];
         }
     }

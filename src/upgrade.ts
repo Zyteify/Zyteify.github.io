@@ -14,7 +14,7 @@ class Upgrade {
 
 
     //list of upgrades that are set to be locked initially based on the tags
-    static unavailableUpgrades: String[] = ["Worker", "Gear", "WorkHire"];
+    static unavailableUpgrades: String[] = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe"];
     unlocks: string[] = [];
 
     //tag the upgrade if it needs to be unlocked later
@@ -41,8 +41,14 @@ class Upgrade {
         }
 
         switch (this.name) {
-            case "Increase Gear Slots":
-                this.costMultiplier = 1.5;
+            case "Unlock Gear":
+                this.costMultiplier = 1;
+                break
+            case "Unlock Hammer":
+                this.costMultiplier = 1;
+                break
+            case "Unlock Axe":
+                this.costMultiplier = 1;
                 break
             default:
                 this.costMultiplier = 2;
@@ -200,7 +206,7 @@ class Upgrade {
         let result = false;
         for (let i = 0; i < this.resourcesRequired.length; i++) {
             for (let j = 0; j < resources.length; j++) {
-                if (this.resourcesRequired[i].name == resources[j].name && this.resourcesRequired[i].amount <= resources[j].amount) {
+                if (this.resourcesRequired[i].ResourceType == resources[j].ResourceType && this.resourcesRequired[i].amount <= resources[j].amount) {
                     result = true;
                 }
             }
@@ -213,7 +219,7 @@ class Upgrade {
         for (let i = 0; i < this.resourcesRequired.length; i++) {
             let resourcespent = false;
             for (let j = 0; j < resources.length; j++) {
-                if (this.resourcesRequired[i].name == resources[j].name && this.resourcesRequired[i].amount <= resources[j].amount) {
+                if (this.resourcesRequired[i].ResourceType == resources[j].ResourceType && this.resourcesRequired[i].amount <= resources[j].amount) {
                     resources[j].amount -= this.resourcesRequired[i].amount;
                     resourcespent = true;
                 }

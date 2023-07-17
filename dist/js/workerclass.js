@@ -315,7 +315,7 @@ class WorkerClass {
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
             //check to see if the worker has the resource
-            if (this.resources[i].name === resource.name) {
+            if (this.resources[i].ResourceType === resource.ResourceType) {
                 //add the resource to the worker's inventory
                 this.resources[i].amount += resource.amount;
                 resourceExistsFlag = true;
@@ -348,11 +348,22 @@ class WorkerClass {
     }
     //equip an item
     equipItem(item) {
-        if (item.type == "Weapon") {
-            this.weapon[0] = item;
-        }
-        else if (item.type == "Boot") {
-            this.boot[0] = item;
+        switch (item.gearSlot) {
+            case "Weapon":
+                this.weapon[0] = item;
+                break;
+            case "Shirt":
+                this.shirt[0] = item;
+                break;
+            case "Hat":
+                this.hat[0] = item;
+                break;
+            case "Boot":
+                this.boot[0] = item;
+                break;
+            default:
+                console.log('unknown weapon type');
+                break;
         }
         this.setItemParent();
         this.setVocation();
@@ -360,9 +371,15 @@ class WorkerClass {
     }
     //unequip an item
     unequipItem(item) {
-        switch (item.type) {
+        switch (item.gearSlot) {
             case "Weapon":
                 removeItem(item, this.weapon);
+                break;
+            case "Shirt":
+                removeItem(item, this.shirt);
+                break;
+            case "Hat":
+                removeItem(item, this.hat);
                 break;
             case "Boot":
                 removeItem(item, this.boot);
@@ -380,7 +397,7 @@ class WorkerClass {
         for (let i = 0; i < this.resources.length; i++) {
             //check to see if the stockpile has the resource
             let workerResource = this.resources[i];
-            let homeResource = getResourceByName(workerResource.name);
+            let homeResource = getResourceByName(workerResource.ResourceType);
             if (homeResource != null) {
                 //add the resource to the homeResource
                 let resourceToAdd = Math.min(workerResource.amount, amount);
@@ -415,7 +432,7 @@ class WorkerClass {
         //loop through each resource in the worker's inventory
         for (let i = 0; i < this.resources.length; i++) {
             //check to see if the worker has food
-            if (this.resources[i].name === 'food') {
+            if (this.resources[i].ResourceType === 'food') {
                 food = this.resources[i];
             }
         }
@@ -492,12 +509,27 @@ class WorkerClass {
             case 'Shirt':
                 return this.displayShirtDiv;
             case 'Hat':
-                return this.displayBootDiv;
+                return this.displayHatDiv;
             case 'Boot':
                 return this.displayBootDiv;
             default:
                 console.log('unknown gear type');
                 return this.displayWeaponDiv;
+        }
+    }
+    getItemArray(gearSlot) {
+        switch (gearSlot) {
+            case 'Weapon':
+                return this.weapon;
+            case 'Shirt':
+                return this.shirt;
+            case 'Hat':
+                return this.hat;
+            case 'Boot':
+                return this.boot;
+            default:
+                console.log('unknown gear type');
+                return this.weapon;
         }
     }
     updateResourceDiv() {
@@ -738,7 +770,7 @@ class WorkerClass {
     farm(workPower) {
         this.activity = 'farming';
         //add food to the worker
-        let resource = new Resource('food', this.resourceDiv, workPower);
+        let resource = new Resource('food', workPower, this.resourceDiv);
         this.addResource(resource);
     }
     mine(workPower) {
@@ -758,16 +790,16 @@ class WorkerClass {
         let random = Math.random() * totalWinChance;
         switch (true) {
             case (random < stoneChance):
-                this.addResource(new Resource('stone', this.resourceDiv, 1));
+                this.addResource(new Resource('stone', 1, this.resourceDiv));
                 break;
             case (random < stoneChance + copperChance):
-                this.addResource(new Resource('copper', this.resourceDiv, 1));
+                this.addResource(new Resource('copper', 1, this.resourceDiv));
                 break;
             case (random < stoneChance + copperChance + silverChance):
-                this.addResource(new Resource('silver', this.resourceDiv, 1));
+                this.addResource(new Resource('silver', 1, this.resourceDiv));
                 break;
             case (random < stoneChance + copperChance + silverChance + goldChance):
-                this.addResource(new Resource('gold', this.resourceDiv, 1));
+                this.addResource(new Resource('gold', 1, this.resourceDiv));
                 break;
             default:
                 console.log('incorrect chances in mineOnce');
@@ -783,7 +815,7 @@ class WorkerClass {
     chop(workPower) {
         this.activity = 'chopping';
         //add wood to the worker
-        this.addResource(new Resource('wood', this.resourceDiv, workPower));
+        this.addResource(new Resource('wood', workPower, this.resourceDiv));
     }
     craft(workPower) {
         this.activity = 'crafting';
@@ -810,10 +842,10 @@ class WorkerClass {
         let random = Math.random();
         if (random < huntChance) {
             //add food to the worker
-            let resource = new Resource('food', this.resourceDiv, 10 * workPower);
+            let resource = new Resource('food', 1 * workPower, this.resourceDiv);
             this.addResource(resource);
         }
-        this.addResource(new Resource('food', this.resourceDiv, 0));
+        this.addResource(new Resource('food', 0, this.resourceDiv));
     }
     tax(workPower) {
         this.activity = 'taxing';
@@ -826,7 +858,7 @@ class WorkerClass {
         }
         let amount = workerCount * workPower;
         if (amount > 0) {
-            let resource = new Resource('coins', this.resourceDiv, amount);
+            let resource = new Resource('coins', amount, this.resourceDiv);
             this.addResource(resource);
         }
     }
@@ -857,10 +889,10 @@ class WorkerClass {
                     console.log('error chances in gambler');
                     break;
             }
-            let resource = new Resource('coins', this.resourceDiv, amount);
+            let resource = new Resource('coins', amount, this.resourceDiv);
             this.addResource(resource);
         }
-        new Resource('coins', this.resourceDiv, 0);
+        new Resource('coins', 0, this.resourceDiv);
     }
     research(workPower) {
         this.activity = 'researching';
@@ -883,22 +915,22 @@ class WorkerClass {
             let random = Math.random() * totalWinChance;
             switch (true) {
                 case (random < chanceCoin):
-                    resource = new Resource('coins', this.resourceDiv, workPower);
+                    resource = new Resource('coins', workPower, this.resourceDiv);
                     break;
                 case (random < chanceCoin + chanceFood):
-                    resource = new Resource('food', this.resourceDiv, workPower);
+                    resource = new Resource('food', workPower, this.resourceDiv);
                     break;
                 default:
                     console.log('error chances in beg');
-                    resource = new Resource('coins', this.resourceDiv, 0);
+                    resource = new Resource('coins', 0, this.resourceDiv);
                     break;
             }
             this.addResource(resource);
         }
         //always add 1 coins and food to show that the worker is begging
-        resource = new Resource('coins', this.resourceDiv, 1);
+        resource = new Resource('coins', 1, this.resourceDiv);
         this.addResource(resource);
-        resource = new Resource('food', this.resourceDiv, 0);
+        resource = new Resource('food', 0, this.resourceDiv);
         this.addResource(resource);
     }
     export() {

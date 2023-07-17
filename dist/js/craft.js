@@ -5,12 +5,7 @@ let craftingItemOptions = document.createElement('p');
 craftingItemOptions.id = "crafting-item-options";
 craftingItemOptions.innerHTML = "Item Options";
 craftingOptionsDiv.appendChild(craftingItemOptions);
-//set the item materials
-let craftingItemMaterials = document.createElement('p');
-craftingItemMaterials.id = "crafting-item-materials";
-craftingItemMaterials.innerHTML = "Item Materials";
-craftingMaterialsListDiv.appendChild(craftingItemMaterials);
-const itemTypes = ["Weapon", "Boot"];
+const gearSlots = ["Weapon", "Boot", "Shirt", "Hat"];
 const gearTypes = [
     "Spade",
     //"Mace",
@@ -273,14 +268,12 @@ deleteImage.className = 'delete-img';
 deleteDiv.appendChild(deleteImage);
 function createRandomGear() {
     let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
-    let randomItemType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
-    //set it to weapon for now while we only have weapons
-    randomItemType = "Weapon";
+    let randomGearSLot = gearSlots[Math.floor(Math.random() * gearSlots.length)];
     //create a new worker
-    let gearCreation = createGear(randomItemType, randomGearType);
+    let gearCreation = createGear(randomGearSLot, randomGearType);
     if (gearCreation) {
-        craftWork -= craftingCosts.craftingWork;
-        updateCraftButton();
+        /* craftWork -= craftingCosts.craftingWork;
+        updateCraftButton(); */
         controlCraftingButtons();
     }
     return gearCreation;
@@ -288,12 +281,13 @@ function createRandomGear() {
 function createSelectedGear() {
     let baseTypeName = materialsItemDropdown.value;
     let gearType = materialsGearDropdown.value;
+    let gearSlot = materialsGearSlotDropdown.value;
     let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
     if (baseType) {
-        let gearCreation = createGear("Weapon", gearType, baseType);
+        let gearCreation = createGear(gearSlot, gearType, baseType);
         if (gearCreation) {
-            craftWork -= craftingCosts.craftingWork;
-            updateCraftButton();
+            /* craftWork -= craftingCosts.craftingWork;
+            updateCraftButton(); */
             controlCraftingButtons();
         }
         return gearCreation;
@@ -303,7 +297,7 @@ function createSelectedGear() {
         return false;
     }
 }
-function createGear(itemType, gearType, baseType, rarity) {
+function createGear(gearSlot, gearType, baseType, rarity) {
     let location;
     let locationDiv;
     //starter gear goes directly into inventory
@@ -339,9 +333,9 @@ function createGear(itemType, gearType, baseType, rarity) {
     }
     //able to pay the resources?
     for (let i = 0; i < baseType.resource.length; i++) {
-        let resource = getResourceByName(baseType.resource[i]);
-        if (resource) {
-            if (resource.amount >= baseType.resourceCost[i]) {
+        let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+        if (resourceInventory) {
+            if (resourceInventory.amount >= baseType.resource[i].amount) {
                 resourceCostSuccess = true;
             }
             else {
@@ -358,16 +352,16 @@ function createGear(itemType, gearType, baseType, rarity) {
     if (locationHasRoom && resourceCostSuccess) {
         //pay the resources
         for (let i = 0; i < baseType.resource.length; i++) {
-            let resource = getResourceByName(baseType.resource[i]);
-            if (resource) {
-                resource.amount -= baseType.resourceCost[i];
+            let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+            if (resourceInventory) {
+                resourceInventory.amount -= baseType.resource[i].amount;
             }
             else {
                 console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
                 break;
             }
         }
-        let newGear = new Item(itemType, baseType, rarity);
+        let newGear = new Item(gearSlot, baseType, rarity);
         newGear.setParentDiv(locationDiv);
         location.push(newGear);
         displayText();

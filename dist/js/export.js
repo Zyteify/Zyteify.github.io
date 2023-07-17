@@ -108,7 +108,7 @@ function importResources() {
         for (let i = 0; i < dataArray.length - 1; i++) {
             let importResource = JSON.parse(dataArray[i]);
             importDataResources.push(importResource);
-            let resource = new Resource(importResource.name, resourceList, importResource.amount);
+            let resource = new Resource(importResource.name, importResource.amount, resourceList);
             resource.display;
             resource.active = importResource.active;
             resources.push(resource);

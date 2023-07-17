@@ -34,7 +34,7 @@ function unlockDev() {
     for (let i = 0; i < resources.length; i++) {
         //create a button for each gear type
         let button = document.createElement('button');
-        button.innerHTML = resources[i].name;
+        button.innerHTML = resources[i].ResourceType;
         button.onclick = function () {
             resources[i].amount += 1000
         }

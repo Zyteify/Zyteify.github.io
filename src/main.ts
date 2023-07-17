@@ -5,20 +5,20 @@ let workers: WorkerClass[] = [];
 
 //create resources list of initial resources available
 let resources: Resource[] = [
-    new Resource('food', resourceList, 0),
-    new Resource('wood', resourceList, 0),
-    new Resource('stone', resourceList, 0),
-    new Resource('copper', resourceList, 0),
-    new Resource('silver', resourceList, 0),
-    new Resource('gold', resourceList, 0),
-    new Resource('coins', resourceList, 0),
+    new Resource('food', 0, resourceList),
+    new Resource('wood', 0, resourceList),
+    new Resource('stone', 0, resourceList),
+    new Resource('copper', 0, resourceList),
+    new Resource('silver', 0, resourceList),
+    new Resource('gold', 0, resourceList),
+    new Resource('coins', 0, resourceList),
 
 ];
 
 function setResourceActive(name: ResourceType) {
     //set the default resource to be active
     for (let i = 0; i < resources.length; i++) {
-        if (resources[i].name == name) {
+        if (resources[i].ResourceType == name) {
             resources[i].active = true;
         }
     }
@@ -132,42 +132,37 @@ loadJson('../dist/data/affixes.json').then(data => {
 const baseTypes: BaseType[] = [];
 
 //load the json data for basetypes
-let baseTypeList: any[] = [];
 loadJson('../dist/data/basetypes.json').then(data => {
-    baseTypeList = data as any[];
+    let baseTypeListTemp = data as any[];
 
     //create a basetype for each in the list
-    for (let i = 0; i < baseTypeList.length; i++) {
-        let baseType = baseTypeList[i];
+    for (let i = 0; i < baseTypeListTemp.length; i++) {
+        let baseType = baseTypeListTemp[i];
         let name = baseType.name;
         let gearType = baseType.gearType;
         let gearSlot = baseType.gearSlot;
-        let resourceCost = baseType.resourceCost;
-        let resource = baseType.resource;
+        let resources = baseType.resources;
         let itemMods = baseType.itemMods;
         let craftingCost = baseType.craftingCost;
 
-        //create arrays for each item in the string for resourceCost and resource
-        let resourceCostArray: number[] = [];
-        let resourceArray: ResourceType[] = [];
-        if (resourceCost && resource) {
-            //split the string into an array
-            resourceCost = resourceCost.split(", ");
-            resource = resource.split(", ");
-            for (let j = 0; j < resourceCost.length; j++) {
-                resourceCostArray.push(parseInt(resourceCost[j]));
-            }
-            for (let j = 0; j < resource.length; j++) {
-                resourceArray.push(resource[j]);
+        let resourcesTemp: Resource[] = [];
+
+        //create an array for each resource
+        if (resources) {
+            for (let i = 0; i < resources.length; i++) {
+                let resource = new Resource(resources[i].resourceType, resources[i].amount);
+                resourcesTemp.push(resource);
             }
         }
+
 
         //create an itemMod for the item power
 
 
-        let newBaseType = new BaseType(name, gearType, gearSlot, resourceCostArray, resourceArray, itemMods, craftingCost);
+        let newBaseType = new BaseType(name, gearType, gearSlot, resourcesTemp, itemMods, craftingCost);
         baseTypes.push(newBaseType);
     }
+
 
     initializeCrafting()
 
@@ -251,9 +246,10 @@ function moveGear(
     //if the destination is a worker, equip the item to them
     if (destinationWorker) {
         //if the destination worker already has an item equipped, move it back to the source
-        if (destinationWorker.weapon[0]) {
+        if (destinationArray[0]) {
             //must move the sourcediv's parent as the sourcediv is actually an item and not the gear container on the worker
-            moveGear(destinationWorker.weapon[0], destinationWorker, destinationWorker.weapon, destinationDiv, source, sourceArray, sourceDiv.parentElement as HTMLDivElement)
+            let newDiv = sourceDiv.parentElement as HTMLDivElement
+            moveGear(destinationArray[0], destinationWorker, destinationArray, destinationDiv, source, sourceArray, newDiv)
         }
         destinationWorker.equipItem(item)
     }
@@ -301,11 +297,18 @@ let upgrades: Upgrade[] = [
     new Upgrade("Unlock Workers", true, 0, 1, unlockWorkers, ["Worker"], ["Worker"]),
     new Upgrade("Unlock Gear", false, 0, 1, unlockGear, ["Worker"], ["Gear"]),
     new Upgrade("Hire Worker", false, 0, 10, createWorker, ["Worker"], ["WorkHire"]),
-    new Upgrade("Increase Gear Slots", false, 0, 10, increaseGearCountMax, ["Gear"]),
-    //max worker slots
     new Upgrade("Increase Worker Slots", false, 0, 10, increaseWorkerMax, ["WorkHire"]),
-    //increase worker speed
     new Upgrade("Increase Worker Speed", false, 0, 10, increaseWorkerSpeed, ["WorkHire"]),
+    new Upgrade("Unlock Hammer", false, 0, 1, unlockHammer, ["Gear"], ["Hammer"]),
+    new Upgrade("Unlock Axe", false, 0, 1, unlockAxe, ["Hammer"], ["Axe"]),
+    new Upgrade("Unlock Potion", false, 0, 1, unlockPotion, ["Axe"], ["Potion"]),
+    new Upgrade("Unlock Spear", false, 0, 1, unlockSpear, ["Axe"], ["Spear"]),
+    new Upgrade("Unlock Pickaxe", false, 0, 1, unlockPickaxe, ["Axe"], ["Pickaxe"]),
+    new Upgrade("Unlock Chisel", false, 0, 1, unlockChisel, ["Pickaxe"], ["Chisel"]),
+    new Upgrade("Unlock Dice", false, 0, 1, unlockDice, ["Axe"], ["Dice"]),
+    new Upgrade("Unlock Scales", false, 0, 1, unlockScales, ["Axe"], ["Scales"]),
+    new Upgrade("Unlock Scroll", false, 0, 1, unlockScroll, ["Axe"], ["Scroll"]),
+    new Upgrade("Unlock Holy Symbol", false, 0, 1, unlockHolySymbol, ["Axe"], ["Holy Symbol"]),
 ];
 
 //add the costs to the upgrades
@@ -313,22 +316,49 @@ for (let i = 0; i < upgrades.length; i++) {
     let upgrade = <Upgrade>getUpgradeByName(upgrades[i].name)
     switch (upgrade.name) {
         case "Unlock Workers":
-            upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 0));
+            upgrade.addResourceCost(new Resource('coins', 0, upgrade.resourceSpan));
             break
         case "Unlock Gear":
-            upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 10));
+            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
             break
         case "Hire Worker":
-            upgrade.addResourceCost(new Resource('food', upgrade.resourceSpan, 0));
-            break
-        case "Increase Gear Slots":
-            upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 10));
+            upgrade.addResourceCost(new Resource('food', 0, upgrade.resourceSpan));
             break
         case "Increase Worker Slots":
-            upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 10));
+            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
             break
         case "Increase Worker Speed":
-            upgrade.addResourceCost(new Resource('coins', upgrade.resourceSpan, 10));
+            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
+            break
+        case "Unlock Hammer":
+            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
+            break
+        case "Unlock Axe":
+            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
+            break
+        case "Unlock Potion":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Spear":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Pickaxe":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Chisel":
+            upgrade.addResourceCost(new Resource('coins', 50, upgrade.resourceSpan));
+            break
+        case "Unlock Dice":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Scales":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Scroll":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Holy Symbol":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
             break
         default:
             console.log(`no upgrade cost for ${upgrade.name}`);
@@ -340,65 +370,140 @@ function increaseWorkerMax() {
     game.workerCountMax++;
 }
 
-function increaseGearCountMax() {
-    game.gearCountMax++;
-    unlockStarterGear()
+function unlockHammer() {
+    if (!game.unlockedGearType.Hammer) {
+        let gearSlot: GearSlot = "Weapon";
+        let gearType: GearType = "Hammer";
+        let baseMaterial: BaseMaterial = "Scrap";
+        let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+        if (baseType) {
+            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            if (gearCreation) {
+                game.unlockedGearType.Hammer = true;
+                unlockCraftingButtonType("Hammer", "gearType")
+                unlockCrafting()
+            }
+            else {
+                console.log("error creating spade")
+                //reset the upgrade
+                let upgrade = <Upgrade>getUpgradeByName("Unlock Hammer")
+                upgrade.active = true;
+                upgrade.level--;
+                upgrade.display();
+            }
+        }
+    }
 }
 
-function unlockStarterGear() {
-    // Call upgrade function with the name of the upgrade
-    let gearCreation: boolean = false;
-    let baseType: BaseType | null;
-    switch (game.gearCountMax) {
-        case 1:
-            baseType = findBaseTypeByNameandGearType("Scrap", 'Spade')
-            if (baseType) {
-                gearCreation = createGear("Weapon", "Spade", baseType, 'Starter');
-                if (gearCreation) {
-                    game.unlockedSpade = true;
-                }
-                else {
-                    console.log("error creating spade")
-                }
-                break;
+function unlockAxe() {
+    if (!game.unlockedGearType.Axe) {
+        let gearSlot: GearSlot = "Weapon";
+        let gearType: GearType = "Axe";
+        let baseMaterial: BaseMaterial = "Scrap";
+        let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+        if (baseType) {
+            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            if (gearCreation) {
+                game.unlockedGearType.Axe = true;
+                unlockCraftingButtonType("Axe", "gearType")
+                unlockCraftingButtonType("Wooden", "baseTypeName")
+                flashElement(buttonCrafting)
             }
-
-        /*         case 3:
-                    baseType = findBaseTypeByNameandGearType("Scrap", 'Axe')
-                    if (baseType) {
-                        gearCreation = createGear("Weapon", "Axe", baseType, 'Starter');
-                        if (gearCreation) {
-                            game.unlockedAxe = true;
-                            setResourceActive('wood');
-                        }
-                        else{
-                            console.log("error creating axe")
-                        }
-                        break;
-                    } */
-        case 2:
-            baseType = findBaseTypeByNameandGearType("Scrap", 'Hammer')
-            if (baseType) {
-                gearCreation = createGear("Weapon", "Hammer", baseType, 'Starter');
-                if (gearCreation) {
-                    game.unlockedHammer = true;
-                    unlockMaterials()
-                    unlockCrafting()
-
-                    game.unlockedPickaxe = true;
-                    setResourceActive('stone');
-                    setResourceActive('copper');
-                    setResourceActive('silver');
-                    setResourceActive('gold');
-                    setResourceActive('wood');
-                }
-                else {
-                    console.log("error creating hammer")
-                }
-                break;
+            else {
+                console.log("error creating spade")
+                //reset the upgrade
+                let upgrade = <Upgrade>getUpgradeByName("Unlock Axe")
+                upgrade.active = true;
+                upgrade.level--;
+                upgrade.display();
             }
-        default:
-            break;
+        }
+    }
+}
+
+function unlockSpade() {
+    if (!game.unlockedGearType.Spade) {
+        let gearSlot: GearSlot = "Weapon";
+        let gearType: GearType = "Spade";
+        let baseMaterial: BaseMaterial = "Scrap";
+        let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+        if (baseType) {
+            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            if (gearCreation) {
+                game.unlockedGearType.Spade = true;
+                unlockCraftingButtonType("Spade", "gearType")
+
+            }
+            else {
+                console.log("error creating spade")
+
+            }
+        }
+    }
+}
+
+function unlockPotion() {
+    if (!game.unlockedGearType.Potion) {
+        game.unlockedGearType.Potion = true;
+        unlockCraftingButtonType("Potion", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockSpear() {
+    if (!game.unlockedGearType.Spear) {
+        game.unlockedGearType.Spear = true;
+        unlockCraftingButtonType("Spear", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockPickaxe() {
+    if (!game.unlockedGearType.Pickaxe) {
+        game.unlockedGearType.Pickaxe = true;
+        unlockCraftingButtonType("Pickaxe", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockChisel() {
+    if (!game.unlockedGearType.Chisel) {
+        game.unlockedGearType.Chisel = true;
+        unlockCraftingButtonType("Chisel", "gearType")
+        flashElement(buttonCrafting)
+        unlockMaterials()
+    }
+}
+
+function unlockDice() {
+    if (!game.unlockedGearType.Dice) {
+        game.unlockedGearType.Dice = true;
+        unlockCraftingButtonType("Dice", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockScales() {
+    if (!game.unlockedGearType.Scales) {
+        game.unlockedGearType.Scales = true;
+        unlockCraftingButtonType("Scales", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockScroll() {
+    if (!game.unlockedGearType.Scroll) {
+        game.unlockedGearType.Scroll = true;
+        unlockCraftingButtonType("Scroll", "gearType")
+        flashElement(buttonCrafting)
+    }
+}
+
+function unlockHolySymbol() {
+    if (!game.unlockedGearType.HolySymbol) {
+        game.unlockedGearType.HolySymbol = true;
+        unlockCraftingButtonType("Holy Symbol", "gearType")
+        flashElement(buttonCrafting)
     }
 }
 
@@ -408,7 +513,7 @@ function unlockGear() {
         game.unlockedGear = true;
 
         gearContainer.classList.remove('initial-hide');
-        increaseGearCountMax()
+        unlockSpade()
     }
 }
 
@@ -416,10 +521,8 @@ function unlockMaterials() {
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedMaterials) {
         materialsDiv.classList.remove('initial-hide');
-        craftingDiv.classList.remove('initial-hide');
-        buttonCrafting.classList.remove('initial-hide');
-        showMainDiv(craftingDiv)
         game.unlockedMaterials = true;
+        flashElement(materialsDiv)
     }
 }
 
@@ -427,7 +530,9 @@ function unlockCrafting() {
     //if this upgrade is to unlock a div, show it
     if (!game.unlockedCrafting) {
         craftingDiv.classList.remove('initial-hide');
+        buttonCrafting.classList.remove('initial-hide');
         game.unlockedCrafting = true;
+        flashElement(buttonCrafting)
     }
 }
 
@@ -539,7 +644,7 @@ function findHungriestWorker() {
 gameLoop();
 let gamespeed = 5;
 //do the game loop every 100 milliseconds
-setInterval(gameLoop, 100/gamespeed);
+setInterval(gameLoop, 100 / gamespeed);
 
 //main game loop
 function gameLoop() {

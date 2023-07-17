@@ -53,8 +53,8 @@
 
 #crafting-title-item{
     display: flex;
-    align-items: center;
-    flex-direction: column;
+    align-items: flex-start;
+    flex-direction: row;
     flex-grow: 1;
     width: 100%;
 
@@ -63,13 +63,14 @@
 
 #section-main{
     display: flex;
+    flex-direction: column; 
     flex-grow: 10;
 }
 
 #show-buttons{
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 .show-button{
@@ -134,14 +135,8 @@ body {
     padding: 5px;
 
 }
-/* 
-.main {
-    flex-basis: 0;
-    flex-grow: 1;
-} */
 
 #world{
-    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -423,7 +418,7 @@ body {
 }
 
 .main-active{
-    filter: hue-rotate(130deg);
+    filter: hue-rotate(0deg);
 }
 
 
@@ -455,4 +450,40 @@ used for the button in main */
 /* for when the player hasn't unlocked the element yet */
 .initial-hide{
     display: none !important;
+}
+
+#crafting-choose-button{
+    width: 300px;
+}
+
+.crafting-picture{
+    height: 100%;
+}
+
+.crafting-div{
+    height: 50px;
+    position: relative;
+}
+
+.crafting-button{
+    width: 100%;
+    height: 100%;
+}
+
+#crafting-interact{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.crafting-resource-image-cost{
+    height: 100%;
+}
+
+.crafting-cost-div{
+    display: flex;
+    width: 100%;
+    height: 100%;
 }

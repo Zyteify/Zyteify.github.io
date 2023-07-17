@@ -57,71 +57,50 @@
         </div>
         <div id="section-interact">
             <div id="section-main">
+                <div id="show-buttons">
+                    <div id="button-upgrade" class="show-button">
+                        <h1 id="section-title"> Upgrades </h1>
+                    </div>
+                    <div id="button-crafting" class="show-button initial-hide">
+                        <h1 id="section-title"> Crafting </h1>
+                    </div>
+                    <div id="button-quests" class="show-button initial-hide">
+                        <h1 id="section-title"> Quests </h1>
+                    </div>
+                    <div id="button-world" class="show-button initial-hide">
+                        <h1 id="section-title"> World </h1>
+                    </div>
+                </div>
                 <div id="empty" class="main">
                 </div>
                 <div id="world" class="main initial-hide">
-                    <h1 id="section-title"> World: </h1>
                     <div id="world-screen">
                     </div>
                 </div>
                 <div id="crafting" class="main hide initial-hide">
                     <div id="crafting-title-item">
-                        <h1 id="section-title"> Crafting: </h1>
-                        <div id="crafting-item-section">
+                        <div id="crafting-choose-button"></div>
+                        <div id="crafting-interact">
+                            <div id="crafting-item-section">
+                            </div>
+                            <div id="crating-options-materials">
+                                <div id="crafting-options"></div>
+                            </div>
                         </div>
                     </div>
-                    <div id="crating-options-materials">
-                        <div id="crafting-options">
-                            <select id="material-geartype-dropdown">
-                                <option value="all"> geartype Not Loaded </option>
-                            </select>
-                            <select id="material-basetypename-dropdown">
-                                <option value="all"> basetypename Not Loaded </option>
-                            </select>
-                            <button id="materials-create-gear"> Create gear</button>
-                            <div id="materials-resource"> </div>
-                        </div>
-                        <div id="crafting-materials-list"></div>
-                    </div>
-
                 </div>
                 <div id="upgrades" class="main hide">
-                    <h1 id="section-title"> Upgrades: </h1>
                     <div id="upgrade-list">
                     </div>
                 </div>
                 <div id="quests" class="main hide initial-hide">
-                    <h1 id="section-title"> Quests: </h1>
                     <div id="quest-list">
-                    </div>
-                </div>
-                <div id="show-buttons">
-                    <div id="button-upgrade" class="show-button">
-                        <h1 id="section-title"> Upgrades </h1>
-                        <img id="button-image-upgrade" src='' alt="">
-                    </div>
-                    <div id="button-crafting" class="show-button initial-hide">
-                        <h1 id="section-title"> Crafting </h1>
-                        <img id="button-image-crafting" src='' alt="">
-                    </div>
-                    <div id="button-quests" class="show-button initial-hide">
-                        <h1 id="section-title"> Quests </h1>
-                        <img id="button-image-quests" src='' alt="">
-                    </div>
-                    <div id="button-world" class="show-button initial-hide">
-                        <h1 id="section-title"> World </h1>
-                        <img id="button-image-world" src='' alt="">
                     </div>
                 </div>
             </div>
             <div id="gear" class="main initial-hide">
                 <div id="gear-title-count">
                     <h1 id="section-title"> Gear: </h1>
-                    <p id="gear-count">
-                        <span id="gear-count-current"> 0 </span> /
-                        <span id="gear-count-max"> 0 </span>
-
-                    </p>
                 </div>
                 <div id="gear-variables">
 

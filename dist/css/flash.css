@@ -28,10 +28,10 @@
 
 .flash-border-good {
     border: 2px solid transparent;
-    animation: flash-good 1s infinite;
+    animation: flash-good 1s 10;
 }
 
 .flash-border-bad {
     border: 2px solid transparent;
-    animation: flash-bad 1s infinite;
+    animation: flash-bad 1s 10;
 }

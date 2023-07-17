@@ -10,7 +10,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -26,7 +26,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -42,7 +42,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -58,7 +58,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -74,7 +74,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -90,7 +90,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -106,7 +106,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -122,7 +122,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -138,7 +138,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -154,7 +154,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -170,7 +170,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -186,7 +186,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -202,7 +202,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "FlatItemPower",
     "tags": "item power, flat"
@@ -218,7 +218,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -234,7 +234,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -250,7 +250,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -266,7 +266,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -282,7 +282,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -298,7 +298,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -314,7 +314,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -330,7 +330,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -346,7 +346,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -362,7 +362,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -378,7 +378,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -394,7 +394,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -410,7 +410,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "IncreasedItemPower",
     "tags": "item power, percent"
@@ -426,7 +426,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -442,7 +442,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -458,7 +458,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -474,7 +474,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -490,7 +490,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -506,7 +506,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -522,7 +522,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -538,7 +538,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -554,7 +554,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -570,7 +570,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -586,7 +586,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -602,7 +602,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -618,7 +618,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "DuplicateWork",
     "tags": "duplication, work"
@@ -634,7 +634,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -650,7 +650,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -666,7 +666,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -682,7 +682,7 @@
     "weight": 50,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -698,7 +698,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -714,7 +714,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -730,7 +730,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "AdjacentItemPower",
     "tags": "item power, flat, adjacent"
@@ -746,7 +746,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -762,7 +762,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -778,7 +778,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -794,7 +794,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -810,7 +810,7 @@
     "weight": 50,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -826,7 +826,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -842,7 +842,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -858,7 +858,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "ChanceRepeatGreatestWorkDuration",
     "tags": "repeat, greatest, duration, work"
@@ -874,7 +874,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatModTier",
     "tags": "othermod, flat, tier"
@@ -890,7 +890,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatModTier",
     "tags": "othermod, flat, tier"
@@ -906,7 +906,7 @@
     "weight": 10,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "FlatModTier",
     "tags": "othermod, flat, tier"
@@ -922,7 +922,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -938,7 +938,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -954,7 +954,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -970,7 +970,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -986,7 +986,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1002,7 +1002,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1018,7 +1018,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1034,7 +1034,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1050,7 +1050,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1066,7 +1066,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1082,7 +1082,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1098,7 +1098,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1114,7 +1114,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkChance",
     "tags": "percent, critical, work"
@@ -1130,7 +1130,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1146,7 +1146,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1162,7 +1162,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1178,7 +1178,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1194,7 +1194,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1210,7 +1210,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1226,7 +1226,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1242,7 +1242,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1258,7 +1258,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1274,7 +1274,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1290,7 +1290,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1306,7 +1306,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1322,7 +1322,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentCriticalWorkMultiplier",
     "tags": "percent, critical, work"
@@ -1338,7 +1338,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1354,7 +1354,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1370,7 +1370,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1386,7 +1386,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1402,7 +1402,7 @@
     "weight": 1000,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1418,7 +1418,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1434,7 +1434,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1450,7 +1450,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1466,7 +1466,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1482,7 +1482,7 @@
     "weight": 20,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1498,7 +1498,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1514,7 +1514,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1530,7 +1530,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentNoEnergy",
     "tags": "percent, energy, noenergy"
@@ -1546,7 +1546,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1562,7 +1562,7 @@
     "weight": 500,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1578,7 +1578,7 @@
     "weight": 200,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1594,7 +1594,7 @@
     "weight": 100,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": true,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1610,7 +1610,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1626,7 +1626,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"
@@ -1642,7 +1642,7 @@
     "weight": 0,
     "gearType": "ANY",
     "baseType": "ANY",
-    "itemType": "Weapon",
+    "gearSlot": "Weapon",
     "rollable": false,
     "modFamily": "PercentMultiplyStock",
     "tags": "percent, multiply, stock"

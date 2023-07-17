@@ -18,12 +18,6 @@ function displayText() {
     //worker-count-max
     workerCountMax.innerHTML = game.workerCountMax.toString();
     //gear
-    //gear-count-current
-    gearCountCurrent.innerHTML = itemsInventory.length.toString();
-    //gear-count-max
-    gearCountMax.innerHTML = game.gearCountMax.toString();
-    //crafting
-    //crafting-progress
     updateEventListeners();
     updateCraftButton();
 }
@@ -103,9 +97,6 @@ function displayCraftWork() {
 configureShowButtons();
 function configureShowButtons() {
     for (let i = 0; i < buttons.length; i++) {
-        buttons[i].image.src = 'dist/img/arrow-left.png';
-        buttons[i].image.classList.add('button-img');
-        buttons[i].button.appendChild(buttons[i].image);
         buttons[i].button.addEventListener('click', function () {
             showMainDiv(buttons[i].div);
         });

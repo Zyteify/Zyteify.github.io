@@ -1,138 +1,307 @@
 "use strict";
-function updateCraftButton() {
-    let text = '';
-    for (const [key, value] of Object.entries(craftingCosts.craftingResources)) {
-        //get the icon from the resource
-        const resource = getResourceByName(value.type);
-        if (resource) {
-            text += ` ${resource.name} ${value.amount}`;
+let craftingButtonsList = [];
+class CraftingButton {
+    id = 0;
+    baseType;
+    active = {
+        gearSlot: false,
+        gearType: false,
+        baseTypeName: false
+    };
+    div;
+    button;
+    picture;
+    costDiv;
+    setup = false;
+    flashed = false;
+    resources = [];
+    static count = 0;
+    constructor(baseType) {
+        this.id = CraftingButton.count++;
+        this.baseType = baseType;
+        this.div = document.createElement('div');
+        this.div.id = `crafting-div-${this.id}`;
+        this.div.className = "crafting-div";
+        craftingChooseDiv.appendChild(this.div);
+        this.button = document.createElement('button');
+        this.button.id = `crafting-button-${this.id}`;
+        this.button.className = "crafting-button";
+        this.button.onclick = function () {
+        };
+        this.picture = document.createElement('img');
+        this.picture.id = `crafting-picture-${this.id}`;
+        this.picture.className = "crafting-picture";
+        this.picture.src = `./dist/img/${this.baseType.gearType.toLocaleLowerCase()}.png`;
+        this.costDiv = document.createElement('div');
+        this.costDiv.id = `crafting-cost-div-${this.id}`;
+        this.costDiv.className = "crafting-cost-div";
+        //add a resource from all the resources in the baseType. the container will be the costDiv
+        for (let i = 0; i < this.baseType.resource.length; i++) {
+            let resource = new Resource(this.baseType.resource[i].ResourceType, this.baseType.resource[i].amount, this.costDiv);
+            this.resources.push(resource);
         }
+        this.button.appendChild(this.picture);
+        this.button.appendChild(this.costDiv);
+        this.div.appendChild(this.button);
+        this.display();
     }
-    materialsCreateGearButton.innerHTML = `Craft Gear (🔨${craftingCosts.craftingWork}${text})`;
-    const resourcesAvailable = Object.values(craftingCosts.craftingResources).every((resource) => {
-        const resourceGlobal = getResourceByName(resource.type);
-        if (resourceGlobal) {
-            return resourceGlobal.amount >= resource.amount;
+    canCraft() {
+        let craftWorkAvailable = false;
+        craftWorkAvailable = this.baseType.craftingCost > craftWork;
+        let craftingResourcesAvailable = false;
+        if (this.resources.length > 0) {
+            for (let i = 0; i < this.resources.length; i++) {
+                //get the resource from the global list of resources
+                //resource from basetypes are in two different arrays; resource and resourceCost
+                let resource = getResourceByName(this.resources[i].ResourceType);
+                if (resource) {
+                    if (this.resources[i].amount > resource.amount) {
+                        craftingResourcesAvailable = true;
+                    }
+                }
+            }
+        }
+        else {
+            craftingResourcesAvailable = true;
+        }
+        return craftWorkAvailable && craftingResourcesAvailable;
+    }
+    isActive() {
+        return this.active.gearSlot && this.active.gearType && this.active.baseTypeName;
+    }
+    isDisabled() {
+        if (this.active.gearSlot && this.active.baseTypeName) {
+            if (!this.active.gearType) {
+                return true;
+            }
         }
         return false;
-    });
-    //if the player has enough resources, enable the button
-    if (craftWork >= craftingCosts.craftingWork && resourcesAvailable) {
-        materialsCreateGearButton.disabled = false;
     }
-    else {
-        materialsCreateGearButton.disabled = true;
-    }
-    //if the crafting button has not been shown yet, show it
-    if (!game.unlockedCraftingButton) {
-        game.unlockedCraftingButton = true;
-        materialsResource.style.display = "block";
-        materialsCreateGearButton.style.display = "block";
-    }
-}
-const craftingCosts = {
-    craftingWork: 5,
-    craftingResources: {},
-};
-function getCraftingCosts() {
-    //get the crafting costs from the selected base type and gear type
-    const baseTypeName = materialsItemDropdown.value;
-    const gearType = materialsGearDropdown.value;
-    //remove existing craftingcosts/resources
-    craftingCosts.craftingResources = {};
-    craftingCosts.craftingWork = 123456789;
-    const baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
-    if (baseType) {
-        craftingCosts.craftingWork = baseType.craftingCost;
-        craftingCosts.craftingResources = {};
-        for (let i = 0; i < baseType.resource.length; i++) {
-            craftingCosts.craftingResources[baseType.resource[i]] = {
-                type: baseType.resource[i],
-                amount: baseType.resourceCost[i],
-            };
+    //set the button to inactive or not and also hide it if it is not active
+    display() {
+        if (!this.isActive()) {
+            this.div.classList.add("hide");
+        }
+        else {
+            this.div.classList.remove("hide");
+            if (!this.flashed) {
+                this.flashed = true;
+                flashElement(this.div);
+            }
+        }
+        if (!this.canCraft() || this.isDisabled()) {
+            this.button.classList.add("inactive");
+        }
+        else {
+            this.button.classList.remove("inactive");
+        }
+        //if the costDiv has no children, add them
+        if (!this.setup) {
+            this.addCostDivChildren();
         }
     }
-    updateCraftButton();
+    addCostDivChildren() {
+        this.setup = true;
+        //update the paragraph
+        let initialParagraph = document.createElement('p');
+        initialParagraph.id = `crafting-paragraph-${this.id}`;
+        initialParagraph.className = `crafting-paragraph-initial`;
+        initialParagraph.innerHTML = `${this.baseType.name}-${this.baseType.gearType}`;
+        this.costDiv.appendChild(initialParagraph);
+        if (this.resources.length > 0) {
+            for (let i = 0; i < this.resources.length; i++) {
+                /* this.resources[i].container = this.costDiv; */
+                //actually set the display to be here
+                this.resources[i].active = true;
+                //remove the resource from the costDiv and add it back in
+                this.resources[i].container.removeChild(this.resources[i].div);
+                this.costDiv.appendChild(this.resources[i].div);
+                this.resources[i].display();
+            }
+        }
+    }
+    setActive(type, name) {
+        switch (type) {
+            case "gearSlot":
+                if (this.baseType.gearSlot == name) {
+                    this.active.gearSlot = true;
+                }
+                break;
+            case "gearType":
+                if (this.baseType.gearType == name) {
+                    this.active.gearType = true;
+                }
+                break;
+            case "baseTypeName":
+                if (this.baseType.name == name) {
+                    this.active.baseTypeName = true;
+                }
+                break;
+            default:
+                console.log(`error unlocking crafting button ${name} ${type}`);
+                break;
+        }
+    }
+}
+//create a button for each option of item to create in baseTypeList
+function createCraftingButtons() {
+    for (let i = 0; i < baseTypes.length; i++) {
+        //create a craftingButton
+        let craftingButton = new CraftingButton(baseTypes[i]);
+        craftingButtonsList.push(craftingButton);
+    }
+    unlockCraftingButtonType("Weapon", "gearSlot");
+}
+function unlockCraftingButtonType(name, type) {
+    for (let i = 0; i < craftingButtonsList.length; i++) {
+        craftingButtonsList[i].setActive(type, name);
+    }
+}
+function updateCraftButton() {
+    for (let i = 0; i < craftingButtonsList.length; i++) {
+        craftingButtonsList[i].display();
+    }
 }
 function initializeCrafting() {
-    initializeBaseTypeNameDropdown();
-    initializeGearTypeDropdown();
-    initializeCraftButton();
-    getCraftingCosts();
+    createCraftingButtons();
+    /* initializeGearSlotDropdown()
+    initializeBaseTypeNameDropdown()
+    initializeGearTypeDropdown()
+    initializeCraftButton() */
 }
-function initializeCraftButton() {
+/* function initializeCraftButton() {
     //create-gear
     materialsCreateGearButton.disabled = true;
+
     //if the craft button is clicked, craft the item
     materialsCreateGearButton.onclick = function () {
-        unlockCrafting();
+        unlockCrafting()
         createSelectedGear();
-    };
+    }
+
 }
-function handleSelectChange() {
-    getCraftingCosts();
-}
+
 function initializeBaseTypeNameDropdown() {
     //create a dropdown menu for the crafting items
     materialsItemDropdown.id = "crafting-item-basetypename-dropdown";
-    materialsItemDropdown.className = "crafting-item-basetypename--dropdown";
+    materialsItemDropdown.className = "crafting-item-basetypename--dropdown"
+
     //add an event listener to the dropdown menu
     materialsItemDropdown.addEventListener('change', handleSelectChange);
+
     //remove existing options
     while (materialsItemDropdown.firstChild) {
         materialsItemDropdown.removeChild(materialsItemDropdown.firstChild);
     }
+
     //create a list of options for the dropdown menu
-    const options = [];
+    const options: HTMLOptionElement[] = []
+
     // create a Set to store unique option values
-    const uniqueValues = new Set();
+    const uniqueValues = new Set<string>();
+
     // add every item to the dropdown menu
     for (let i = 0; i < baseTypeList.length; i++) {
         const value = baseTypeList[i].name;
+
         // check if the value is already in the Set
         if (!uniqueValues.has(value)) {
-            let option = document.createElement('option');
+            let option: HTMLOptionElement = document.createElement('option');
             option.value = value;
             option.text = value;
             options.push(option);
+
             // add the value to the Set to mark it as seen
             uniqueValues.add(value);
         }
     }
+
     //add the options to the dropdown menu
     for (let i = 0; i < options.length; i++) {
         materialsItemDropdown.appendChild(options[i]);
     }
 }
+
 function initializeGearTypeDropdown() {
     //create a dropdown menu for the crafting items
     materialsGearDropdown.id = "crafting-item-geartype-dropdown";
-    materialsGearDropdown.className = "crafting-item-geartype-dropdown";
+    materialsGearDropdown.className = "crafting-item-geartype-dropdown"
+
     //add an event listener to the dropdown menu
     materialsGearDropdown.addEventListener('change', handleSelectChange);
+
     //remove existing options
     while (materialsGearDropdown.firstChild) {
         materialsGearDropdown.removeChild(materialsGearDropdown.firstChild);
     }
+
     //create a list of options for the dropdown menu
-    const options = [];
+    const options: HTMLOptionElement[] = []
+
     // create a Set to store unique option values
-    const uniqueValues = new Set();
+    const uniqueValues = new Set<string>();
+
     // add every item to the dropdown menu
     for (let i = 0; i < baseTypeList.length; i++) {
         const value = baseTypeList[i].gearType;
+
         // check if the value is already in the Set
         if (!uniqueValues.has(value)) {
-            let option = document.createElement('option');
+            let option: HTMLOptionElement = document.createElement('option');
             option.value = value;
             option.text = value;
             options.push(option);
+
             // add the value to the Set to mark it as seen
             uniqueValues.add(value);
         }
     }
+
     //add the options to the dropdown menu
     for (let i = 0; i < options.length; i++) {
         materialsGearDropdown.appendChild(options[i]);
     }
 }
+
+function initializeGearSlotDropdown() {
+    //create a dropdown menu for the crafting items
+    materialsGearSlotDropdown.id = "crafting-item-gearslot-dropdown";
+    materialsGearSlotDropdown.className = "crafting-item-gearslot-dropdown"
+
+    //add an event listener to the dropdown menu
+    materialsGearSlotDropdown.addEventListener('change', handleSelectChange);
+
+    //remove existing options
+    while (materialsGearSlotDropdown.firstChild) {
+        materialsGearSlotDropdown.removeChild(materialsGearSlotDropdown.firstChild);
+    }
+
+    //create a list of options for the dropdown menu
+    const options: HTMLOptionElement[] = []
+
+    // create a Set to store unique option values
+    const uniqueValues = new Set<string>();
+
+    // add every item to the dropdown menu
+    for (let i = 0; i < baseTypeList.length; i++) {
+        const value = baseTypeList[i].gearSlot;
+
+        // check if the value is already in the Set
+        if (!uniqueValues.has(value)) {
+            let option: HTMLOptionElement = document.createElement('option');
+            option.value = value;
+            option.text = value;
+            options.push(option);
+
+            // add the value to the Set to mark it as seen
+            uniqueValues.add(value);
+        }
+    }
+
+    //add the options to the dropdown menu
+    for (let i = 0; i < options.length; i++) {
+        materialsGearSlotDropdown.appendChild(options[i]);
+    }
+}
+
+ */

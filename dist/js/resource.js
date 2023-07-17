@@ -1,6 +1,6 @@
 "use strict";
 class Resource {
-    name;
+    ResourceType;
     amount;
     active = false;
     id;
@@ -12,12 +12,20 @@ class Resource {
     div;
     setup = false;
     static count = 0;
-    constructor(name, container, amount) {
+    constructor(name, amount, container) {
         this.id = Resource.count++;
-        this.name = name;
+        this.ResourceType = name;
         this.amount = amount;
-        this.container = container;
-        this.imageName = this.name + ".png";
+        if (container) {
+            this.container = container;
+        }
+        else {
+            //no container was passed in, so create a new one but dont use it
+            this.container = document.createElement('div');
+            this.container.id = "resource" + this.id + 'container';
+            this.container.className = "resource-container";
+        }
+        this.imageName = this.ResourceType + ".png";
         this.div = document.createElement('div');
         this.div.id = "resource" + this.id + 'div';
         this.div.className = "resource-div";
@@ -87,7 +95,7 @@ class Resource {
     export() {
         let resource = {
             id: this.id,
-            name: this.name,
+            name: this.ResourceType,
             amount: this.amount,
             active: this.active,
         };
@@ -96,7 +104,7 @@ class Resource {
 }
 function getResourceByName(name) {
     for (let i = 0; i < resources.length; i++) {
-        if (resources[i].name === name) {
+        if (resources[i].ResourceType === name) {
             return resources[i];
         }
     }

@@ -10,7 +10,7 @@ type Affix = {
     weight: number;
     gearType: string;
     baseType: string;
-    itemType: GearSlot;
+    gearSlot: GearSlot;
     rollable: boolean;
     modFamily: string;
     tags: string;

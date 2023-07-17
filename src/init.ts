@@ -15,8 +15,13 @@ const workerList = <HTMLDivElement>document.getElementById('worker-list');
 
 //Materials
 const materialsDiv = <HTMLElement>document.getElementById('materials');
+
+
+
 //Materials-create-gear
 const materialsCreateGearButton = <HTMLButtonElement>document.getElementById('materials-create-gear');
+//Materials-item-dropdown
+const materialsGearSlotDropdown = <HTMLSelectElement>document.getElementById('material-gearslot-dropdown');
 //Materials-item-dropdown
 const materialsItemDropdown = <HTMLSelectElement>document.getElementById('material-basetypename-dropdown');
 //Materials-gear-dropdown
@@ -33,14 +38,18 @@ const resourceList = document.getElementById('resource-list') as HTMLDivElement;
 const gearContainer = document.getElementById('gear') as HTMLDivElement;
 //gear
 const gearListContainer = document.getElementById('gear-list') as HTMLDivElement;
-//gear-count-current
+/* //gear-count-current
 const gearCountCurrent = <HTMLElement>document.getElementById('gear-count-current');
 //gear-count-max
-const gearCountMax = <HTMLElement>document.getElementById('gear-count-max');
+const gearCountMax = <HTMLElement>document.getElementById('gear-count-max'); */
 //delete-div
 const deleteDiv = <HTMLElement>document.getElementById('delete-div');
 
 //crafting
+//choose
+const craftingChooseDiv = <HTMLElement>document.getElementById('crafting-choose-button');
+
+
 const craftingItemSectionDiv = <HTMLDivElement>document.getElementById('crafting-item-section');
 const craftingItemNameDiv = <HTMLElement>document.getElementById('crafting-item-name');
 const craftingItemPictureDiv = <HTMLElement>document.getElementById('crafting-item-picture');
@@ -74,26 +83,22 @@ buttons = [
     {
         name: 'upgrades',
         div: upgradeDiv,
-        button: buttonUpgrades,
-        image: buttonImageUpgrades
+        button: buttonUpgrades
     },
     {
         name: 'crafting',
         div: craftingDiv,
-        button: buttonCrafting,
-        image: buttonImageCrafting
+        button: buttonCrafting
     },
     {
         name: 'quests',
         div: questDiv,
-        button: buttonQuests,
-        image: buttonImageQuests
+        button: buttonQuests
     },
     {
         name: 'world',
         div: worldDiv,
-        button: buttonWorld,
-        image: buttonImageWorld
+        button: buttonWorld
     }
 ]
 
@@ -117,17 +122,31 @@ let game = {
     //worker-count-max
     workerCountMax: 0,
     gearCountCurrent: 0,
-    gearCountMax: 0,
+    gearCountMax: 100,
     //player state
-    unlockedSpade: false,
-    unlockedAxe: false,
-    unlockedHammer: false,
+    
     unlockedWorkers: false,
     unlockedGear: false,
-    unlockedPickaxe: false,
     unlockedCraftingButton: false,
     unlockedCrafting: false,
     unlockedMaterials: false,
+    //"Spade" | "Mace" | "Potion" | "Hammer" | "Knife" | "Spear" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
+    unlockedGearType: {
+        Pickaxe: false,
+        Axe: false,
+        Spade: false,
+        Hammer: false,
+        Potion: false,
+        Scroll: false,
+        Knife: false,
+        Spear: false,
+        Mace: false,
+        Chisel: false,
+        Quill: false,
+        Dice: false,
+        Scales: false,
+        HolySymbol: false
+    },
     craftingItemsMax: 1
 
 }

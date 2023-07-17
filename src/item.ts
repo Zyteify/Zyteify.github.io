@@ -1,6 +1,6 @@
 class Item {
     id: number;
-    type: GearSlot;
+    gearSlot: GearSlot;
     image: HTMLImageElement;
 
     //mods
@@ -37,11 +37,11 @@ class Item {
     setup: boolean = false;
     setupHover: boolean = false;
     static count: number = 0;
-    constructor(type: GearSlot, baseType: BaseType, rarity: RarityType, full?: any
+    constructor(gearSlot: GearSlot, baseType: BaseType, rarity: RarityType, full?: any
     ) {
 
         this.id = Item.count++;
-        this.type = type;
+        this.gearSlot = gearSlot;
 
         this.baseType = baseType;
 
@@ -471,7 +471,7 @@ class Item {
     export() {
         let item = {
             id: this.id,
-            type: this.type,
+            type: this.gearSlot,
             baseType: this.baseType,
             prefixes: this.prefixes,
             suffixes: this.suffixes,

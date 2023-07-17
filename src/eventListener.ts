@@ -103,9 +103,13 @@ function updateEventListeners() {
             trackEventListeners(myElement, 'dragover', function (event) {
                 event.preventDefault();
                 if (dragDiv.hasItem()) {
+                    //check which item slot the item is 
+                    let dragGearSlot = dragDiv.origin.item.baseType.gearSlot;
+
                     let workerid: number = parseInt(myElement.id.replace('worker-div', ''));
                     let dragWorkerDest = <WorkerClass>getWorkerById(workerid);
-                    if (dragWorkerDest.weapon[0] == null) {
+                    let itemArray = dragWorkerDest.getItemArray(dragGearSlot);
+                    if (itemArray.length == 0) {
                         if (isChildOf(dragDiv.origin.div as HTMLElement, myElement) || dragDiv.origin.div === event.target) {
                             return; // Exit the event handler
                         }
@@ -116,6 +120,7 @@ function updateEventListeners() {
                         }
                         myElement.classList.add('highlightMayMove');
                     }
+
                 }
             });
 
@@ -164,24 +169,7 @@ function updateEventListeners() {
 }
 
 function mouseoverEventStart(myElement: HTMLElement, event: Event) {
-    let dragSource = myElement as HTMLElement;
-    //get the gear that is being dragged
-    let gearid: string = dragSource.id.replace('gear-div', '');
-    //find the item from the list of items in storage or on a worker
-    let item = itemsInventory.find(item => item.id === parseInt(gearid));
-    //also check the crafting items
-    if (!item) {
-        item = itemsCrafting.find(item => item.id === parseInt(gearid));
-        if (item) {
-        }
-        //loop through each worker and see if they are wearing the item
-        for (let i = 0; i < workers.length; i++) {
-            if (workers[i].weapon[0]?.id === parseInt(gearid)) {
-                item = <Item>workers[i].weapon[0];
-            }
-        }
-    }
-
+    let item = findItem(myElement)
     if (item) {
         item.handleHover(event as MouseEvent);
     }
@@ -192,28 +180,46 @@ function mouseoverEventStart(myElement: HTMLElement, event: Event) {
 
 function mouseLeaveEventStart(myElement: HTMLElement, event: Event) {
     if (!dragDiv.hasItem()) {
-        let dragSource = event.target as HTMLElement;
-        //get the gear that is being dragged
-        let gearid: string = myElement.id.replace('gear-div', '');
-        //find the item from the list of items in storage or on a worker
-        let item = itemsInventory.find(item => item.id === parseInt(gearid));
-        //also check the crafting items
-        if (!item) {
-            item = itemsCrafting.find(item => item.id === parseInt(gearid));
-            if (item) {
-            }
-            //loop through each worker and see if they are wearing the item
-            for (let i = 0; i < workers.length; i++) {
-                if (workers[i].weapon[0]?.id === parseInt(gearid)) {
-                    item = <Item>workers[i].weapon[0];
-                }
-            }
-        }
+        let item = findItem(myElement)
         if (item) {
             item.handleHoverLeave(event as MouseEvent);
         }
         else {
         }
+    }
+}
+
+function findItem(myElement: HTMLElement): Item | null {
+    let gearid: string = myElement.id.replace('gear-div', '');
+    //find the item from the list of items in storage or on a worker
+    let item = itemsInventory.find(item => item.id === parseInt(gearid));
+    //also check the crafting items
+    if (!item) {
+        item = itemsCrafting.find(item => item.id === parseInt(gearid));
+        if (!item) {
+            //loop through each worker and see if they are wearing the item
+            for (let i = 0; i < workers.length; i++) {
+                let worker = workers[i];
+                for (let j = 0; j < gearSlots.length; j++) {
+                    let gearSlot = gearSlots[j];
+
+                    let itemArray = worker.getItemArray(gearSlot);
+                    if (itemArray.length > 0) {
+                        if (itemArray[0].id === parseInt(gearid)) {
+                            item = <Item>itemArray[0]
+                            return item
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+    if (item) {
+        return item
+    }
+    else {
+        return null
     }
 }
 
@@ -233,8 +239,9 @@ function dropEvent(myElement: HTMLElement, event: Event) {
 
             //get the gear slot that the item is being dropped on
             let workerItemDiv = worker.getItemDiv(dragDiv.origin.item.baseType)
+            let workerItemArray = worker.getItemArray(dragDiv.origin.item.baseType.gearSlot)
 
-            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, worker.weapon, workerItemDiv);
+            moveGear(dragDiv.origin.item, dragDiv.origin.source, dragDiv.origin.sourceArray, dragDiv.origin.div, worker, workerItemArray, workerItemDiv);
         }
         //if the element being dropped on is the gear list container
         else if (myElement === gearListContainer) {
@@ -308,16 +315,20 @@ function dragEventStart(myElement: HTMLElement, event: Event) {
             dragDiv.origin.sourceArray = itemsCrafting;
         }
     }
-
-
     //loop through each worker and see if they are wearing the item
     for (let i = 0; i < workers.length; i++) {
-        if (workers[i].weapon[0]?.id === parseInt(gearid)) {
-            item = <Item>workers[i].weapon[0];
-            dragDiv.setItem(item);
-            dragDiv.setWorker(workers[i]);
-            dragDiv.origin.worker = workers[i];
-            dragDiv.origin.source = workers[i];
+        for (let j = 0; j < gearSlots.length; j++) {
+            let gearSlot = gearSlots[j];
+            let itemArray = workers[i].getItemArray(gearSlot);
+            if (itemArray[0]?.id === parseInt(gearid)) {
+                item = <Item>itemArray[0];
+                dragDiv.setItem(item);
+                dragDiv.setWorker(workers[i]);
+                dragDiv.origin.worker = workers[i];
+                dragDiv.origin.source = workers[i];
+                dragDiv.origin.sourceArray = itemArray;
+                break
+            }
         }
     }
     if (!item) {
