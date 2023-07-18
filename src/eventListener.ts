@@ -258,18 +258,6 @@ function dropEvent(myElement: HTMLElement, event: Event) {
             if (!confirmDelete) {
                 return;
             }
-            //delete the item and remove it from either the inventory or the workers inventory
-            if (dragDiv.hasWorker()) {
-                let dragWorker = <WorkerClass>dragDiv.origin.worker
-                dragWorker.unequipItem(<Item>dragDiv.origin.item);
-                dragWorker.setVocation();
-            }
-            else if (dragDiv.origin.source == 'items') {
-                removeItem(myItem, itemsInventory)
-            }
-            else if (dragDiv.origin.source == 'craftingItems') {
-                removeItem(myItem, itemsCrafting)
-            }
             emptyGearDisplay();
             displayText();
             console.log(`deleting ${myItem.baseType.gearType}`);

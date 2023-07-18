@@ -12,7 +12,7 @@ class Upgrade {
     button;
     flashed = false;
     //list of upgrades that are set to be locked initially based on the tags
-    static unavailableUpgrades = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe"];
+    static unavailableUpgrades = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe", "Copper", "Silver", "Golden"];
     unlocks = [];
     //tag the upgrade if it needs to be unlocked later
     tags = [];
@@ -144,7 +144,7 @@ class Upgrade {
             if (!this.flashed) {
                 this.flashed = true;
                 flashUpgradeButton();
-                flashElement(this.button);
+                flashElementGood(this.button);
             }
         }
         //if the upgrade is at max level or the upgrade is unavailable, hide the button
@@ -158,7 +158,7 @@ class Upgrade {
             //remove the none display
             button.style.display = "";
             if (!flashUpgradeButton()) {
-                flashElement(button);
+                flashElementGood(button);
             }
         }
     }

@@ -9,7 +9,7 @@
         "modValue": 2
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -21,7 +21,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -33,7 +33,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -45,7 +45,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -57,7 +57,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -69,7 +69,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -81,7 +81,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -93,7 +93,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Scrap",
@@ -105,7 +105,7 @@
         "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
     "name": "Wooden",
@@ -113,7 +113,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -131,7 +131,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -149,7 +149,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -167,7 +167,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -185,7 +185,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -203,7 +203,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -221,7 +221,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -239,7 +239,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -257,7 +257,7 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       }
     ],
@@ -275,11 +275,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -297,11 +297,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -319,11 +319,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -341,11 +341,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -363,11 +363,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -385,11 +385,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -407,11 +407,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -429,11 +429,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -451,11 +451,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Copper",
+        "resourceType": "copper",
         "amount": 5
       }
     ],
@@ -473,11 +473,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -495,11 +495,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -517,11 +517,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -539,11 +539,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -561,11 +561,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -583,11 +583,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -605,11 +605,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -627,11 +627,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -649,11 +649,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Silver",
+        "resourceType": "silver",
         "amount": 5
       }
     ],
@@ -671,11 +671,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -693,11 +693,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -715,11 +715,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -737,11 +737,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -759,11 +759,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -781,11 +781,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -803,11 +803,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -825,11 +825,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],
@@ -847,11 +847,11 @@
     "gearSlot": "Weapon",
     "resources": [
       {
-        "resourceType": "Wood",
+        "resourceType": "wood",
         "amount": 5
       },
       {
-        "resourceType": "Gold",
+        "resourceType": "gold",
         "amount": 5
       }
     ],

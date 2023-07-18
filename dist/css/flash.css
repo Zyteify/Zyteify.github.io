@@ -27,11 +27,13 @@
 }
 
 .flash-border-good {
+    box-sizing: border-box;
     border: 2px solid transparent;
     animation: flash-good 1s 10;
 }
 
 .flash-border-bad {
+    box-sizing: border-box;
     border: 2px solid transparent;
     animation: flash-bad 1s 10;
 }

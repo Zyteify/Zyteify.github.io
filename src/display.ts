@@ -104,9 +104,8 @@ function setTextfromAffixes(stringText: string, stringValue: number): string {
 }
 
 function displayCraftWork() {
-    materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
+    materialsCraftWork.innerHTML = (`🔨 ${craftWork.toString()}`);
 }
-
 
 configureShowButtons()
 function configureShowButtons() {
@@ -157,10 +156,19 @@ function flashUpgradeButton(): boolean {
     }
 }
 
-function flashElement(element: HTMLElement) {
-    element.classList.remove('flash-border-good');
+function flashElementGood(element: HTMLElement) {
+    element.classList.remove('flash-border-bad');
     element.classList.add('flash-border-good');
     setTimeout(function () {
         element.classList.remove('flash-border-good');
+    }, 5000);
+}
+
+function flashElementBad(element: HTMLElement) {
+    element.classList.remove('flash-border-good');
+    element.classList.remove('flash-border-bad');
+    element.classList.add('flash-border-bad');
+    setTimeout(function () {
+        element.classList.remove('flash-border-bad');
     }, 5000);
 }

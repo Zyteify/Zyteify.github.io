@@ -171,7 +171,7 @@ function importGear() {
 		for (let i = 0; i < dataArray.length - 1; i++) {
 			let importGear = JSON.parse(dataArray[i]);
 			let baseType = <BaseType> findBaseTypeByNameandGearType(importGear.baseType.name, importGear.baseType.gearType);
-			let item = new Item(importGear.type, baseType, importGear.rarity, importGear.full);
+			let item = new Item(baseType, importGear.rarity, importGear.full);
 			switch (importGear.containerNumber) {
 				case -2:
 					item.setParentDiv(gearListContainer);
@@ -208,7 +208,7 @@ function importWorkers() {
 			let worker = new WorkerClass(importWorker.full);
 			for (let j = 0; j < importWorker.weapon.length; j++) {
 				let baseType = <BaseType> findBaseTypeByNameandGearType(importWorker.weapon[j].baseType.name, importWorker.weapon[j].baseType.gearType);
-				let item = new Item(importWorker.weapon[j].type, baseType, importWorker.weapon[j].rarity, importWorker.weapon[j].full);
+				let item = new Item(baseType, importWorker.weapon[j].rarity, importWorker.weapon[j].full);
 				item.setParentDiv(worker.div);
 				item.resetDiv()
 				worker.equipItem(item);

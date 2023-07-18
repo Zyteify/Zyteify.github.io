@@ -266,25 +266,25 @@ let deleteImage = document.createElement('img');
 deleteImage.src = 'dist/img/trash.png';
 deleteImage.className = 'delete-img';
 deleteDiv.appendChild(deleteImage);
-function createRandomGear() {
+/* function createRandomGear(): boolean {
+
     let randomGearType = gearTypes[Math.floor(Math.random() * gearTypes.length)];
     let randomGearSLot = gearSlots[Math.floor(Math.random() * gearSlots.length)];
     //create a new worker
-    let gearCreation = createGear(randomGearSLot, randomGearType);
+    let gearCreation = createGear(randomGearType);
     if (gearCreation) {
-        /* craftWork -= craftingCosts.craftingWork;
-        updateCraftButton(); */
-        controlCraftingButtons();
+
+        controlCraftingButtons()
     }
     return gearCreation;
-}
+} */
 function createSelectedGear() {
     let baseTypeName = materialsItemDropdown.value;
     let gearType = materialsGearDropdown.value;
     let gearSlot = materialsGearSlotDropdown.value;
     let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
     if (baseType) {
-        let gearCreation = createGear(gearSlot, gearType, baseType);
+        let gearCreation = createGear(baseType, 'Starter');
         if (gearCreation) {
             /* craftWork -= craftingCosts.craftingWork;
             updateCraftButton(); */
@@ -297,7 +297,7 @@ function createSelectedGear() {
         return false;
     }
 }
-function createGear(gearSlot, gearType, baseType, rarity) {
+function createGear(baseType, rarity) {
     let location;
     let locationDiv;
     //starter gear goes directly into inventory
@@ -308,16 +308,6 @@ function createGear(gearSlot, gearType, baseType, rarity) {
     else {
         location = itemsCrafting;
         locationDiv = craftingItemSectionDiv;
-    }
-    let gear = gearType;
-    if (!gear) {
-        gear = generateGear();
-    }
-    if (!baseType) {
-        baseType = generateBaseType(gear);
-    }
-    if (!rarity) {
-        rarity = generateRarity();
     }
     //if the location to put the new item is items and the player has room for it and the player has the resources, create the item
     let locationHasRoom = false;
@@ -350,7 +340,7 @@ function createGear(gearSlot, gearType, baseType, rarity) {
         }
     }
     if (locationHasRoom && resourceCostSuccess) {
-        //pay the resources
+        //pay the resources and the crafting work
         for (let i = 0; i < baseType.resource.length; i++) {
             let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
             if (resourceInventory) {
@@ -361,7 +351,8 @@ function createGear(gearSlot, gearType, baseType, rarity) {
                 break;
             }
         }
-        let newGear = new Item(gearSlot, baseType, rarity);
+        craftWork -= baseType.craftingCost;
+        let newGear = new Item(baseType, rarity);
         newGear.setParentDiv(locationDiv);
         location.push(newGear);
         displayText();

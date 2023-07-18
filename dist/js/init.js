@@ -6,6 +6,7 @@ const hours = document.getElementById('game-time-hours');
 //workers
 const workerContainer = document.getElementById('workers');
 //worker-count-current
+const workerCount = document.getElementById('worker-count');
 const workerCountCurrent = document.getElementById('worker-count-current');
 //worker-count-max
 const workerCountMax = document.getElementById('worker-count-max');
@@ -22,8 +23,9 @@ const materialsItemDropdown = document.getElementById('material-basetypename-dro
 //Materials-gear-dropdown
 const materialsGearDropdown = document.getElementById('material-geartype-dropdown');
 //Materials-progress
-const materialsResource = document.getElementById('materials-resource');
-const materialsGemList = document.getElementById('materials-list');
+const materialsCraftWork = document.getElementById('materials-craft-work');
+const materialsList = document.getElementById('materials-list');
+const materialsGemList = document.getElementById('materials-gem-list');
 //resources
 const resourceList = document.getElementById('resource-list');
 //gear
@@ -109,6 +111,7 @@ let game = {
     unlockedCraftingButton: false,
     unlockedCrafting: false,
     unlockedMaterials: false,
+    unlockedGems: false,
     //"Spade" | "Mace" | "Potion" | "Hammer" | "Knife" | "Spear" | "Chisel" | "Quill" | "Dice" | "Scales" | "Holy Symbol" | "Scroll" | "Pickaxe" | "Axe";
     unlockedGearType: {
         Pickaxe: false,
@@ -124,7 +127,14 @@ let game = {
         Quill: false,
         Dice: false,
         Scales: false,
-        HolySymbol: false
+        HolySymbol: false,
+        Bow: false,
+    },
+    unlockedBaseMaterial: {
+        Wooden: false,
+        Copper: false,
+        Silver: false,
+        Gold: false
     },
     craftingItemsMax: 1
 };

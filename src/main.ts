@@ -295,12 +295,13 @@ function createWorker() {
 //create a few upgrades
 let upgrades: Upgrade[] = [
     new Upgrade("Unlock Workers", true, 0, 1, unlockWorkers, ["Worker"], ["Worker"]),
-    new Upgrade("Unlock Gear", false, 0, 1, unlockGear, ["Worker"], ["Gear"]),
     new Upgrade("Hire Worker", false, 0, 10, createWorker, ["Worker"], ["WorkHire"]),
     new Upgrade("Increase Worker Slots", false, 0, 10, increaseWorkerMax, ["WorkHire"]),
     new Upgrade("Increase Worker Speed", false, 0, 10, increaseWorkerSpeed, ["WorkHire"]),
+    new Upgrade("Unlock Gear", false, 0, 1, unlockGear, ["Worker"], ["Gear"]),
     new Upgrade("Unlock Hammer", false, 0, 1, unlockHammer, ["Gear"], ["Hammer"]),
     new Upgrade("Unlock Axe", false, 0, 1, unlockAxe, ["Hammer"], ["Axe"]),
+    new Upgrade("Unlock Magic Gems", false, 0, 1, unlockGems, ["Axe"], ["Gems"]),
     new Upgrade("Unlock Potion", false, 0, 1, unlockPotion, ["Axe"], ["Potion"]),
     new Upgrade("Unlock Spear", false, 0, 1, unlockSpear, ["Axe"], ["Spear"]),
     new Upgrade("Unlock Pickaxe", false, 0, 1, unlockPickaxe, ["Axe"], ["Pickaxe"]),
@@ -308,7 +309,12 @@ let upgrades: Upgrade[] = [
     new Upgrade("Unlock Dice", false, 0, 1, unlockDice, ["Axe"], ["Dice"]),
     new Upgrade("Unlock Scales", false, 0, 1, unlockScales, ["Axe"], ["Scales"]),
     new Upgrade("Unlock Scroll", false, 0, 1, unlockScroll, ["Axe"], ["Scroll"]),
+    new Upgrade("Unlock Bow", false, 0, 1, unlockBow, ["Axe"], ["Bow"]),
+    new Upgrade("Unlock Quill", false, 0, 1, unlockQuill, ["Axe"], ["Quill"]),
     new Upgrade("Unlock Holy Symbol", false, 0, 1, unlockHolySymbol, ["Axe"], ["Holy Symbol"]),
+    new Upgrade("Unlock Copper Gear", false, 0, 1, unlockCopper, ["Pickaxe"], ["Copper"]),
+    new Upgrade("Unlock Silver Gear", false, 0, 1, unlockSilver, ["Copper"], ["Silver"]),
+    new Upgrade("Unlock Golden Gear", false, 0, 1, unlockGolden, ["Silver"], ["Golden"]),
 ];
 
 //add the costs to the upgrades
@@ -357,8 +363,26 @@ for (let i = 0; i < upgrades.length; i++) {
         case "Unlock Scroll":
             upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
             break
+        case "Unlock Quill":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Bow":
+            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
         case "Unlock Holy Symbol":
             upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
+            break
+        case "Unlock Copper Gear":
+            upgrade.addResourceCost(new Resource('wood', 100, upgrade.resourceSpan));
+            break
+        case "Unlock Silver Gear":
+            upgrade.addResourceCost(new Resource('copper', 100, upgrade.resourceSpan));
+            break
+        case "Unlock Golden Gear":
+            upgrade.addResourceCost(new Resource('silver', 100, upgrade.resourceSpan));
+            break
+        case "Unlock Magic Gems":
+            upgrade.addResourceCost(new Resource('coins', 20, upgrade.resourceSpan));
             break
         default:
             console.log(`no upgrade cost for ${upgrade.name}`);
@@ -368,6 +392,7 @@ for (let i = 0; i < upgrades.length; i++) {
 
 function increaseWorkerMax() {
     game.workerCountMax++;
+    flashElementGood(workerCount)
 }
 
 function unlockHammer() {
@@ -377,14 +402,17 @@ function unlockHammer() {
         let baseMaterial: BaseMaterial = "Scrap";
         let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
         if (baseType) {
-            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            let gearCreation = createGear(baseType, 'Starter');
             if (gearCreation) {
                 game.unlockedGearType.Hammer = true;
-                unlockCraftingButtonType("Hammer", "gearType")
+                unlockCraftingButtonTypeActiveAllWeapons()
+                unlockCraftingButtonTypeSelectable("Hammer", "gearType")
+                unlockCraftingButtonTypeSelectable("Wooden", "baseTypeName")
                 unlockCrafting()
+                unlockMaterials()
             }
             else {
-                console.log("error creating spade")
+                console.log("error creating hammer")
                 //reset the upgrade
                 let upgrade = <Upgrade>getUpgradeByName("Unlock Hammer")
                 upgrade.active = true;
@@ -402,15 +430,19 @@ function unlockAxe() {
         let baseMaterial: BaseMaterial = "Scrap";
         let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
         if (baseType) {
-            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            let gearCreation = createGear(baseType, 'Starter');
             if (gearCreation) {
                 game.unlockedGearType.Axe = true;
-                unlockCraftingButtonType("Axe", "gearType")
-                unlockCraftingButtonType("Wooden", "baseTypeName")
-                flashElement(buttonCrafting)
+                unlockCraftingButtonTypeActive("Wooden", "baseTypeName")
+                unlockCraftingButtonTypeSelectable("Axe", "gearType")
+                //get the wood resource and make it active
+                let wood = <Resource>getResourceByName('wood');
+                wood.active = true;
+                displayResources()
+                flashElementGood(buttonCrafting)
             }
             else {
-                console.log("error creating spade")
+                console.log("error creating axe")
                 //reset the upgrade
                 let upgrade = <Upgrade>getUpgradeByName("Unlock Axe")
                 upgrade.active = true;
@@ -428,10 +460,10 @@ function unlockSpade() {
         let baseMaterial: BaseMaterial = "Scrap";
         let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
         if (baseType) {
-            let gearCreation = createGear(gearSlot, gearType, baseType, 'Starter');
+            let gearCreation = createGear(baseType, 'Starter');
             if (gearCreation) {
                 game.unlockedGearType.Spade = true;
-                unlockCraftingButtonType("Spade", "gearType")
+                unlockCraftingButtonTypeSelectable("Spade", "gearType")
 
             }
             else {
@@ -445,32 +477,41 @@ function unlockSpade() {
 function unlockPotion() {
     if (!game.unlockedGearType.Potion) {
         game.unlockedGearType.Potion = true;
-        unlockCraftingButtonType("Potion", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Potion", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
 function unlockSpear() {
     if (!game.unlockedGearType.Spear) {
         game.unlockedGearType.Spear = true;
-        unlockCraftingButtonType("Spear", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Spear", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
 function unlockPickaxe() {
     if (!game.unlockedGearType.Pickaxe) {
         game.unlockedGearType.Pickaxe = true;
-        unlockCraftingButtonType("Pickaxe", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Pickaxe", "gearType")
+        flashElementGood(buttonCrafting)
+        let stone = <Resource>getResourceByName('stone');
+        stone.active = true;
+        let copper = <Resource>getResourceByName('copper');
+        copper.active = true;
+        let silver = <Resource>getResourceByName('silver');
+        silver.active = true;
+        let gold = <Resource>getResourceByName('gold');
+        gold.active = true;
+        displayResources()
     }
 }
 
 function unlockChisel() {
     if (!game.unlockedGearType.Chisel) {
         game.unlockedGearType.Chisel = true;
-        unlockCraftingButtonType("Chisel", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Chisel", "gearType")
+        flashElementGood(buttonCrafting)
         unlockMaterials()
     }
 }
@@ -478,32 +519,51 @@ function unlockChisel() {
 function unlockDice() {
     if (!game.unlockedGearType.Dice) {
         game.unlockedGearType.Dice = true;
-        unlockCraftingButtonType("Dice", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Dice", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
 function unlockScales() {
     if (!game.unlockedGearType.Scales) {
         game.unlockedGearType.Scales = true;
-        unlockCraftingButtonType("Scales", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Scales", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
 function unlockScroll() {
     if (!game.unlockedGearType.Scroll) {
         game.unlockedGearType.Scroll = true;
-        unlockCraftingButtonType("Scroll", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeActive("Scroll", "gearType")
+        unlockCraftingButtonTypeSelectable("Scroll", "gearType")
+        flashElementGood(buttonCrafting)
+    }
+}
+
+function unlockBow() {
+    if (!game.unlockedGearType.Bow) {
+        game.unlockedGearType.Bow = true;
+        unlockCraftingButtonTypeActive("Bow", "gearType")
+        unlockCraftingButtonTypeSelectable("Bow", "gearType")
+        flashElementGood(buttonCrafting)
+    }
+}
+
+function unlockQuill() {
+    if (!game.unlockedGearType.Quill) {
+        game.unlockedGearType.Quill = true;
+        unlockCraftingButtonTypeActive("Quill", "gearType")
+        unlockCraftingButtonTypeSelectable("Quill", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
 function unlockHolySymbol() {
     if (!game.unlockedGearType.HolySymbol) {
         game.unlockedGearType.HolySymbol = true;
-        unlockCraftingButtonType("Holy Symbol", "gearType")
-        flashElement(buttonCrafting)
+        unlockCraftingButtonTypeSelectable("Holy Symbol", "gearType")
+        flashElementGood(buttonCrafting)
     }
 }
 
@@ -522,7 +582,20 @@ function unlockMaterials() {
     if (!game.unlockedMaterials) {
         materialsDiv.classList.remove('initial-hide');
         game.unlockedMaterials = true;
-        flashElement(materialsDiv)
+        flashElementGood(materialsDiv)
+        displayCraftWork()
+    }
+}
+
+function unlockGems() {
+    //if this upgrade is to unlock a div, show it
+    if (!game.unlockedGems) {
+        materialsDiv.classList.remove('initial-hide');
+        game.unlockedMaterials = true;
+        flashElementGood(materialsDiv)
+
+        //add 10 basic gems
+        
     }
 }
 
@@ -532,7 +605,8 @@ function unlockCrafting() {
         craftingDiv.classList.remove('initial-hide');
         buttonCrafting.classList.remove('initial-hide');
         game.unlockedCrafting = true;
-        flashElement(buttonCrafting)
+        flashElementGood(buttonCrafting)
+        unlockCraftingButtonTypeActive("Wooden", "baseTypeName")
     }
 }
 
@@ -542,6 +616,33 @@ function unlockWorkers() {
 
         game.workerCountMax++;
         game.unlockedWorkers = true;
+    }
+}
+
+function unlockCopper() {
+    if (!game.unlockedBaseMaterial.Copper) {
+        game.unlockedBaseMaterial.Copper = true;
+        unlockCraftingButtonTypeSelectable("Copper", "baseTypeName")
+        unlockCraftingButtonTypeActive("Copper", "baseTypeName")
+        flashElementGood(buttonCrafting)
+    }
+}
+
+function unlockSilver() {
+    if (!game.unlockedBaseMaterial.Silver) {
+        game.unlockedBaseMaterial.Silver = true;
+        unlockCraftingButtonTypeSelectable("Silver", "baseTypeName")
+        unlockCraftingButtonTypeActive("Silver", "baseTypeName")
+        flashElementGood(buttonCrafting)
+    }
+}
+
+function unlockGolden() {
+    if (!game.unlockedBaseMaterial.Gold) {
+        game.unlockedBaseMaterial.Gold = true;
+        unlockCraftingButtonTypeSelectable("Golden", "baseTypeName")
+        unlockCraftingButtonTypeActive("Golden", "baseTypeName")
+        flashElementGood(buttonCrafting)
     }
 }
 
@@ -576,6 +677,52 @@ function unlockUpgrades() {
         }
     }
     displayUpgrades()
+}
+
+function checkSoftLock(deletedGearType: GearType) {
+    let gearSlot: GearSlot = "Weapon";
+    let gearType: GearType = "Spade";
+    let baseMaterial: BaseMaterial = "Scrap";
+    let wood = <Resource>getResourceByName('wood');
+    if (deletedGearType == 'Hammer' && !game.unlockedGearType.Axe) {
+        //create a new hammer
+        gearType = "Hammer";
+        let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+        if (baseType) {
+            createGear(baseType, 'Starter')
+            alert(`Softlock Prevention: a new scrap hammer has been found`)
+        }
+    }
+    else if (deletedGearType == 'Hammer' && game.unlockedGearType.Axe && craftWork < 5) {
+        //create a new hammer
+        gearType = "Hammer";
+        let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+        if (baseType) {
+            createGear(baseType, 'Starter')
+            alert(`Softlock Prevention: a new scrap hammer has been found`)
+        }
+    }
+    else if (deletedGearType == 'Axe') {
+        if (wood.amount < 5) {
+            //create a new axe
+            gearType = "Axe";
+            let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+            if (baseType) {
+                createGear(baseType, 'Starter')
+                alert(`Softlock Prevention: a new scrap axe has been found`)
+            }
+        }
+        else if (craftWork < 5) {
+            //create a new hammer
+            gearType = "Hammer";
+            let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType)
+            if (baseType) {
+                createGear(baseType, 'Starter')
+                alert(`Softlock Prevention: a new scrap hammer has been found`)
+            }
+
+        }
+    }
 }
 
 function controlWorkers() {

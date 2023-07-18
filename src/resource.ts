@@ -16,6 +16,7 @@ class Resource {
     container: HTMLElement;
     div: HTMLElement;
     setup: boolean = false;
+    order: number = 0;
 
     static count: number = 0;
     constructor(name: ResourceType, amount: number, container?: HTMLElement) {
@@ -38,6 +39,33 @@ class Resource {
         this.div.id = "resource" + this.id + 'div';
         this.div.className = "resource-div"
         this.container.appendChild(this.div);
+
+        switch (this.ResourceType) {
+            case 'food':
+                this.order = 99;
+                break;
+            case 'wood':
+                this.order = 1;
+                break;
+            case 'stone':
+                this.order = 2;
+                break;
+            case 'copper':
+                this.order = 3;
+                break;
+            case 'silver':
+                this.order = 4;
+                break;
+            case 'gold':
+                this.order = 5;
+                break;
+            case 'coins':
+                this.order = 6;
+                break;
+            default:
+                this.order = 7;
+                break;
+        }
 
     }
 

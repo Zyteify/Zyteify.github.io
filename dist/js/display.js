@@ -92,7 +92,7 @@ function setTextfromAffixes(stringText, stringValue) {
     return text;
 }
 function displayCraftWork() {
-    materialsResource.innerHTML = (`🔨 ${craftWork.toString()}`);
+    materialsCraftWork.innerHTML = (`🔨 ${craftWork.toString()}`);
 }
 configureShowButtons();
 function configureShowButtons() {
@@ -140,10 +140,18 @@ function flashUpgradeButton() {
         return false;
     }
 }
-function flashElement(element) {
-    element.classList.remove('flash-border-good');
+function flashElementGood(element) {
+    element.classList.remove('flash-border-bad');
     element.classList.add('flash-border-good');
     setTimeout(function () {
         element.classList.remove('flash-border-good');
+    }, 5000);
+}
+function flashElementBad(element) {
+    element.classList.remove('flash-border-good');
+    element.classList.remove('flash-border-bad');
+    element.classList.add('flash-border-bad');
+    setTimeout(function () {
+        element.classList.remove('flash-border-bad');
     }, 5000);
 }

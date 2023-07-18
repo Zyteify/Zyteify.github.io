@@ -75,7 +75,7 @@ class Gem {
             paragraph.id = "gem" + this.id;
             paragraph.className = "gem"
 
-            const container = document.getElementById('materials-list') as HTMLDivElement;
+            const container = materialsGemList
             this.div.appendChild(paragraph);
         }
 

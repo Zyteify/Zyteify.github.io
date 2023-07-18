@@ -326,6 +326,9 @@ class WorkerClass {
             //the worker does not have the resource, add it to the worker's inventory
             this.resources.push(resource);
             resource.active = true;
+            //sort it so the more important resources are at the top
+            //todo sort the images too
+            this.resources.sort((a, b) => (a.order > b.order) ? 1 : -1);
             resource.display();
         }
         else {
@@ -348,7 +351,7 @@ class WorkerClass {
     }
     //equip an item
     equipItem(item) {
-        switch (item.gearSlot) {
+        switch (item.baseType.gearSlot) {
             case "Weapon":
                 this.weapon[0] = item;
                 break;
@@ -371,7 +374,7 @@ class WorkerClass {
     }
     //unequip an item
     unequipItem(item) {
-        switch (item.gearSlot) {
+        switch (item.baseType.gearSlot) {
             case "Weapon":
                 removeItem(item, this.weapon);
                 break;
@@ -394,7 +397,7 @@ class WorkerClass {
     depositResources(amount) {
         let deposited = false;
         //loop through each resource in the worker's inventory
-        for (let i = 0; i < this.resources.length; i++) {
+        for (let i = this.resources.length - 1; i >= 0; i--) {
             //check to see if the stockpile has the resource
             let workerResource = this.resources[i];
             let homeResource = getResourceByName(workerResource.ResourceType);

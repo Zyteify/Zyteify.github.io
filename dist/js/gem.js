@@ -66,7 +66,7 @@ class Gem {
             paragraph = document.createElement('p');
             paragraph.id = "gem" + this.id;
             paragraph.className = "gem";
-            const container = document.getElementById('materials-list');
+            const container = materialsGemList;
             this.div.appendChild(paragraph);
         }
         paragraph.innerHTML = this.amount.toString();

@@ -10,7 +10,7 @@ function unlockDev() {
 
     let craftingContainer: HTMLElement = <HTMLElement>document.getElementById('materials');
 
-    let gearCraftingDiv = document.createElement('div');
+    /* let gearCraftingDiv = document.createElement('div');
     gearCraftingDiv.classList.add('dev-div');
     gearCraftingDiv.classList.add('dev');
     craftingContainer.appendChild(gearCraftingDiv);
@@ -23,7 +23,7 @@ function unlockDev() {
             createGear("Weapon", gearTypes[i]);
         }
         gearCraftingDiv.appendChild(button);
-    }
+    } */
 
     let resourcesContainer: HTMLElement = <HTMLElement>document.getElementById('resources');
     let resourceContainerDiv = document.createElement('div');

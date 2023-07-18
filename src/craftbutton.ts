@@ -7,12 +7,18 @@ class CraftingButton {
         gearType: false,
         baseTypeName: false
     };
+    selectable: any = {
+        gearSlot: false,
+        gearType: false,
+        baseTypeName: false
+    };
     div: HTMLDivElement;
     button: HTMLButtonElement;
     picture: HTMLImageElement;
     costDiv: HTMLDivElement;
     setup: boolean = false;
-    flashed: boolean = false;
+    flashedActive: boolean = false;
+    flashedReady: boolean = false;
     resources: Resource[] = [];
     static count: number = 0;
 
@@ -20,9 +26,6 @@ class CraftingButton {
     constructor(baseType: BaseType) {
         this.id = CraftingButton.count++;
         this.baseType = baseType;
-
-
-
         this.div = document.createElement('div');
         this.div.id = `crafting-div-${this.id}`;
         this.div.className = "crafting-div";
@@ -33,7 +36,12 @@ class CraftingButton {
         this.button.id = `crafting-button-${this.id}`;
         this.button.className = "crafting-button";
         this.button.onclick = function () {
-
+            let gearCreation = createGear(baseType, 'Common');
+            if (gearCreation) {
+                /* craftWork -= craftingCosts.craftingWork;
+                updateCraftButton(); */
+                controlCraftingButtons()
+            }
         }
 
         this.picture = document.createElement('img');
@@ -59,7 +67,7 @@ class CraftingButton {
 
     canCraft() {
         let craftWorkAvailable = false;
-        craftWorkAvailable = this.baseType.craftingCost > craftWork
+        craftWorkAvailable = this.baseType.craftingCost <= craftWork
         let craftingResourcesAvailable = false;
         if (this.resources.length > 0) {
             for (let i = 0; i < this.resources.length; i++) {
@@ -67,7 +75,7 @@ class CraftingButton {
                 //resource from basetypes are in two different arrays; resource and resourceCost
                 let resource = getResourceByName(this.resources[i].ResourceType);
                 if (resource) {
-                    if (this.resources[i].amount > resource.amount) {
+                    if (this.resources[i].amount <= resource.amount) {
                         craftingResourcesAvailable = true;
                     }
                 }
@@ -83,13 +91,8 @@ class CraftingButton {
         return this.active.gearSlot && this.active.gearType && this.active.baseTypeName;
     }
 
-    isDisabled() {
-        if(this.active.gearSlot && this.active.baseTypeName){
-            if(!this.active.gearType){
-                return true
-            }
-        }
-        return false
+    isSelectable() {
+        return this.selectable.gearSlot && this.selectable.gearType && this.selectable.baseTypeName;
     }
 
     //set the button to inactive or not and also hide it if it is not active
@@ -99,16 +102,29 @@ class CraftingButton {
         }
         else {
             this.div.classList.remove("hide");
-            if(!this.flashed){
-                this.flashed = true;
-                flashElement(this.div)
+            if (!this.flashedActive) {
+                this.flashedActive = true;
+                flashElementBad(this.div)
             }
+
         }
-        if (!this.canCraft() || this.isDisabled()) {
-            this.button.classList.add("inactive");
+        if (!this.canCraft()) {
+            this.button.disabled = true;
         }
         else {
-            this.button.classList.remove("inactive");
+            this.button.disabled = false;
+        }
+        if (!this.isSelectable()) {
+            this.button.classList.add("not-selectable");
+        }
+        else {
+            this.button.classList.remove("not-selectable");
+
+        }
+        //if it is all ready, flash the button one time
+        if (!this.flashedReady && this.isSelectable() && this.isActive() && this.canCraft()) {
+            this.flashedReady = true;
+            flashElementGood(this.div)
         }
 
         //if the costDiv has no children, add them
@@ -139,6 +155,14 @@ class CraftingButton {
                 this.resources[i].display();
             }
         }
+        if (this.baseType.craftingCost > 0) {
+            //create a paragraph for the crafting cost
+            let craftingCostParagraph = document.createElement('p');
+            craftingCostParagraph.id = `crafting-cost-paragraph-${this.id}`;
+            craftingCostParagraph.className = `crafting-cost-paragraph`;
+            craftingCostParagraph.innerHTML = `🔨 ${this.baseType.craftingCost.toString()}`;
+            this.costDiv.appendChild(craftingCostParagraph);
+        }
     }
 
 
@@ -164,6 +188,29 @@ class CraftingButton {
                 break;
         }
     }
+
+    setSelectable(type: string, name: string) {
+        switch (type) {
+            case "gearSlot":
+                if (this.baseType.gearSlot == name) {
+                    this.selectable.gearSlot = true;
+                }
+                break;
+            case "gearType":
+                if (this.baseType.gearType == name) {
+                    this.selectable.gearType = true;
+                }
+                break;
+            case "baseTypeName":
+                if (this.baseType.name == name) {
+                    this.selectable.baseTypeName = true;
+                }
+                break;
+            default:
+                console.log(`error unlocking crafting button ${name} ${type}`);
+                break;
+        }
+    }
 }
 
 //create a button for each option of item to create in baseTypeList
@@ -173,12 +220,28 @@ function createCraftingButtons() {
         let craftingButton = new CraftingButton(baseTypes[i]);
         craftingButtonsList.push(craftingButton)
     }
-    unlockCraftingButtonType("Weapon", "gearSlot")
+    unlockCraftingButtonTypeActive("Weapon", "gearSlot")
+    unlockCraftingButtonTypeSelectable("Weapon", "gearSlot")
 }
 
-function unlockCraftingButtonType(name: string, type: string) {
+function unlockCraftingButtonTypeActive(name: string, type: string) {
     for (let i = 0; i < craftingButtonsList.length; i++) {
         craftingButtonsList[i].setActive(type, name);
+    }
+}
+
+function unlockCraftingButtonTypeSelectable(name: string, type: string) {
+    for (let i = 0; i < craftingButtonsList.length; i++) {
+        craftingButtonsList[i].setSelectable(type, name);
+    }
+}
+
+//set all the weapon geartypes to be active
+function unlockCraftingButtonTypeActiveAllWeapons() {
+    for (let i = 0; i < craftingButtonsList.length; i++) {
+        if (craftingButtonsList[i].baseType.gearSlot == "Weapon") {
+            craftingButtonsList[i].active.gearType = true;
+        }
     }
 }
 

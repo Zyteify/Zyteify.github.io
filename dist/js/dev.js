@@ -6,7 +6,7 @@ if (window.location.hostname == "127.0.0.1" || window.location.hostname == "loca
 dev = false;
 function unlockDev() {
     let craftingContainer = document.getElementById('materials');
-    let gearCraftingDiv = document.createElement('div');
+    /* let gearCraftingDiv = document.createElement('div');
     gearCraftingDiv.classList.add('dev-div');
     gearCraftingDiv.classList.add('dev');
     craftingContainer.appendChild(gearCraftingDiv);
@@ -17,9 +17,9 @@ function unlockDev() {
         button.innerHTML = gearTypes[i];
         button.onclick = function () {
             createGear("Weapon", gearTypes[i]);
-        };
+        }
         gearCraftingDiv.appendChild(button);
-    }
+    } */
     let resourcesContainer = document.getElementById('resources');
     let resourceContainerDiv = document.createElement('div');
     resourceContainerDiv.classList.add('dev-div');

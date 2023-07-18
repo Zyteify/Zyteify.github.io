@@ -14,7 +14,7 @@ class Upgrade {
 
 
     //list of upgrades that are set to be locked initially based on the tags
-    static unavailableUpgrades: String[] = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe"];
+    static unavailableUpgrades: String[] = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe", "Copper", "Silver", "Golden"];
     unlocks: string[] = [];
 
     //tag the upgrade if it needs to be unlocked later
@@ -175,7 +175,7 @@ class Upgrade {
             if (!this.flashed) {
                 this.flashed = true;
                 flashUpgradeButton()
-                flashElement(this.button)
+                flashElementGood(this.button)
             }
         }
 
@@ -192,7 +192,7 @@ class Upgrade {
             //remove the none display
             button.style.display = "";
             if (!flashUpgradeButton()) {
-                flashElement(button)
+                flashElementGood(button)
             }
         }
     }

@@ -1,6 +1,5 @@
 class Item {
     id: number;
-    gearSlot: GearSlot;
     image: HTMLImageElement;
 
     //mods
@@ -37,11 +36,10 @@ class Item {
     setup: boolean = false;
     setupHover: boolean = false;
     static count: number = 0;
-    constructor(gearSlot: GearSlot, baseType: BaseType, rarity: RarityType, full?: any
+    constructor(baseType: BaseType, rarity: RarityType, full?: any
     ) {
 
         this.id = Item.count++;
-        this.gearSlot = gearSlot;
 
         this.baseType = baseType;
 
@@ -255,6 +253,10 @@ class Item {
 
         itemsDeleted.push(this);
         //remove event listeners
+
+        checkSoftLock(this.baseType.gearType)
+
+        
     }
 
     handleHover(event: MouseEvent) {
@@ -471,7 +473,6 @@ class Item {
     export() {
         let item = {
             id: this.id,
-            type: this.gearSlot,
             baseType: this.baseType,
             prefixes: this.prefixes,
             suffixes: this.suffixes,

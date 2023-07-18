@@ -1,7 +1,6 @@
 "use strict";
 class Item {
     id;
-    gearSlot;
     image;
     //mods
     baseType;
@@ -33,9 +32,8 @@ class Item {
     setup = false;
     setupHover = false;
     static count = 0;
-    constructor(gearSlot, baseType, rarity, full) {
+    constructor(baseType, rarity, full) {
         this.id = Item.count++;
-        this.gearSlot = gearSlot;
         this.baseType = baseType;
         this.rarity = rarity;
         if (full) {
@@ -217,6 +215,7 @@ class Item {
         }
         itemsDeleted.push(this);
         //remove event listeners
+        checkSoftLock(this.baseType.gearType);
     }
     handleHover(event) {
         // Position the hoverDiv above the mouse position
@@ -392,7 +391,6 @@ class Item {
     export() {
         let item = {
             id: this.id,
-            type: this.gearSlot,
             baseType: this.baseType,
             prefixes: this.prefixes,
             suffixes: this.suffixes,
