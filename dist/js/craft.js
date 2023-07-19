@@ -284,7 +284,7 @@ function createSelectedGear() {
     let gearSlot = materialsGearSlotDropdown.value;
     let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
     if (baseType) {
-        let gearCreation = createGear(baseType, 'Starter');
+        let gearCreation = createGear(baseType, 'Starter', itemsCrafting);
         if (gearCreation) {
             /* craftWork -= craftingCosts.craftingWork;
             updateCraftButton(); */
@@ -297,18 +297,8 @@ function createSelectedGear() {
         return false;
     }
 }
-function createGear(baseType, rarity) {
-    let location;
+function createGear(baseType, rarity, location, worker) {
     let locationDiv;
-    //starter gear goes directly into inventory
-    if (rarity == 'Starter') {
-        location = itemsInventory;
-        locationDiv = gearListContainer;
-    }
-    else {
-        location = itemsCrafting;
-        locationDiv = craftingItemSectionDiv;
-    }
     //if the location to put the new item is items and the player has room for it and the player has the resources, create the item
     let locationHasRoom = false;
     if (location == itemsInventory) {
@@ -316,6 +306,14 @@ function createGear(baseType, rarity) {
     }
     else if (location == itemsCrafting) {
         locationHasRoom = roomAvailable(itemsCrafting);
+    }
+    else {
+        if (worker) {
+            locationHasRoom = worker.roomAvailable(baseType);
+        }
+        else {
+            console.log(`error in createGear, location not found, location: ${location}`);
+        }
     }
     let resourceCostSuccess = false;
     if (baseType.resource.length == 0) {
@@ -354,7 +352,12 @@ function createGear(baseType, rarity) {
         craftWork -= baseType.craftingCost;
         let newGear = new Item(baseType, rarity);
         newGear.setParentDiv(locationDiv);
-        location.push(newGear);
+        if (worker) {
+            worker.equipItem(newGear);
+        }
+        else {
+            location.push(newGear);
+        }
         displayText();
         controlCraftingButtons();
         displayGear();

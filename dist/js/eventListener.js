@@ -207,8 +207,8 @@ function dropEvent(myElement, event) {
             if (!confirmDelete) {
                 return;
             }
-            emptyGearDisplay();
-            displayText();
+            /* emptyGearDisplay(); */
+            /* displayText(); */
             console.log(`deleting ${myItem.baseType.gearType}`);
             myItem.remove();
         }

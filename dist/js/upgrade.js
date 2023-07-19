@@ -11,38 +11,17 @@ class Upgrade {
     resourceSpan;
     button;
     flashed = false;
+    requiredUpgrade;
     //list of upgrades that are set to be locked initially based on the tags
-    static unavailableUpgrades = ["Worker", "Gear", "WorkHire", "Axe", "Hammer", "Pickaxe", "Copper", "Silver", "Golden"];
-    unlocks = [];
-    //tag the upgrade if it needs to be unlocked later
-    tags = [];
-    constructor(name, active, level, maxLevel, upgradeAction, tags, 
-    //optional parameter
-    unlocks) {
+    static availableUpgrades = [];
+    constructor(name, active, level, maxLevel, upgradeAction, costMultiplier, requiredUpgrade) {
         this.active = active;
         this.name = name;
         this.level = level;
         this.maxLevel = maxLevel;
         this.upgradeAction = upgradeAction;
-        this.tags = tags;
-        //optional parameter
-        if (unlocks) {
-            this.unlocks = unlocks;
-        }
-        switch (this.name) {
-            case "Unlock Gear":
-                this.costMultiplier = 1;
-                break;
-            case "Unlock Hammer":
-                this.costMultiplier = 1;
-                break;
-            case "Unlock Axe":
-                this.costMultiplier = 1;
-                break;
-            default:
-                this.costMultiplier = 2;
-                break;
-        }
+        this.requiredUpgrade = requiredUpgrade;
+        this.costMultiplier = costMultiplier;
         this.button = document.createElement('button');
         this.resourceSpan = document.createElement('span');
         this.resourceSpan.id = `upgrade-resource-span-${this.name}`;
@@ -61,14 +40,7 @@ class Upgrade {
             this.level++;
             this.increaseResourcesCost();
             this.upgradeAction();
-            if (this.unlocks.length > 0) {
-                //loop through the list of upgrades that are set to be unlocked
-                for (let i = 0; i < this.unlocks.length; i++) {
-                    //remove it from the list of unavailable upgrades
-                    let index = Upgrade.unavailableUpgrades.indexOf(this.unlocks[i]);
-                    Upgrade.unavailableUpgrades.splice(index, 1);
-                }
-            }
+            Upgrade.availableUpgrades.push(this.name);
             unlockUpgrades();
             this.button.classList.remove('flash-border-good');
         }
@@ -182,6 +154,8 @@ class Upgrade {
         for (let i = 0; i < this.resourcesRequired.length; i++) {
             let resourcespent = false;
             for (let j = 0; j < resources.length; j++) {
+                console.log(`spending ${this.resourcesRequired[i].amount} ${this.resourcesRequired[i].ResourceType}`);
+                console.log(`checking ${resources[j].amount} ${resources[j].ResourceType}`);
                 if (this.resourcesRequired[i].ResourceType == resources[j].ResourceType && this.resourcesRequired[i].amount <= resources[j].amount) {
                     resources[j].amount -= this.resourcesRequired[i].amount;
                     resourcespent = true;
@@ -216,8 +190,7 @@ class Upgrade {
             active: this.active,
             costMultiplier: this.costMultiplier,
             upgradeAction: this.upgradeAction,
-            tags: this.tags,
-            unlocks: this.unlocks
+            requiredUpgrade: this.requiredUpgrade
         };
         return upgrade;
     }

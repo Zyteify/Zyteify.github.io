@@ -14,9 +14,9 @@ function displayText() {
     hours.innerHTML = convertHoursToTime(game.hours);
     //workers
     //worker-count-current
-    workerCountCurrent.innerHTML = game.workerCountCurrent.toString();
+    /* workerCountCurrent.innerHTML = game.workerCountCurrent.toString(); */
     //worker-count-max
-    workerCountMax.innerHTML = game.workerCountMax.toString();
+    /* workerCountMax.innerHTML = game.workerCountMax.toString(); */
     //gear
     updateEventListeners();
     updateCraftButton();

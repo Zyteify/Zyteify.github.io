@@ -161,6 +161,13 @@ class Item {
         else {
             this.imageDiv.classList.remove("crafting-item-size-big");
         }
+        //if in on a worker
+        if (this.containerNumber >= 0) {
+            this.imageDiv.classList.add("worker-item");
+        }
+        else {
+            this.imageDiv.classList.remove("worker-item");
+        }
     }
     resetDiv() {
         //destory the div and resetup div
@@ -180,7 +187,7 @@ class Item {
         //otherwise the item is on a worker
         else {
             //get the worker number
-            let workerNumber = this.container.id.slice(15, this.container.id.length);
+            let workerNumber = this.container.id.slice(17, this.container.id.length);
             this.containerNumber = parseInt(workerNumber);
         }
     }
@@ -215,7 +222,6 @@ class Item {
         }
         itemsDeleted.push(this);
         //remove event listeners
-        checkSoftLock(this.baseType.gearType);
     }
     handleHover(event) {
         // Position the hoverDiv above the mouse position

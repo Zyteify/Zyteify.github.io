@@ -1,6 +1,6 @@
 .image-div{
-    height: 100px;
-    width: 100px;
+    height: 50px;
+    width: 50px;
 }
 
 .image{
@@ -19,9 +19,7 @@
 .worker-div{
     display: flex;
     flex-direction: row;
-    height: 225px;
     /* to account for padding+margin */
-    width: 480px;
     
 }
 
@@ -33,27 +31,25 @@
 .worker-inventory-name-div{
     display: flex;
     flex-direction: column;
-    width: 70%;
-    align-items: center;
+    width: 80px;
 }
 
 .worker-stat-container-div{
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    width: 30%;
     align-items: flex-start;
+    flex-grow: 1;
 }
 
 .worker-image{
     display: flex;
-    width: 40%;
-    height: 200px;
+    height: 50px;
+    width: 50px;
+
 }
 
 .worker-inventory-gear-div{
     display: flex;
-    width: 60%;
 }
 
 #workers * p{
@@ -61,12 +57,12 @@
 }
 
 .worker-progress{
-    width: 70%;
+    flex-grow: 1;
 }
 
 .worker-energy{
     display: flex;
-    width: 30%;
+    min-width: 30px;
 }
 
 .worker-resources-div{
@@ -101,4 +97,27 @@
     flex-direction: column;
     flex-wrap: wrap;
     direction: ltr;
+    width: 750px;
+}
+
+.worker-weapon-shirt-div{
+    display: flex;
+    flex-direction: row;
+}
+
+.worker-boots-hat-div{
+    display: flex;
+    flex-direction: row;
+}
+
+.worker-activity{
+    min-width: 80px;
+    text-align: center;
+}
+
+.worker-item{
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
 }

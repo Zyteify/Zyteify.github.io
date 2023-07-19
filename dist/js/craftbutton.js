@@ -33,7 +33,7 @@ class CraftingButton {
         this.button.id = `crafting-button-${this.id}`;
         this.button.className = "crafting-button";
         this.button.onclick = function () {
-            let gearCreation = createGear(baseType, 'Common');
+            let gearCreation = createGear(baseType, 'Common', itemsCrafting);
             if (gearCreation) {
                 /* craftWork -= craftingCosts.craftingWork;
                 updateCraftButton(); */
@@ -62,16 +62,19 @@ class CraftingButton {
         craftWorkAvailable = this.baseType.craftingCost <= craftWork;
         let craftingResourcesAvailable = false;
         if (this.resources.length > 0) {
+            let craftingResourcesAvailabletemp = true;
             for (let i = 0; i < this.resources.length; i++) {
                 //get the resource from the global list of resources
                 //resource from basetypes are in two different arrays; resource and resourceCost
                 let resource = getResourceByName(this.resources[i].ResourceType);
                 if (resource) {
-                    if (this.resources[i].amount <= resource.amount) {
-                        craftingResourcesAvailable = true;
+                    if (!(this.resources[i].amount <= resource.amount)) {
+                        //if any resource is not available, craftingResourcesAvailable is false
+                        craftingResourcesAvailabletemp = false;
                     }
                 }
             }
+            craftingResourcesAvailable = craftingResourcesAvailabletemp;
         }
         else {
             craftingResourcesAvailable = true;

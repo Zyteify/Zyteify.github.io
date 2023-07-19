@@ -666,7 +666,7 @@
     "craftingCost": 100
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Spade",
     "gearSlot": "Weapon",
     "resources": [
@@ -688,7 +688,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Potion",
     "gearSlot": "Weapon",
     "resources": [
@@ -710,7 +710,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Hammer",
     "gearSlot": "Weapon",
     "resources": [
@@ -732,7 +732,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Bow",
     "gearSlot": "Weapon",
     "resources": [
@@ -754,7 +754,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Chisel",
     "gearSlot": "Weapon",
     "resources": [
@@ -776,7 +776,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Quill",
     "gearSlot": "Weapon",
     "resources": [
@@ -798,7 +798,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Dice",
     "gearSlot": "Weapon",
     "resources": [
@@ -820,7 +820,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Pickaxe",
     "gearSlot": "Weapon",
     "resources": [
@@ -842,7 +842,7 @@
     "craftingCost": 1000
   },
   {
-    "name": "Gold",
+    "name": "Golden",
     "gearType": "Axe",
     "gearSlot": "Weapon",
     "resources": [

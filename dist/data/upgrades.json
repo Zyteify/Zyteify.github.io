@@ -1,0 +1,283 @@
+﻿[
+  {
+    "name": "Increase Worker Energy",
+    "active": false,
+    "level": 0,
+    "maxLevel": 10,
+    "upgradeAction": "increaseWorkerSpeed",
+    "requiredUpgrade": "Hire Farmer",
+    "costMultiplier": 2,
+    "resourcesRequired": [
+      {
+        "resourceType": "food",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Increase Worker Inventory",
+    "active": false,
+    "level": 0,
+    "maxLevel": 10,
+    "upgradeAction": "increaseWorkerInventory",
+    "requiredUpgrade": "Hire Woodcutter",
+    "costMultiplier": 2,
+    "resourcesRequired": [
+      {
+        "resourceType": "wood",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Increase Stockpile",
+    "active": false,
+    "level": 0,
+    "maxLevel": 10,
+    "upgradeAction": "increaseStockpile",
+    "requiredUpgrade": "Hire Miner",
+    "costMultiplier": 2,
+    "resourcesRequired": [
+      {
+        "resourceType": "stone",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Increase Deposit Speed",
+    "active": false,
+    "level": 0,
+    "maxLevel": 5,
+    "upgradeAction": "increaseDepositSpeed",
+    "requiredUpgrade": "Hire Gambler",
+    "costMultiplier": 2,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Beggar",
+    "active": true,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "createWorker",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "name": "Hire Farmer",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockFarmer",
+    "requiredUpgrade": "Hire Beggar",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Gambler",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockGambler",
+    "requiredUpgrade": "Hire Farmer",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 20
+      },
+      {
+        "resourceType": "food",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Woodcutter",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockWoodcutter",
+    "requiredUpgrade": "Hire Gambler",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 200
+      },
+      {
+        "resourceType": "food",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Miner",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockMiner",
+    "requiredUpgrade": "Hire Woodcutter",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "wood",
+        "amount": 200
+      },
+      {
+        "resourceType": "food",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "name": "Hire Gemcutter",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockGemcutter",
+    "requiredUpgrade": "Hire Miner",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "copper",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Blacksmith",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockBlacksmith",
+    "requiredUpgrade": "Hire Miner",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "stone",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "name": "Unlock Wooden Upgrades",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockWooden",
+    "requiredUpgrade": "Hire Woodcutter",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "wood",
+        "amount": 20
+      }
+    ]
+  },
+  {
+    "name": "Unlock Copper Upgrades",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockCopper",
+    "requiredUpgrade": "Hire Blacksmith",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "copper",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "name": "Unlock Silver Ugrades",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockSilver",
+    "requiredUpgrade": "Hire Blacksmith",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "silver",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "name": "Unlock Golden Upgrades",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockGolden",
+    "requiredUpgrade": "Hire Blacksmith",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "gold",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "name": "Hire Merchant",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockMerchant",
+    "requiredUpgrade": "Hire Blacksmith",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "gold",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "name": "Hire Priest",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockPriest",
+    "requiredUpgrade": "Hire Merchant",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 1000
+      }
+    ]
+  },
+  {
+    "name": "Create Holy Symbol",
+    "active": false,
+    "level": 0,
+    "maxLevel": 1,
+    "upgradeAction": "unlockHolySymbol",
+    "requiredUpgrade": "Hire Priest",
+    "costMultiplier": 1,
+    "resourcesRequired": [
+      {
+        "resourceType": "coins",
+        "amount": 1000
+      }
+    ]
+  }
+]

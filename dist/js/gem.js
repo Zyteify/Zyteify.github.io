@@ -4,6 +4,11 @@ class Gem {
     id;
     amount;
     active;
+    //display
+    divImage;
+    image;
+    imageBackground;
+    paragraph;
     imageDirectory = "dist/img/gems/";
     imageName;
     imageNameBackground = "-bg";
@@ -20,6 +25,27 @@ class Gem {
         this.imageNameBackground = this.imageName.slice(0, this.imageName.length - 4) + this.imageNameBackground + this.imageName.slice(this.imageName.length - 4, this.imageName.length);
         this.container = materialsGemList;
         this.div = document.createElement('div');
+        this.div.id = "gem" + this.id + 'div';
+        this.div.className = "gem-div";
+        this.container.appendChild(this.div);
+        this.divImage = document.createElement('div');
+        this.divImage.id = "gem" + this.id + 'imagediv';
+        this.divImage.className = "gem-div-image";
+        this.div.appendChild(this.divImage);
+        this.image = document.createElement('img');
+        this.image.src = this.imageDirectory + this.imageName;
+        this.image.id = "gem" + this.id + 'image';
+        this.image.className = "gem-image";
+        this.divImage.appendChild(this.image);
+        this.imageBackground = document.createElement('img');
+        this.imageBackground.src = this.imageDirectory + this.imageNameBackground;
+        this.imageBackground.id = "gem" + this.id + 'imageBackground';
+        this.imageBackground.className = "gem-image-bg";
+        this.divImage.appendChild(this.imageBackground);
+        this.paragraph = document.createElement('p');
+        this.paragraph.id = "gem" + this.id;
+        this.paragraph.className = "gem";
+        this.div.appendChild(this.paragraph);
     }
     add(amount) {
         this.amount += amount;
@@ -28,53 +54,12 @@ class Gem {
         this.amount -= amount;
     }
     display() {
-        //check to see if a div element exists for this resource
-        if (this.div.id != "gem" + this.id + 'div') {
-            this.div.id = "gem" + this.id + 'div';
-            this.div.className = "gem-div";
-            this.container.appendChild(this.div);
-        }
-        //check to see if a div element exists for this resource
-        let divImage = document.getElementById("gem" + this.id + 'imagediv');
-        if (divImage == null) {
-            divImage = document.createElement('div');
-            divImage.id = "gem" + this.id + 'imagediv';
-            divImage.className = "gem-div-image";
-            this.div.appendChild(divImage);
-        }
-        //check to see if a image element exists for this resource
-        let image = document.getElementById("gem" + this.id + 'image');
-        if (image == null) {
-            image = document.createElement('img');
-            image.src = this.imageDirectory + this.imageName;
-            image.id = "gem" + this.id + 'image';
-            image.className = "gem-image";
-            divImage.appendChild(image);
-        }
-        //check to see if a image background element exists for this resource
-        let imageBackground = document.getElementById("gem" + this.id + 'imageBackground');
-        if (imageBackground == null) {
-            imageBackground = document.createElement('img');
-            imageBackground.src = this.imageDirectory + this.imageNameBackground;
-            imageBackground.id = "gem" + this.id + 'imageBackground';
-            imageBackground.className = "gem-image-bg";
-            divImage.appendChild(imageBackground);
-        }
-        //check to see if a paragraph element exists for this resource
-        let paragraph = document.getElementById("gem" + this.id);
-        if (paragraph == null) {
-            paragraph = document.createElement('p');
-            paragraph.id = "gem" + this.id;
-            paragraph.className = "gem";
-            const container = materialsGemList;
-            this.div.appendChild(paragraph);
-        }
-        paragraph.innerHTML = this.amount.toString();
+        this.paragraph.innerHTML = this.amount.toString();
         if (!this.active) {
             this.div.style.display = "none";
         }
         else {
-            this.div.style.display = "flex";
+            this.div.style.display = "";
         }
     }
     remove() {
@@ -98,5 +83,12 @@ class Gem {
             active: this.active
         };
         return gem;
+    }
+}
+function getGemByName(name) {
+    for (let i = 0; i < gems.length; i++) {
+        if (gems[i].name == name) {
+            return gems[i];
+        }
     }
 }
