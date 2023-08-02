@@ -246,6 +246,17 @@ class WorkerClass {
         //when they change vocation, they should lose their work progress
         this.workProgress = 0;
     }
+    upgradeWeapon(baseMaterialFrom, baseMaterialTo) {
+        //check the weapon they are using is the correct base material
+        if (this.weapon[0]?.baseType.baseMaterial == baseMaterialFrom) {
+            //change it to the new base material
+            let baseType = findBaseTypeByNameandGearType(baseMaterialTo, this.weapon[0].baseType.gearType);
+            this.weapon[0].baseType = baseType;
+            this.weapon[0].resetDiv();
+            this.calculateMods();
+            this.setVocation();
+        }
+    }
     calculateDuplicateWork() {
         //reset duplicate work
         this.flags.duplicateWork = false;
@@ -417,6 +428,9 @@ class WorkerClass {
             if (homeResource != null) {
                 //add the resource to the homeResource
                 let resourceToAdd = Math.min(workerResource.amount, amount);
+                if ((homeResource.amount + resourceToAdd) > game.maxInventory) {
+                    resourceToAdd = game.maxInventory - homeResource.amount;
+                }
                 homeResource.amount += resourceToAdd;
                 //subtract the resource from the worker's inventory
                 workerResource.amount -= resourceToAdd;
@@ -428,8 +442,7 @@ class WorkerClass {
                 console.log("Error: Resource not found in home stockpile");
             }
         }
-        //clear the worker's inventory
-        //loop through each resource in the worker's inventory
+        //clear the worker's inventory if its empty
         for (let i = 0; i < this.resources.length; i++) {
             this.resources[i].display();
             //if the resource has an amount of 0, remove it from the worker's inventory
@@ -815,7 +828,7 @@ class WorkerClass {
         //have an x chance of getting a resource
         //add a resource to the worker
         let stoneChance = 0.8;
-        let copperChance = 0.1;
+        let copperChance = 0.2;
         let silverChance = 0.1;
         let goldChance = 0.01;
         let totalWinChance = stoneChance + copperChance + silverChance + goldChance;
@@ -997,4 +1010,9 @@ function getWorkerById(id) {
         }
     }
     return null;
+}
+function recalculateWorkers() {
+    for (let i = 0; i < workers.length; i++) {
+        workers[i].calculateMods();
+    }
 }

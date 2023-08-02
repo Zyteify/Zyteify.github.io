@@ -12,12 +12,6 @@ function displayText() {
     days.innerHTML = `day ${game.days.toString()}`;
     hours.innerHTML = game.hours.toString();
     hours.innerHTML = convertHoursToTime(game.hours);
-    //workers
-    //worker-count-current
-    /* workerCountCurrent.innerHTML = game.workerCountCurrent.toString(); */
-    //worker-count-max
-    /* workerCountMax.innerHTML = game.workerCountMax.toString(); */
-    //gear
     updateEventListeners();
     updateCraftButton();
 }
@@ -32,12 +26,6 @@ function displayGear() {
         itemsCrafting[i].setParentDiv(craftingItemSectionDiv);
         itemsCrafting[i].resetDiv();
     }
-    /* for (let i = 0; i < workers.length; i++) {
-        if (workers[i].weapon[0] != null) {
-            workers[i].weapon[0]?.setParentDiv(workers[i].gearDiv)
-            workers[i].weapon[0]?.resetDiv()
-        }
-    } */
 }
 function displayResources() {
     //loop through each resource and create a paragraph element for them if it doesn't exist
@@ -64,11 +52,6 @@ function displayUpgrades() {
         upgrades[i].display();
     }
 }
-/* function showBegging() {
-    for (let i = 0; i < begList.length; i++) {
-        begList[i].display()
-    }
-} */
 function setTextfromAffixes(stringText, stringValue) {
     //get the position to put the value of the stat by the #
     let position = stringText.search("#");
@@ -95,6 +78,7 @@ function displayCraftWork() {
     materialsCraftWork.innerHTML = (`🔨 ${craftWork.toString()}`);
 }
 configureShowButtons();
+//if the menu button is pressed, show that section
 function configureShowButtons() {
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].button.addEventListener('click', function () {
@@ -103,6 +87,7 @@ function configureShowButtons() {
     }
 }
 let activeDiv = worldDiv;
+//who the main section. 
 function showMainDiv(div) {
     emptyDiv.classList.add('hide');
     emptyDiv.classList.remove('show');

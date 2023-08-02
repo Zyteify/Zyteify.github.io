@@ -3,6 +3,8 @@
 //list of workers
 let workers: WorkerClass[] = [];
 
+
+
 //create resources list of initial resources available
 let resources: Resource[] = [
     new Resource('food', 0, resourceList),
@@ -131,6 +133,10 @@ loadJson('../dist/data/affixes.json').then(data => {
 
 const baseTypes: BaseType[] = [];
 
+/* //for each tool, create a tool in the tool list to upgrade
+const tools: Tool[] = [
+]; */
+
 //load the json data for basetypes
 loadJson('../dist/data/basetypes.json').then(data => {
     let baseTypeListTemp = data as any[];
@@ -157,8 +163,6 @@ loadJson('../dist/data/basetypes.json').then(data => {
 
 
         //create an itemMod for the item power
-
-
         let newBaseType = new BaseType(name, gearType, gearSlot, resourcesTemp, itemMods, craftingCost);
         baseTypes.push(newBaseType);
     }
@@ -166,7 +170,22 @@ loadJson('../dist/data/basetypes.json').then(data => {
 
     initializeCrafting()
 
+    /* //for each basetype create a tool that can be clicked on to upgrade exisiting items
+    for (let i = 0; i < baseTypes.length; i++) {
+        let baseType = baseTypes[i];
+        let tool = new Tool(baseType);
+        //loop through the basetype and create a resource for each
+        for (let j = 0; j < baseType.resource.length; j++) {
+            let resource = new Resource(baseType.resource[j].ResourceType, baseType.resource[j].amount, tool.resourceSpan);
+            resource.active = true
+            tool.resource.push(resource);
+            tools.push(tool);
+        }
+    } */
+
 });
+
+
 
 //create a few upgrades
 let upgrades: Upgrade[] = [
@@ -185,7 +204,7 @@ loadJson('../dist/data/upgrades.json').then(data => {
         let active: boolean = upgradesTemp[i].active;
         let level: number = upgradesTemp[i].level;
         let maxLevel: number = upgradesTemp[i].maxLevel;
-        
+
         let upgradeAction: () => void = (window as any)[upgradesTemp[i].upgradeAction];
         let requiredUpgrade: string = upgradesTemp[i].requiredUpgrade;
         let costMultiplier: number = upgradesTemp[i].costMultiplier;
@@ -206,82 +225,6 @@ loadJson('../dist/data/upgrades.json').then(data => {
     }
     displayUpgrades()
 })
-
-
-
-/* //add the costs to the upgrades
-for (let i = 0; i < upgrades.length; i++) {
-    let upgrade = <Upgrade>getUpgradeByName(upgrades[i].name)
-    switch (upgrade.name) {
-        case "Hire Beggar":
-            upgrade.addResourceCost(new Resource('coins', 1, upgrade.resourceSpan));
-            break
-        case "Unlock Gear":
-            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
-            break
-        case "Hire Worker":
-            upgrade.addResourceCost(new Resource('food', 0, upgrade.resourceSpan));
-            break
-        case "Increase Worker Slots":
-            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
-            break
-        case "Increase Worker Speed":
-            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
-            break
-        case "Unlock Hammer":
-            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
-            break
-        case "Unlock Axe":
-            upgrade.addResourceCost(new Resource('coins', 10, upgrade.resourceSpan));
-            break
-        case "Unlock Potion":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Spear":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Pickaxe":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Chisel":
-            upgrade.addResourceCost(new Resource('coins', 50, upgrade.resourceSpan));
-            break
-        case "Unlock Dice":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Scales":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Scroll":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Quill":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Bow":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Holy Symbol":
-            upgrade.addResourceCost(new Resource('coins', 30, upgrade.resourceSpan));
-            break
-        case "Unlock Copper Gear":
-            upgrade.addResourceCost(new Resource('wood', 100, upgrade.resourceSpan));
-            break
-        case "Unlock Silver Gear":
-            upgrade.addResourceCost(new Resource('copper', 100, upgrade.resourceSpan));
-            break
-        case "Unlock Golden Gear":
-            upgrade.addResourceCost(new Resource('silver', 100, upgrade.resourceSpan));
-            break
-        case "Unlock Magic Gems":
-            upgrade.addResourceCost(new Resource('coins', 20, upgrade.resourceSpan));
-            break
-        default:
-            console.log(`no upgrade cost for ${upgrade.name}`);
-            break
-    }
-} */
-
 
 function updateGameTime() {
     //game-time
@@ -388,7 +331,12 @@ function removeItem(item: any, array: any[]): void {
     }
 }
 
-
+function upgradeWeapons(baseMaterialFrom: BaseMaterial, baseMaterialTo: BaseMaterial) {
+    //loop through each worker and upgrade their weapons
+    for (let i = 0; i < workers.length; i++) {
+        workers[i].upgradeWeapon(baseMaterialFrom, baseMaterialTo);
+    }
+}
 
 
 
@@ -456,7 +404,7 @@ function findHungriestWorker() {
 }
 
 gameLoop();
-let gamespeed = 1;
+let gamespeed = 50;
 //do the game loop every 100 milliseconds
 setInterval(gameLoop, 100 / gamespeed);
 

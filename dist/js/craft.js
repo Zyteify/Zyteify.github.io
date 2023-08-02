@@ -284,7 +284,7 @@ function createSelectedGear() {
     let gearSlot = materialsGearSlotDropdown.value;
     let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
     if (baseType) {
-        let gearCreation = createGear(baseType, 'Starter', itemsCrafting);
+        let gearCreation = createGear(false, baseType, 'Starter', itemsCrafting);
         if (gearCreation) {
             /* craftWork -= craftingCosts.craftingWork;
             updateCraftButton(); */
@@ -297,7 +297,7 @@ function createSelectedGear() {
         return false;
     }
 }
-function createGear(baseType, rarity, location, worker) {
+function createGear(noCost, baseType, rarity, location, worker) {
     let locationDiv;
     //if the location to put the new item is items and the player has room for it and the player has the resources, create the item
     let locationHasRoom = false;
@@ -316,40 +316,45 @@ function createGear(baseType, rarity, location, worker) {
         }
     }
     let resourceCostSuccess = false;
-    if (baseType.resource.length == 0) {
+    if (baseType.resource.length == 0 || noCost) {
         resourceCostSuccess = true;
     }
-    //able to pay the resources?
-    for (let i = 0; i < baseType.resource.length; i++) {
-        let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
-        if (resourceInventory) {
-            if (resourceInventory.amount >= baseType.resource[i].amount) {
-                resourceCostSuccess = true;
+    else {
+        //able to pay the resources?
+        for (let i = 0; i < baseType.resource.length; i++) {
+            let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+            if (resourceInventory) {
+                if (resourceInventory.amount >= baseType.resource[i].amount) {
+                    resourceCostSuccess = true;
+                }
+                else {
+                    resourceCostSuccess = false;
+                    break;
+                }
             }
             else {
+                console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
                 resourceCostSuccess = false;
                 break;
             }
         }
-        else {
-            console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
-            resourceCostSuccess = false;
-            break;
-        }
     }
     if (locationHasRoom && resourceCostSuccess) {
-        //pay the resources and the crafting work
-        for (let i = 0; i < baseType.resource.length; i++) {
-            let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
-            if (resourceInventory) {
-                resourceInventory.amount -= baseType.resource[i].amount;
+        //no cost for the item, so no need to pay the resources
+        if (!noCost) {
+            //pay the resources and the crafting work
+            for (let i = 0; i < baseType.resource.length; i++) {
+                let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+                if (resourceInventory) {
+                    resourceInventory.amount -= baseType.resource[i].amount;
+                }
+                else {
+                    console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
+                    break;
+                }
             }
-            else {
-                console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
-                break;
-            }
+            craftWork -= baseType.craftingCost;
         }
-        craftWork -= baseType.craftingCost;
         let newGear = new Item(baseType, rarity);
         newGear.setParentDiv(locationDiv);
         if (worker) {

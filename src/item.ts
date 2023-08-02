@@ -106,6 +106,8 @@ class Item {
     }
 
     populateItemMods() {
+        this.itemMods = [];
+
         //get the list of suffixes and prefixes
         let affixes = this.prefixes.concat(this.suffixes);
         //loop through each and add the item mod to the item
@@ -207,7 +209,14 @@ class Item {
         removeAllChildren(this.div);
         this.setup = false
         this.setupDiv();
+        this.setHoverDiv();
+        this.recalculate();
         this.trackContainer()
+    }
+
+    recalculate() {
+        this.populateItemMods();
+        this.calculateModStrength();
     }
 
     trackContainer() {
@@ -318,6 +327,10 @@ class Item {
             this.hoverDiv.appendChild(this.hoverInsideDiv);
             this.createFullText(this.hoverInsideDiv);
 
+        }
+        else{
+            removeAllChildren(this.hoverInsideDiv);
+            this.createFullText(this.hoverInsideDiv);
         }
 
     }
@@ -441,7 +454,7 @@ class Item {
 
         let itemName = document.createElement('p');
         itemName.classList.add("item-name");
-        itemName.innerHTML = `${this.rarity} ${this.baseType.name} ${this.baseType.gearType}`;
+        itemName.innerHTML = `${this.rarity} ${this.baseType.baseMaterial} ${this.baseType.gearType}`;
         itemNameDiv.appendChild(itemName);
     }
 
@@ -488,4 +501,3 @@ class Item {
         return item
     }
 }
-

@@ -64,6 +64,9 @@ const craftingMaterialsListDiv = <HTMLElement>document.getElementById('crafting-
 //upgrades
 const upgradeButtonList = <HTMLDivElement>document.getElementById('upgrade-list');
 
+//tools
+const toolButtonList = <HTMLDivElement>document.getElementById('tool-list');
+
 let buttonUpgrades = <HTMLDivElement>document.getElementById(`button-upgrade`);
 let upgradeDiv = <HTMLDivElement>document.getElementById(`upgrades`);
 let buttonCrafting = <HTMLDivElement>document.getElementById(`button-crafting`);
@@ -72,6 +75,8 @@ let buttonQuests = <HTMLDivElement>document.getElementById(`button-quests`);
 let questDiv = <HTMLDivElement>document.getElementById(`quests`);
 let buttonWorld = <HTMLDivElement>document.getElementById(`button-world`);
 let worldDiv = <HTMLDivElement>document.getElementById(`world`);
+let buttonTools = <HTMLDivElement>document.getElementById(`button-tool`);
+let toolDiv = <HTMLDivElement>document.getElementById(`tools`);
 let emptyDiv = <HTMLDivElement>document.getElementById(`empty`);
 
 let buttonImageUpgrades = <HTMLImageElement>document.getElementById(`button-image-upgrade`);
@@ -101,6 +106,11 @@ buttons = [
         name: 'world',
         div: worldDiv,
         button: buttonWorld
+    },
+    {
+        name: 'tools',
+        div: toolDiv,
+        button: buttonTools
     }
 ]
 
@@ -125,8 +135,11 @@ let game = {
     workerCountMax: 0,
     gearCountCurrent: 0,
     gearCountMax: 100,
+
+    //resources
+    maxInventory: 200,
+
     //player state
-    
     unlockedWorkers: false,
     unlockedGear: false,
     unlockedCraftingButton: false,
@@ -157,6 +170,7 @@ let game = {
         Silver: false,
         Gold: false
     },
+    creationMaterial: 'Scrap',
     craftingItemsMax: 1
 
 }

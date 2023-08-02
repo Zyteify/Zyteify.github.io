@@ -4,23 +4,25 @@ function increaseWorkerSpeed() {
     //loop through each worker and display
     for (let i = 0; i < workers.length; i++) {
         workers[i].energy += 5;
-        workers[i].calculateMods();
     }
+    recalculateWorkers();
     displayUpgrades();
 }
 //Increase Worker Inventory
 function increaseWorkerInventory() {
     WorkerClass.maxInventory += 50;
+    recalculateWorkers();
     displayUpgrades();
 }
 //Increase Stockpile
 function increaseStockpile() {
-    /* StockpileClass.maxInventory += 100; */
+    game.maxInventory *= 2;
     displayUpgrades();
 }
 //Increase Deposit Speed
 function increaseDepositSpeed() {
     WorkerClass.depositAmount += 1;
+    recalculateWorkers();
     displayUpgrades();
 }
 //Hire Beggar
@@ -44,9 +46,9 @@ function unlockFarmer() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Spade";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     displayUpgrades();
 }
@@ -55,9 +57,9 @@ function unlockGambler() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Dice";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     displayUpgrades();
 }
@@ -66,9 +68,9 @@ function unlockWoodcutter() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Axe";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     let wood = getResourceByName('wood');
     wood.active = true;
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
@@ -79,9 +81,9 @@ function unlockMiner() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Pickaxe";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     let stone = getResourceByName('stone');
     stone.active = true;
     let copper = getResourceByName('copper');
@@ -98,9 +100,9 @@ function unlockGemcutter() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Chisel";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     unlockMaterials();
     unlockGems();
@@ -111,9 +113,9 @@ function unlockBlacksmith() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Hammer";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     unlockGear();
     unlockCrafting();
@@ -124,9 +126,9 @@ function unlockMerchant() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Scales";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     displayUpgrades();
 }
@@ -135,9 +137,9 @@ function unlockPriest() {
     //create a new worker
     let worker = createWorker();
     let gearType = "Holy Symbol";
-    let baseMaterial = "Scrap";
+    let baseMaterial = game.creationMaterial;
     let baseType = findBaseTypeByNameandGearType(baseMaterial, gearType);
-    createGear(baseType, 'Starter', worker.weapon, worker);
+    createGear(true, baseType, 'Starter', worker.weapon, worker);
     unlockCraftingButtonTypeSelectable(gearType, "gearType");
     displayUpgrades();
 }
@@ -183,8 +185,14 @@ function unlockCrafting() {
 function unlockWooden() {
     if (!game.unlockedBaseMaterial.Wooden) {
         game.unlockedBaseMaterial.Wooden = true;
+        /*  //unlock the tools button
+         buttonTools.classList.remove('initial-hide')
+         toolDiv.classList.remove('initial-hide') */
+        //unlock the crafting options for wooden items
         unlockCraftingButtonTypeSelectable("Wooden", "baseTypeName");
         unlockCraftingButtonTypeActive("Wooden", "baseTypeName");
+        game.creationMaterial = "Wooden";
+        upgradeWeapons("Scrap", "Wooden");
         flashElementGood(buttonCrafting);
     }
 }
@@ -193,6 +201,8 @@ function unlockCopper() {
         game.unlockedBaseMaterial.Copper = true;
         unlockCraftingButtonTypeSelectable("Copper", "baseTypeName");
         unlockCraftingButtonTypeActive("Copper", "baseTypeName");
+        game.creationMaterial = "Copper";
+        upgradeWeapons("Wooden", "Copper");
         flashElementGood(buttonCrafting);
     }
 }
@@ -201,6 +211,8 @@ function unlockSilver() {
         game.unlockedBaseMaterial.Silver = true;
         unlockCraftingButtonTypeSelectable("Silver", "baseTypeName");
         unlockCraftingButtonTypeActive("Silver", "baseTypeName");
+        game.creationMaterial = "Silver";
+        upgradeWeapons("Copper", "Silver");
         flashElementGood(buttonCrafting);
     }
 }
@@ -209,6 +221,8 @@ function unlockGolden() {
         game.unlockedBaseMaterial.Gold = true;
         unlockCraftingButtonTypeSelectable("Golden", "baseTypeName");
         unlockCraftingButtonTypeActive("Golden", "baseTypeName");
+        game.creationMaterial = "Gold";
+        upgradeWeapons("Silver", "Gold");
         flashElementGood(buttonCrafting);
     }
 }

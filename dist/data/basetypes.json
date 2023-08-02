@@ -6,281 +6,139 @@
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Potion",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Hammer",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Bow",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Chisel",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Quill",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Dice",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Pickaxe",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Scrap",
-    "gearType": "Axe",
-    "gearSlot": "Weapon",
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 1
-      }
-    ],
-    "craftingCost": 0
-  },
-  {
-    "name": "Wooden",
-    "gearType": "Spade",
-    "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
-    "itemMods": [
-      {
-        "modName": "itemPower",
         "modValue": 3
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Potion",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Hammer",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Bow",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Chisel",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Quill",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Dice",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
   },
   {
-    "name": "Wooden",
+    "name": "Scrap",
     "gearType": "Pickaxe",
     "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
     "itemMods": [
       {
         "modName": "itemPower",
-        "modValue": 2
+        "modValue": 1
       }
     ],
-    "craftingCost": 5
+    "craftingCost": 0
+  },
+  {
+    "name": "Scrap",
+    "gearType": "Axe",
+    "gearSlot": "Weapon",
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 1
+      }
+    ],
+    "craftingCost": 0
+  },
+  {
+    "name": "Scrap",
+    "gearType": "Scales",
+    "gearSlot": "Weapon",
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 1
+      }
+    ],
+    "craftingCost": 0
+  },
+  {
+    "name": "Scrap",
+    "gearType": "Holy Symbol",
+    "gearSlot": "Weapon",
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 1
+      }
+    ],
+    "craftingCost": 0
   },
   {
     "name": "Wooden",
-    "gearType": "Axe",
-    "gearSlot": "Weapon",
-    "resources": [
-      {
-        "resourceType": "wood",
-        "amount": 5
-      }
-    ],
-    "itemMods": [
-      {
-        "modName": "itemPower",
-        "modValue": 2
-      }
-    ],
-    "craftingCost": 5
-  },
-  {
-    "name": "Copper",
     "gearType": "Spade",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
-      },
-      {
-        "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -289,6 +147,208 @@
         "modValue": 5
       }
     ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Potion",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Hammer",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Bow",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Chisel",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Quill",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Dice",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Pickaxe",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Axe",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Scales",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Wooden",
+    "gearType": "Holy Symbol",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 2
+      }
+    ],
+    "craftingCost": 5
+  },
+  {
+    "name": "Copper",
+    "gearType": "Spade",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "copper",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 7
+      }
+    ],
     "craftingCost": 20
   },
   {
@@ -298,11 +358,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -320,11 +380,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -342,11 +402,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -364,11 +424,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -386,11 +446,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -408,11 +468,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -430,11 +490,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -452,11 +512,55 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "copper",
-        "amount": 5
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 4
+      }
+    ],
+    "craftingCost": 20
+  },
+  {
+    "name": "Copper",
+    "gearType": "Scales",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "copper",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 4
+      }
+    ],
+    "craftingCost": 20
+  },
+  {
+    "name": "Copper",
+    "gearType": "Holy Symbol",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "copper",
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -474,11 +578,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -496,11 +600,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -518,11 +622,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -540,11 +644,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -562,11 +666,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -584,11 +688,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -606,11 +710,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -628,11 +732,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -650,11 +754,11 @@
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "silver",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -666,17 +770,61 @@
     "craftingCost": 100
   },
   {
-    "name": "Golden",
+    "name": "Silver",
+    "gearType": "Scales",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "silver",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 8
+      }
+    ],
+    "craftingCost": 100
+  },
+  {
+    "name": "Silver",
+    "gearType": "Holy Symbol",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "silver",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 8
+      }
+    ],
+    "craftingCost": 100
+  },
+  {
+    "name": "Gold",
     "gearType": "Spade",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -688,17 +836,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Potion",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -710,17 +858,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Hammer",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -732,17 +880,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Bow",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -754,17 +902,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Chisel",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -776,17 +924,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Quill",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -798,17 +946,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Dice",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -820,17 +968,17 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Pickaxe",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
       }
     ],
     "itemMods": [
@@ -842,17 +990,61 @@
     "craftingCost": 1000
   },
   {
-    "name": "Golden",
+    "name": "Gold",
     "gearType": "Axe",
     "gearSlot": "Weapon",
     "resources": [
       {
         "resourceType": "wood",
-        "amount": 5
+        "amount": 100
       },
       {
         "resourceType": "gold",
-        "amount": 5
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 15
+      }
+    ],
+    "craftingCost": 1000
+  },
+  {
+    "name": "Gold",
+    "gearType": "Scales",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "gold",
+        "amount": 100
+      }
+    ],
+    "itemMods": [
+      {
+        "modName": "itemPower",
+        "modValue": 15
+      }
+    ],
+    "craftingCost": 1000
+  },
+  {
+    "name": "Gold",
+    "gearType": "Holy Symbol",
+    "gearSlot": "Weapon",
+    "resources": [
+      {
+        "resourceType": "wood",
+        "amount": 100
+      },
+      {
+        "resourceType": "gold",
+        "amount": 100
       }
     ],
     "itemMods": [

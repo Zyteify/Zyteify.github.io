@@ -33,7 +33,7 @@ class CraftingButton {
         this.button.id = `crafting-button-${this.id}`;
         this.button.className = "crafting-button";
         this.button.onclick = function () {
-            let gearCreation = createGear(baseType, 'Common', itemsCrafting);
+            let gearCreation = createGear(true, baseType, 'Common', itemsCrafting);
             if (gearCreation) {
                 /* craftWork -= craftingCosts.craftingWork;
                 updateCraftButton(); */
@@ -127,7 +127,7 @@ class CraftingButton {
         let initialParagraph = document.createElement('p');
         initialParagraph.id = `crafting-paragraph-${this.id}`;
         initialParagraph.className = `crafting-paragraph-initial`;
-        initialParagraph.innerHTML = `${this.baseType.name}-${this.baseType.gearType}`;
+        initialParagraph.innerHTML = `${this.baseType.baseMaterial}-${this.baseType.gearType}`;
         this.costDiv.appendChild(initialParagraph);
         if (this.resources.length > 0) {
             for (let i = 0; i < this.resources.length; i++) {
@@ -162,7 +162,7 @@ class CraftingButton {
                 }
                 break;
             case "baseTypeName":
-                if (this.baseType.name == name) {
+                if (this.baseType.baseMaterial == name) {
                     this.active.baseTypeName = true;
                 }
                 break;
@@ -184,7 +184,7 @@ class CraftingButton {
                 }
                 break;
             case "baseTypeName":
-                if (this.baseType.name == name) {
+                if (this.baseType.baseMaterial == name) {
                     this.selectable.baseTypeName = true;
                 }
                 break;

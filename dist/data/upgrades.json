@@ -40,7 +40,7 @@
     "resourcesRequired": [
       {
         "resourceType": "stone",
-        "amount": 10
+        "amount": 200
       }
     ]
   },
@@ -176,7 +176,7 @@
     ]
   },
   {
-    "name": "Unlock Wooden Upgrades",
+    "name": "Upgrade to Wooden Tools",
     "active": false,
     "level": 0,
     "maxLevel": 1,
@@ -191,12 +191,12 @@
     ]
   },
   {
-    "name": "Unlock Copper Upgrades",
+    "name": "Upgrade to Copper Tools",
     "active": false,
     "level": 0,
     "maxLevel": 1,
     "upgradeAction": "unlockCopper",
-    "requiredUpgrade": "Hire Blacksmith",
+    "requiredUpgrade": "Upgrade to Wooden Tools",
     "costMultiplier": 1,
     "resourcesRequired": [
       {
@@ -206,12 +206,12 @@
     ]
   },
   {
-    "name": "Unlock Silver Ugrades",
+    "name": "Upgrade to Silver Tools",
     "active": false,
     "level": 0,
     "maxLevel": 1,
     "upgradeAction": "unlockSilver",
-    "requiredUpgrade": "Hire Blacksmith",
+    "requiredUpgrade": "Upgrade to Copper Tools",
     "costMultiplier": 1,
     "resourcesRequired": [
       {
@@ -221,12 +221,12 @@
     ]
   },
   {
-    "name": "Unlock Golden Upgrades",
+    "name": "Upgrade to Golden Tools",
     "active": false,
     "level": 0,
     "maxLevel": 1,
     "upgradeAction": "unlockGolden",
-    "requiredUpgrade": "Hire Blacksmith",
+    "requiredUpgrade": "Upgrade to Silver Tools",
     "costMultiplier": 1,
     "resourcesRequired": [
       {

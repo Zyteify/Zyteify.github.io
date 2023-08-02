@@ -87,7 +87,7 @@ class Upgrade {
             span.className = 'upgrade-span';
             this.button.appendChild(span);
             // Set the button text to the upgrade name, resouce required, and cost
-            span.textContent = `${this.name})`;
+            span.textContent = `${this.name}`;
             //create a span element for the button
             this.button.appendChild(this.resourceSpan);
             //create a div element for the button inside the span
@@ -139,12 +139,16 @@ class Upgrade {
         this.resourcesRequired.push(resource);
     }
     resourceAvailable() {
-        let result = false;
+        let result = true;
         for (let i = 0; i < this.resourcesRequired.length; i++) {
+            let resourceAvailable = false;
             for (let j = 0; j < resources.length; j++) {
                 if (this.resourcesRequired[i].ResourceType == resources[j].ResourceType && this.resourcesRequired[i].amount <= resources[j].amount) {
-                    result = true;
+                    resourceAvailable = true;
                 }
+            }
+            if (!resourceAvailable) {
+                result = false;
             }
         }
         return result;
@@ -154,8 +158,6 @@ class Upgrade {
         for (let i = 0; i < this.resourcesRequired.length; i++) {
             let resourcespent = false;
             for (let j = 0; j < resources.length; j++) {
-                console.log(`spending ${this.resourcesRequired[i].amount} ${this.resourcesRequired[i].ResourceType}`);
-                console.log(`checking ${resources[j].amount} ${resources[j].ResourceType}`);
                 if (this.resourcesRequired[i].ResourceType == resources[j].ResourceType && this.resourcesRequired[i].amount <= resources[j].amount) {
                     resources[j].amount -= this.resourcesRequired[i].amount;
                     resourcespent = true;

@@ -1,16 +1,18 @@
 "use strict";
+const baseMaterials = ['Scrap', 'Wooden', 'Copper', 'Silver', 'Gold'];
 class BaseType {
     id;
-    name;
+    baseMaterial;
     gearType;
     gearSlot;
     resource;
     craftingCost;
     itemMod = [];
+    unlocked = false;
     static count = 0;
     constructor(name, gearType, gearSlot, resource, itemMods, craftingCost) {
         this.id = BaseType.count++;
-        this.name = name;
+        this.baseMaterial = name;
         this.gearType = gearType;
         this.gearSlot = gearSlot;
         this.resource = resource;
@@ -20,18 +22,27 @@ class BaseType {
     export() {
         let baseType = {
             id: this.id,
-            name: this.name,
+            name: this.baseMaterial,
             gearType: this.gearType,
             resource: this.resource,
             itemMod: this.itemMod,
-            craftingCost: this.craftingCost
+            craftingCost: this.craftingCost,
+            unlocked: this.unlocked
         };
         return baseType;
     }
 }
 function findBaseTypeByNameandGearType(name, gearType) {
     for (let i = 0; i < baseTypes.length; i++) {
-        if (baseTypes[i].name === name && baseTypes[i].gearType === gearType) {
+        if (baseTypes[i].baseMaterial === name && baseTypes[i].gearType === gearType) {
+            return baseTypes[i];
+        }
+    }
+    return null;
+}
+function fundBaseTypeById(id) {
+    for (let i = 0; i < baseTypes.length; i++) {
+        if (baseTypes[i].id === id) {
             return baseTypes[i];
         }
     }

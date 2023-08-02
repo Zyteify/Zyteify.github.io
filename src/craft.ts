@@ -367,7 +367,7 @@ function createSelectedGear(): boolean {
     let gearSlot = <GearSlot>materialsGearSlotDropdown.value;
     let baseType = findBaseTypeByNameandGearType(baseTypeName, gearType);
     if (baseType) {
-        let gearCreation = createGear(baseType, 'Starter', itemsCrafting);
+        let gearCreation = createGear(false, baseType, 'Starter', itemsCrafting);
         if (gearCreation) {
             /* craftWork -= craftingCosts.craftingWork;
             updateCraftButton(); */
@@ -382,7 +382,7 @@ function createSelectedGear(): boolean {
 }
 
 
-function createGear(baseType: BaseType, rarity: RarityType, location: Item [], worker?: WorkerClass): boolean {
+function createGear(noCost: boolean, baseType: BaseType, rarity: RarityType, location: Item[], worker?: WorkerClass): boolean {
 
     let locationDiv;
 
@@ -395,60 +395,65 @@ function createGear(baseType: BaseType, rarity: RarityType, location: Item [], w
         locationHasRoom = roomAvailable(itemsCrafting);
     }
     else {
-        if(worker){
+        if (worker) {
             locationHasRoom = worker.roomAvailable(baseType)
         }
-        else{
+        else {
             console.log(`error in createGear, location not found, location: ${location}`);
         }
     }
-        
+
 
     let resourceCostSuccess = false;
-    if (baseType.resource.length == 0) {
+    if (baseType.resource.length == 0 || noCost) {
         resourceCostSuccess = true;
     }
-    //able to pay the resources?
-    for (let i = 0; i < baseType.resource.length; i++) {
-        let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
-        if (resourceInventory) {
-            if (resourceInventory.amount >= baseType.resource[i].amount) {
-                resourceCostSuccess = true;
+    else {
+        //able to pay the resources?
+        for (let i = 0; i < baseType.resource.length; i++) {
+            let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+            if (resourceInventory) {
+                if (resourceInventory.amount >= baseType.resource[i].amount) {
+                    resourceCostSuccess = true;
+                }
+                else {
+                    resourceCostSuccess = false;
+                    break;
+                }
             }
             else {
+                console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
                 resourceCostSuccess = false;
                 break;
             }
-        }
-        else {
-            console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
-            resourceCostSuccess = false;
-            break;
         }
     }
 
     if (locationHasRoom && resourceCostSuccess) {
 
-        //pay the resources and the crafting work
-        for (let i = 0; i < baseType.resource.length; i++) {
-            let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
-        if (resourceInventory) {
-            resourceInventory.amount -= baseType.resource[i].amount;
+        //no cost for the item, so no need to pay the resources
+        if (!noCost) {
+            //pay the resources and the crafting work
+            for (let i = 0; i < baseType.resource.length; i++) {
+                let resourceInventory = getResourceByName(baseType.resource[i].ResourceType);
+                if (resourceInventory) {
+                    resourceInventory.amount -= baseType.resource[i].amount;
+                }
+                else {
+                    console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
+                    break;
+                }
             }
-            else {
-                console.log(`error in createGear, resource not found, resource: ${baseType.resource[i]}`);
-                break;
-            }
+            craftWork -= baseType.craftingCost;
         }
-        craftWork -= baseType.craftingCost;
 
         let newGear = new Item(baseType, rarity);
         newGear.setParentDiv(locationDiv)
 
-        if(worker){
+        if (worker) {
             worker.equipItem(newGear)
         }
-        else{
+        else {
             location.push(newGear);
         }
 
