@@ -139,7 +139,7 @@ function importGems() {
         let dataArray = data.split("\n");
         for (let i = 0; i < dataArray.length - 1; i++) {
             let importGem = JSON.parse(dataArray[i]);
-            let gem = new Gem(importGem.name, importGem.imageName, importGem.amount, importGem.active);
+            let gem = new Gem(importGem.name, importGem.amount, importGem.active);
             gem.display();
             gems.push(gem);
         }

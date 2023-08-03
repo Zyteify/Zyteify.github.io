@@ -489,7 +489,7 @@ deleteButton.innerHTML = "Delete";
 deleteButton.onclick = function () {
     deleteItem();
 }
-craftingOptionsDiv.appendChild(deleteButton);
+/* craftingOptionsDiv.appendChild(deleteButton); */
 
 //add a button in the item options to add the item to gear
 let addToGearButton = document.createElement('button');
@@ -497,7 +497,7 @@ addToGearButton.innerHTML = "Add to Gear";
 addToGearButton.onclick = function () {
     addToGear();
 }
-craftingOptionsDiv.appendChild(addToGearButton);
+/* craftingOptionsDiv.appendChild(addToGearButton); */
 
 //todo add and remove event listeners for the crafting items list
 function deleteItem() {

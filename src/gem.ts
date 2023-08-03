@@ -15,13 +15,15 @@ class Gem {
     container: HTMLElement;
     div: HTMLDivElement;
     static count: number = 0;
-    constructor(name: string, imageName: string, amount: number, active: boolean) {
+    constructor(name: string,amount: number, active: boolean) {
         this.id = Item.count++;
         this.name = name;
         this.amount = amount;
         this.active = active;
 
-        this.imageName = imageName
+        
+
+        this.imageName = `gem${name}.png`
         //add -bg before .png
         this.imageNameBackground = this.imageName.slice(0, this.imageName.length - 4) + this.imageNameBackground + this.imageName.slice(this.imageName.length - 4, this.imageName.length)
         this.container = materialsGemList

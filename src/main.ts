@@ -31,9 +31,9 @@ setResourceActive('coins');
 
 //list of gems  
 let gems: Gem[] = [
-    new Gem("1", 'gem1.png', 0, false),
-    new Gem("2", 'gem2.png', 0, false),
-    new Gem("3", 'gem3.png', 0, false),
+    new Gem("1", 0, false),
+    new Gem("2", 0, false),
+    new Gem("3", 0, false),
 ]
 
 function setGemActive(name: string) {
@@ -126,6 +126,29 @@ loadJson('../dist/data/girl_names.json').then(data => {
 let affixList: Affix[] = [];
 loadJson('../dist/data/affixes.json').then(data => {
     affixList = data as Affix[];
+});
+
+let augmentButtonList: AugmentButton[] = []
+loadJson('../dist/data/augments.json').then(data => {
+    let augmentButtonListTemp = data as any[];
+    //create a augment for each in the list
+    for (let i = 0; i < augmentButtonListTemp.length; i++) {
+        let name: string = augmentButtonListTemp[i].name;
+        let craftingCost: number = augmentButtonListTemp[i].craftingCost;
+        let gems = augmentButtonListTemp[i].gems;
+        let gemsTemp: Gem[] = [];
+
+        //create an array for each gem
+        if (gems) {
+            for (let i = 0; i < gems.length; i++) {
+                let gem = new Gem(gems[i].Gem, gems[i].amount, gems[i].active);
+                gemsTemp.push(gem);
+            }
+        }
+        augmentButtonList.push(new AugmentButton(name, gemsTemp, craftingCost));
+    }
+
+
 });
 
 //todo verify the affixList is indeed an array of affixes at runtime

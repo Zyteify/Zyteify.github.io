@@ -1,0 +1,36 @@
+﻿[
+  {
+    "name": "Upgrade to Magic",
+    "craftingCost": 10,
+    "gems": [
+      {
+        "Gem": "1",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "name": "Upgrade to Rare",
+    "craftingCost": 100,
+    "gems": [
+      {
+        "Gem": "2",
+        "amount": 1
+      }
+    ]
+  },
+  {
+    "name": "Reroll Rare",
+    "craftingCost": 1000,
+    "gems": [
+      {
+        "Gem": "3",
+        "amount": 1
+      },
+      {
+        "Gem": "1",
+        "amount": 1
+      }
+    ]
+  }
+]

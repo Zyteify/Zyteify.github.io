@@ -10,7 +10,7 @@ function increaseWorkerSpeed() {
 }
 //Increase Worker Inventory
 function increaseWorkerInventory() {
-    WorkerClass.maxInventory += 50;
+    WorkerClass.maxInventory *= 2;
     recalculateWorkers();
     displayUpgrades();
 }
